@@ -20,21 +20,23 @@ const AdCard = ({ iconName, title, onPress, ...textStyle }) => {
       url: advert1,
       content: advert1Content
     },
-    {
-      id: 2,
-      name: advert2Name,
-      url: advert2,
-      content: advert2Content
-    },
-    {
-      id: 3,
-      name: advert3Name,
-      url: advert3,
-      content: advert3Content
-    }
+    // {
+    //   id: 2,
+    //   name: advert2Name,
+    //   url: advert2,
+    //   content: advert2Content
+    // },
+    // {
+    //   id: 3,
+    //   name: advert3Name,
+    //   url: advert3,
+    //   content: advert3Content
+    // }
   ];
 
-  const filteredAdvertising = advertising.filter((item) => item.content); // Filter out items with no content
+  const filteredAdvertising = advertising.filter((item) => item.name); // Filter out items with no content
+
+  console.log('from adCard ',filteredAdvertising);
 
   return (
     <View>
@@ -67,7 +69,8 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     textAlign: 'center',
     width: '80%',
-    fontSize: 16
+    fontSize: 18,
+    fontWeight: 'bold'
   }
 });
 

@@ -7,7 +7,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { AuthContext } from '../Auth/AuthContext';
 
 const HomeScreen = ({navigation}) => {
-    const {advert1, advert1Name} = useContext(AuthContext);
+    const {advert1, advert1Name, fecha} = useContext(AuthContext);
     const today = new Date();
     const daysOfWeek = ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'];
     const month = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
@@ -26,10 +26,10 @@ const HomeScreen = ({navigation}) => {
         <View>
             <Text style={styles.fecha}>{formattedDate}</Text>
             <AdCard iconName="bitcoin" title="Toma Acción Ahora, Gane hasta US$200 Dolares en Bitcoin. "/>
-            <Result fecha='Miercoles 2, 2023'/>
+            <Result/>
             <TouchableOpacity onPress={handlePres} style={styles.btnGenerar}>
                 <Text style={{color: 'snow', fontSize: 20, fontWeight: 'bold'}}>
-                    Generar Numeros
+                     Números con Lottery Wizard AI
                 </Text>
             </TouchableOpacity>
         </View>

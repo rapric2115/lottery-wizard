@@ -3,8 +3,8 @@ import { View, Text, StyleSheet } from 'react-native';
 import { AuthContext } from '../Auth/AuthContext';
 
 
-const Result = ({fecha}) => {
-    const { acumulado, uno, dos, tres, cuatro, cinco, seis, mas, superMas } = useContext(AuthContext);
+const Result = () => {
+    const { acumulado, uno, dos, tres, cuatro, cinco, seis, mas, superMas, fecha } = useContext(AuthContext);
 
     const resultado = [uno, dos, tres, cuatro, cinco, seis];
     const resultadoMax = [ mas, superMas ]

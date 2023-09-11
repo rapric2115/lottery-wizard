@@ -23,6 +23,16 @@ export const AuthProvider = ({children}) => {
     const [advert3, setAdvert3] = useState();
     const [advert3Name, setAdvert3Name] = useState();
     const [advert3Content, setAdvert3Content] = useState();
+    const [fecha, setFecha] = useState();
+
+    const [unoSecond, setSecondUno] = useState(1);
+    const [dosSecond, setSecondDos] = useState(2);
+    const [tresSecond, setSecondTres] = useState(3);
+    const [cuatroSecond, setSecondCuatro] = useState(4);
+    const [cincoSecond, setSecondCinco] = useState(5);
+    const [seisSecond, setSecondSeis] = useState(6);
+    const [masSecond, setSecondMas] = useState(7);
+    const [superMasSecond, setSecondSuperMas] = useState(8);
 
     useEffect(() => {
         FetchingNumeros();
@@ -44,17 +54,28 @@ export const AuthProvider = ({children}) => {
                   setSeis(response.data[0].Seis);
                   setMas(response.data[0].mas);
                   setSuperMas(response.data[0].super);
+
+                  setSecondUno(response.data[1].Uno);
+                  setSecondDos(response.data[1].Dos);
+                  setSecondTres(response.data[1].Tres);
+                  setSecondCuatro(response.data[1].Cuatro);
+                  setSecondCinco(response.data[1].Cinco);
+                  setSecondSeis(response.data[1].Seis);
+                  setSecondMas(response.data[1].mas);
+                  setSecondSuperMas(response.data[1].super);
+
                   setAcumulado(acc);
-                  setAdvert1Name(data[0].advert1);
-                  setAdvert1(data[1].advert1);
-                  setAdvert1Content(data[2].advert1);
+                  setAdvert1Name(response.data[0].advert1);
+                  setAdvert1(response.data[1].advert1);
+                  setAdvert1Content(response.data[2].advert1);
                   setAdvert2Name(data[0].advert1);
                   setAdvert2(data[1].advert1);
                   setAdvert2Content(data[2].advert1);
                   setAdvert3Name(data[0].advert1);
                   setAdvert3(data[1].advert1);
                   setAdvert3Content(data[2].advert1);
-                  console.log(data);
+                  setFecha(response.data[0].fecha);
+                  console.log('data from AuthContext', response.data[0]);
               } else {
                   console.log('Response data is empty or not as expected.');
               }
@@ -64,10 +85,12 @@ export const AuthProvider = ({children}) => {
           }
       };
 
+      console.log('fecha from authContext', fecha)
 
     return (
         <AuthContext.Provider value={{acumulado, uno, dos, tres, cuatro, cinco, seis, mas, superMas,
-            advert1, advert1Name, advert1Content, advert2, advert2Name, advert2Content, advert3, advert3Name, advert3Content
+            advert1, advert1Name, advert1Content, advert2, advert2Name, advert2Content, advert3, advert3Name, advert3Content, fecha,
+            unoSecond, dosSecond, tresSecond, cuatroSecond, cincoSecond, seisSecond, masSecond, superMasSecond,
         }}>
             {children}
         </AuthContext.Provider>

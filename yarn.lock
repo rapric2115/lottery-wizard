@@ -3764,6 +3764,11 @@ import-fresh@^2.0.0:
     caller-path "^2.0.0"
     resolve-from "^3.0.0"
 
+importance@0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/importance/-/importance-0.0.4.tgz#92fd7d89848eba8bef1901e6285ec01eb39e4714"
+  integrity sha512-3zKffSn6BmOpFbP9WX/AVZ++ZzqVDyqhP9/rrYeum0nVh9B2bIgmJkm+E9/MNHTf9eUfXPezZholVr3aTluIzw==
+
 imurmurhash@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/imurmurhash/-/imurmurhash-0.1.4.tgz#9218b9b2b928a238b13dc4fb6b6d576f231453ea"
@@ -5366,6 +5371,13 @@ queue@6.0.2:
   integrity sha512-iHZWu+q3IdFZFX36ro/lKBkSvfkztY5Y7HMiPlOUjhupPcG2JMfst2KKEpu5XndviX/3UhFbRngUPNKtgvtZiA==
   dependencies:
     inherits "~2.0.3"
+
+random-forest@^0.0.7:
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/random-forest/-/random-forest-0.0.7.tgz#d2e3108ab66e3d314b8a440f1d92a2dce65c2fa8"
+  integrity sha512-fjVxQBZ56/BAZl7kpyWspfPiLdlGHpQltNqpQnPanEdDGdcqOqynu64KyoY3lY4FlkmvBRY9fhR3G9QdYXmJAw==
+  dependencies:
+    importance "0.0.4"
 
 range-parser@~1.2.1:
   version "1.2.1"
