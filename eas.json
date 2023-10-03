@@ -1,0 +1,28 @@
+{
+  "cli": {
+    "version": ">= 4.1.2"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "ios": {
+        "resourcesClass": "ml-medium"
+      }
+    },
+    "preview": {
+      "distribution": "internal",
+      "ios": {
+        "resourcesClass": "ml-medium"
+      }
+    },
+    "production": {
+      "ios": {
+        "resourcesClass": "ml-medium"
+      }
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}

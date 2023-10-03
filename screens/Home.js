@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { View, Text, StyleSheet, Touchable } from 'react-native';
+import { View, Text, StyleSheet, Touchable, ScrollView } from 'react-native';
 
 import AdCard from '../components/adCard';
 import Result from '../components/Resultados';
@@ -23,7 +23,7 @@ const HomeScreen = ({navigation}) => {
     }
 
     return(
-        <View>
+        <ScrollView>
             <Text style={styles.fecha}>{formattedDate}</Text>
             <AdCard iconName="bitcoin" title="Toma Acción Ahora, Gane hasta US$200 Dolares en Bitcoin. "/>
             <Result/>
@@ -32,7 +32,7 @@ const HomeScreen = ({navigation}) => {
                      Números con Lottery Wizard AI
                 </Text>
             </TouchableOpacity>
-        </View>
+        </ScrollView>
     )
 }
 

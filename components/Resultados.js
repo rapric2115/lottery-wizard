@@ -1,49 +1,184 @@
-import React, { useContext } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { AuthContext } from '../Auth/AuthContext';
+import React, { useContext, useState, useEffect } from 'react';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { initializeApp } from 'firebase/app';
+import { getDatabase, ref, onValue, child, get } from 'firebase/database';
+import { firebaseConfig } from '../firebaseConfig';
+
 
 
 const Result = () => {
-    const { acumulado, uno, dos, tres, cuatro, cinco, seis, mas, superMas, fecha } = useContext(AuthContext);
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const [leidsa, setLeidsa] = useState([]);
+    const [leidsaAcumulado, setLeidsaAcumulado] = useState();
+    const [leidsaFecha, setLeidsaFecha] = useState();
+    const [loteka, setLoteka] = useState([]);
+    const [lotekaAcumulado, setLotekaAcumulado] = useState();
+    const [lotekaFecha, setLotekaFecha] = useState();
 
-    const resultado = [uno, dos, tres, cuatro, cinco, seis];
-    const resultadoMax = [ mas, superMas ]
+    const LeidsaRef = ref(db);
+    // const LeidsaRef = ref(db, 'leidsa/');
+    // onValue(LeidsaRef, (snapshot) => {
+    //   const data = snapshot.val();
+    //   setLeidsa(data);
+    // })
+
+    useEffect(() => {
+      getData()
+    }, [])
+    
+    const getData = () => {
+        get(child(LeidsaRef, `lottos/leidsa/num`)).then((snapshot) => {
+          if (snapshot.exists()) {
+            const data = snapshot.val();
+            if (data && typeof data === 'object') {
+              const dataArray = Object.values(data); // Extract values into an array
+              setLeidsa(dataArray);
+            } else {
+              console.log("Data is not an object or is empty");
+            }
+          } else {
+            console.log("No data available");
+          }
+        }).catch((error) => {
+          console.error(error);
+        });
+
+        get(child(LeidsaRef, `lottos/leidsa/acumulado`)).then((snapshot) => {
+            if (snapshot.exists()) {
+              const data = snapshot.val();
+              // Extract values into an array
+                setLeidsaAcumulado(data);
+             
+            } else {
+              console.log("No data available");
+            }
+          }).catch((error) => {
+            console.error(error);
+          });
+
+          get(child(LeidsaRef, `lottos/leidsa/fecha`)).then((snapshot) => {
+            if (snapshot.exists()) {
+              const data = snapshot.val();
+              // Extract values into an array
+                setLeidsaFecha(data);
+             
+            } else {
+              console.log("No data available");
+            }
+          }).catch((error) => {
+            console.error(error);
+          });
+
+          // Loteka
+          get(child(LeidsaRef, `lottos/loteka/num`)).then((snapshot) => {
+            if (snapshot.exists()) {
+              const data = snapshot.val();
+              if (data && typeof data === 'object') {
+                const dataArray = Object.values(data); // Extract values into an array
+                setLoteka(dataArray);
+              } else {
+                console.log("Data is not an object or is empty");
+              }
+            } else {
+              console.log("No data available");
+            }
+          }).catch((error) => {
+            console.error(error);
+          });
+
+          get(child(LeidsaRef, `lottos/loteka/acumulado`)).then((snapshot) => {
+            if (snapshot.exists()) {
+              const data = snapshot.val();
+              // Extract values into an array
+                setLotekaAcumulado(data);
+             
+            } else {
+              console.log("No data available");
+            }
+          }).catch((error) => {
+            console.error(error);
+          });
+
+          get(child(LeidsaRef, `lottos/loteka/fecha`)).then((snapshot) => {
+            if (snapshot.exists()) {
+              const data = snapshot.val();
+              // Extract values into an array
+                setLotekaFecha(data);
+             
+            } else {
+              console.log("No data available");
+            }
+          }).catch((error) => {
+            console.error(error);
+          });
+      }
+      
+      
+    
+
+      console.log(leidsa)
+
     
 
     return(
-        <View style={styles.container}>
-            <Text>Leidsa</Text>
-            <Text style={{fontSize: 38, fontWeight: 'bold'}}>RESULTADO</Text>
-            <Text>Fecha {fecha}</Text>
-            <View style={{flexDirection: 'row', marginTop: 10}}>
-                {resultado.map((item, i) => (
-                    <Text key={i} style={styles.results}>{item}</Text>
-                ))}
+        <ScrollView>
+            <View style={styles.container}>
+                <Text style={{fontWeight: 'bold'}}>LEIDSA</Text>
+                <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
+                    <View style={{flexDirection: 'row'}}>
+                        <Text>FECHA</Text>
+                        <Text style={{marginHorizontal: 10}}>{leidsaFecha}</Text>
+                    </View>
+                    <Text Style={{fontSize: 26, fontWeight: 'bold'}}>RESULTADO</Text>
+                </View>
+                <View style={{flexDirection: 'row', marginTop: 20}}>
+                    {leidsa.map((num) => (
+                        <Text style={styles.results}>{num}</Text>
+                    ))}
+                </View>
+                <View style={{marginTop: 20}}>
+                    <Text>ACUMULADO</Text>
+                    <Text style={{fontSize: 38, fontWeight: 'bold'}}>{`RD$ ${leidsaAcumulado} MILLONES`}</Text>
+                </View>
             </View>
-            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
-                {resultadoMax.map((item, i) => (
-                    <Text key={i} style={styles.resultsMax}>{item}</Text>
-                ))}
+            <View style={styles.container}>
+                <Text style={{fontWeight: 'bold'}}>LOTEKA</Text>
+                <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
+                    <View style={{flexDirection: 'row'}}>
+                        <Text>FECHA</Text>
+                        <Text style={{marginHorizontal: 10}}>{lotekaFecha}</Text>
+                    </View>
+                    <Text Style={{fontSize: 26, fontWeight: 'bold'}}>RESULTADO</Text>
+                </View>
+                <View style={{flexDirection: 'row', marginTop: 20}}>
+                    {loteka.map((num, i) => (
+                        <Text style={styles.results} key={i}>{num}</Text>
+                    ))}
+                </View>
+                <View style={{marginTop: 20}}>
+                    <Text>ACUMULADO</Text>
+                    <Text style={{fontSize: 38, fontWeight: 'bold'}}>{`RD$ ${lotekaAcumulado} MILLONES`}</Text>
+                </View>
             </View>
-            <Text>Acumulado</Text>
-            <Text style={{fontSize: 38, fontWeight: 'bold', alignSelf: 'center'}}>RD$ {acumulado} Millones</Text>
-        </View>
+        </ScrollView>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
         width: 370,
-        height: 333,
+        height: 210,
         backgroundColor: 'white',
         alignSelf: 'center',
         borderRadius: 7,
         marginVertical: 15,
-        padding: 5
+        padding: 5,
+        marginBottom: 15
     },
     results: {
-        width: 50,
-        height: 50,
+        width: 35,
+        height: 35,
         borderRadius: 50,
         backgroundColor: '#cbd4c2',
         margin: 5,

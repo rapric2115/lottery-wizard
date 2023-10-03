@@ -1,96 +1,171 @@
 import React, { createContext, useState, useEffect } from 'react';
-import axios from 'axios';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, signOut} from 'firebase/auth';
+import { initializeApp } from 'firebase/app';
+import { firebaseConfig } from '../firebaseConfig';
+import * as WebBrowser from 'expo-web-browser';
+import * as Google from 'expo-auth-session/providers/google';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
+// web client ID: "391790290602-fis5hsn5s2gqs912jn0ljref9ni1ebfa.apps.googleusercontent.com"
+// IOs client ID: "391790290602-9v54hr3dtoplo9r5a572ctf69uo1ftj7.apps.googleusercontent.com"
+// Android cliend ID: "391790290602-ou4v1l1620m3ia989spi2p3l16ir4m6c.apps.googleusercontent.com"
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({children}) => {
-    const [acumulado, setAcumulado] = useState(0);
-    const [uno, setUno] = useState(1);
-    const [dos, setDos] = useState(2);
-    const [tres, setTres] = useState(3);
-    const [cuatro, setCuatro] = useState(4);
-    const [cinco, setCinco] = useState(5);
-    const [seis, setSeis] = useState(6);
-    const [mas, setMas] = useState(7);
-    const [superMas, setSuperMas] = useState(8);
-    const [advert1, setAdvert1] = useState();
-    const [advert1Name, setAdvert1Name] = useState();
-    const [advert1Content, setAdvert1Content] = useState();
-    const [advert2, setAdvert2] = useState();
-    const [advert2Name, setAdvert2Name] = useState();
-    const [advert2Content, setAdvert2Content] = useState();
-    const [advert3, setAdvert3] = useState();
-    const [advert3Name, setAdvert3Name] = useState();
-    const [advert3Content, setAdvert3Content] = useState();
-    const [fecha, setFecha] = useState();
+    const [currentUser, setCurrentUser] = useState(null);
+    const [accessToken, setAccessToken] = useState(null);
+   
 
-    const [unoSecond, setSecondUno] = useState(1);
-    const [dosSecond, setSecondDos] = useState(2);
-    const [tresSecond, setSecondTres] = useState(3);
-    const [cuatroSecond, setSecondCuatro] = useState(4);
-    const [cincoSecond, setSecondCinco] = useState(5);
-    const [seisSecond, setSecondSeis] = useState(6);
-    const [masSecond, setSecondMas] = useState(7);
-    const [superMasSecond, setSecondSuperMas] = useState(8);
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+
+    const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
+      clientId: "391790290602-fis5hsn5s2gqs912jn0ljref9ni1ebfa.apps.googleusercontent.com",
+      iosClientId: "391790290602-9v54hr3dtoplo9r5a572ctf69uo1ftj7.apps.googleusercontent.com",
+      androidClientId: "391790290602-ou4v1l1620m3ia989spi2p3l16ir4m6c.apps.googleusercontent.com"
+    })
 
     useEffect(() => {
-        FetchingNumeros();
-      }, [])
+      // FetchingNumeros(); // Commented out, so it shouldn't be causing issues
+      if (response?.type === "success") {
+        setAccessToken(response.authentication.accessToken);
+        accessToken && fetchUserInfo(); // Fetching user info only when accessToken changes
+      }
+      loadAccessToken();
+  }, [response, accessToken]);
+
+   // Add this useEffect to load the access token from AsyncStorage
   
-      const FetchingNumeros = async () => {      
-          const url = `https://sheetdb.io/api/v1/boby9tv7bf1xs`;
-      
+    const loadAccessToken = async () => {
+      try {
+        const token = await AsyncStorage.getItem('@user');
+        console.log('access token from asyncStorage: ', token)
+        if (token) {
+          setAccessToken(token);
+          setCurrentUser(token)
+          console.log('token from authContext: ', token)
+        }
+      } catch (error) {
+        console.error('Error loading access token:', error);
+      }
+    };  
+
+      const fetchUserInfo = async () => {
+        if (accessToken) {
           try {
-              const response = await axios.get(url);
-              if (response.data) {
-                  const data = response.data;
-                  const acc = response.data[0].acumulado;
-                  setUno(response.data[0].Uno);
-                  setDos(response.data[0].Dos);
-                  setTres(response.data[0].Tres);
-                  setCuatro(response.data[0].Cuatro);
-                  setCinco(response.data[0].Cinco);
-                  setSeis(response.data[0].Seis);
-                  setMas(response.data[0].mas);
-                  setSuperMas(response.data[0].super);
+            const response = await fetch("https://www.googleapis.com/userinfo/v2/me", {
+              headers: {
+                Authorization: `Bearer ${accessToken}`, // Add the access token here
+              },
+            });
+      
+            if (response.ok) {
+              const userInfo = await response.json();
+              setCurrentUser(userInfo);
+            } else {
+              // Handle errors when fetching user info
+              console.error("Failed to fetch user info:", response.status, response.statusText);
+            }
+          } catch (error) {
+            console.error("Error fetching user info:", error);
+          }
+        }
 
-                  setSecondUno(response.data[1].Uno);
-                  setSecondDos(response.data[1].Dos);
-                  setSecondTres(response.data[1].Tres);
-                  setSecondCuatro(response.data[1].Cuatro);
-                  setSecondCinco(response.data[1].Cinco);
-                  setSecondSeis(response.data[1].Seis);
-                  setSecondMas(response.data[1].mas);
-                  setSecondSuperMas(response.data[1].super);
-
-                  setAcumulado(acc);
-                  setAdvert1Name(response.data[0].advert1);
-                  setAdvert1(response.data[1].advert1);
-                  setAdvert1Content(response.data[2].advert1);
-                  setAdvert2Name(data[0].advert1);
-                  setAdvert2(data[1].advert1);
-                  setAdvert2Content(data[2].advert1);
-                  setAdvert3Name(data[0].advert1);
-                  setAdvert3(data[1].advert1);
-                  setAdvert3Content(data[2].advert1);
-                  setFecha(response.data[0].fecha);
-                  console.log('data from AuthContext', response.data[0]);
-              } else {
-                  console.log('Response data is empty or not as expected.');
-              }
-          } catch (err) {
-              console.log('Error:', err.message);
-              console.log('Error response data:', err.response && err.response.data);
+         // After successfully fetching user info, store the token in AsyncStorage
+          try {
+            await AsyncStorage.setItem('accessToken', accessToken);
+          } catch (error) {
+            console.error('Error saving access token:', error);
           }
       };
+      
+      
+     
 
-      console.log('fecha from authContext', fecha)
+      const userID = () => {
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+              // User is signed in, see docs for a list of available properties
+              // https://firebase.google.com/docs/reference/js/auth.user
+              const uid = user.uid;
+              console.log(uid);
+              // ...
+            } else {
+              // User is signed out
+              // ...
+            }});
+      }
+  
+     
+
+      const login = (values) => {
+        signInWithEmailAndPassword(auth, values.email, values.password)
+          .then((userCredential) => {
+            // Signed in
+            const user = userCredential.user;
+            // console.log(user);
+            setCurrentUser(user);
+              // Store the access token in AsyncStorage upon successful login
+              try {
+                AsyncStorage.setItem('@user', JSON.stringify(userCredential));
+              } catch (error) {
+                console.error('Error saving access token:', error);
+              }
+          })
+          .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            // Handle login errors
+            console.error(errorCode, errorMessage);
+          });
+      };
+      
+
+      const register =  (values) => {
+        createUserWithEmailAndPassword(auth, values.email, values.password)
+          .then(async (userCredential) => {
+            // Signed in
+            const user = userCredential.user;
+            setAccessToken(user.accessToken);
+            setCurrentUser(true);
+            const token = user.accessToken;
+            await AsyncStorage.setItem('@user', JSON.stringify(userCredential));
+            // ...
+          })
+          .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            // Handle registration errors
+            console.error(errorCode, errorMessage);
+          });
+      };
+      
+
+      const signInWithGoogle = () => {
+        promptAsync();
+      };
+      
+      handleSignOutWithGoogle = () => {
+        signOut(auth).then(async () => {
+          // Sign-out successful.
+          try {
+            await AsyncStorage.removeItem('@user');
+          } catch (error) {
+            console.error('Error removing access token:', error);
+          }
+          setCurrentUser(null);
+        }).catch((error) => {
+          // An error happened.
+        });
+      }
+
+      console.log('from AuthContext line 171', currentUser)
 
     return (
-        <AuthContext.Provider value={{acumulado, uno, dos, tres, cuatro, cinco, seis, mas, superMas,
-            advert1, advert1Name, advert1Content, advert2, advert2Name, advert2Content, advert3, advert3Name, advert3Content, fecha,
-            unoSecond, dosSecond, tresSecond, cuatroSecond, cincoSecond, seisSecond, masSecond, superMasSecond,
+        <AuthContext.Provider value={{
+            register, currentUser, signInWithGoogle, login, request, handleSignOutWithGoogle
         }}>
             {children}
         </AuthContext.Provider>
