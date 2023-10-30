@@ -6,11 +6,16 @@ import { NavigationContainer } from '@react-navigation/native';
 import { AuthContext } from '../Auth/AuthContext';
 
 import GeneradorFormula from '../screens/Generador';
+import MembershipPrice from '../screens/memberShip/membershipPrice';
 
 import HomeScreen from '../screens/Home';
 import MyAccount from '../screens/Perfil';
 import Register from '../screens/register';
 import Login from '../screens/login';
+
+import Brain from '../assets/Brain-modified.svg';
+import UProfile from '../assets/user profile-modified.svg';
+import Home from '../assets/home-modified.svg';
 
 
 
@@ -19,11 +24,14 @@ const Stack = createStackNavigator();
 
 
 const TabNavigator = () => {
+    const commonHeaderOptions = {
+        headerBackButtonMenuEnabled: true,
+    }
     return(
         <Tab.Navigator  
             initialRouteName='Home'
             screenOptions={{
-                tabBarActiveTintColor: '#e91e63'
+                tabBarActiveTintColor: '#2691b4'
             }}>               
                 <Tab.Screen
                     name="Home"
@@ -31,7 +39,8 @@ const TabNavigator = () => {
                     options={{
                         tabBarLabel: 'Home',
                         tabBarIcon: () => (
-                            <Octicons name="number" size={24} color="black" />
+                            // <Octicons name="number" size={24} color="black" />
+                            <Home width={30} height={30} fill="blue" />
                             ),
                         title: 'Resultados'
                         }} 
@@ -42,7 +51,8 @@ const TabNavigator = () => {
                     options={{
                         tabBarLabel: 'Combinaciones',
                         tabBarIcon: () => (
-                            <MaterialIcons name="bolt" size={24} color="black" />
+                            // <MaterialIcons name="bolt" size={24} color="black" />
+                            <Brain width={30} height={30} fill="blue" />
                             )
                         }}
                 />
@@ -52,8 +62,9 @@ const TabNavigator = () => {
                     options={{
                         tabBarLabel: 'Mi Perfil',
                         tabBarIcon: () => (
-                            <FontAwesome5 name="user-circle" size={24} color="black" />
-                        )
+                            // <FontAwesome5 name="user-circle" size={24} color="black" />
+                            <UProfile width={30} height={30} fill="blue" />
+                        )                    
                     }}
                 /> 
             </Tab.Navigator>
@@ -62,11 +73,15 @@ const TabNavigator = () => {
 
 const AppNavigator = () => {
     const {currentUser} = useContext(AuthContext);
+    
    return(
         <NavigationContainer>
             <Stack.Navigator>
                 {currentUser ? (
-                    <Stack.Screen name="Tabs" component={TabNavigator} options={{headerShown: false}}/> 
+                    <Stack.Group>
+                        <Stack.Screen name="Tabs" component={TabNavigator} options={{headerShown: false}}/> 
+                        <Stack.Screen name="Precios" component={MembershipPrice} options={{headerShown: true, title: 'Membresias'}} />
+                    </Stack.Group>
                     
                     ): (
                         <Stack.Group>

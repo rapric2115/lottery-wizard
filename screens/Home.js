@@ -5,6 +5,7 @@ import AdCard from '../components/adCard';
 import Result from '../components/Resultados';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { AuthContext } from '../Auth/AuthContext';
+import CountdownTimer from '../components/countDown';
 
 const HomeScreen = ({navigation}) => {
     const {advert1, advert1Name, fecha} = useContext(AuthContext);
@@ -23,13 +24,14 @@ const HomeScreen = ({navigation}) => {
     }
 
     return(
-        <ScrollView>
+        <ScrollView style={{flex: 1}}>
             <Text style={styles.fecha}>{formattedDate}</Text>
             <AdCard iconName="bitcoin" title="Toma Acción Ahora, Gane hasta US$200 Dolares en Bitcoin. "/>
+            {/* <CountdownTimer targetDate="November 1, 2023" /> */}
             <Result/>
             <TouchableOpacity onPress={handlePres} style={styles.btnGenerar}>
                 <Text style={{color: 'snow', fontSize: 20, fontWeight: 'bold'}}>
-                     Números con Lottery Wizard AI
+                     Combinaciones con Lottery Wizard
                 </Text>
             </TouchableOpacity>
         </ScrollView>
@@ -40,13 +42,16 @@ const styles = StyleSheet.create({
     fecha: {
         alignSelf: 'center',
         marginTop: 10,
-        fontSize: 16
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: '#224357'
     },
     btnGenerar: {
         alignSelf: 'center',
-        backgroundColor: '#247ba0',
+        backgroundColor: '#2691b4',
         padding: 20,
         borderRadius: 10,
+        marginBottom: 40
     }
 })
 

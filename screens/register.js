@@ -3,12 +3,14 @@ import { Text, TextInput, View, StyleSheet, TouchableOpacity } from 'react-nativ
 import { Formik } from 'formik';
 import { AuthContext } from '../Auth/AuthContext';
 import ButtonWizard from '../components/button';
+import ErrorMessage from '../components/errorMessage';
  
 const Register = ({navigation}) => {
-    const {register} = useContext(AuthContext);
+    const {register, errorMessage} = useContext(AuthContext);
 
     return (
         <View style={{flex:1, justifyContent: 'center'}}>
+            <ErrorMessage errorMessage={errorMessage} />
             <Formik
                 initialValues={{ email: '', password: '' }}
                 onSubmit={values => register(values)}
@@ -17,6 +19,7 @@ const Register = ({navigation}) => {
                 <View>
                     <TextInput
                         onChangeText={handleChange('email')}
+                        autoCapitalize='none'
                         onBlur={handleBlur('email')}
                         value={values.email}
                         style={styles.input}
@@ -24,13 +27,14 @@ const Register = ({navigation}) => {
                     />
                     <TextInput
                         onChangeText={handleChange('password')}
+                        autoCapitalize='none'
                         onBlur={handleBlur('password')}
                         value={values.password}
                         style={styles.input}
                         placeholder='password'
                     />
                     <TouchableOpacity onPress={handleSubmit} style={styles.btn}>
-                        <Text style={{alignSelf: 'center', color: '#fff'}}> Sign Up</Text>
+                        <Text style={{alignSelf: 'center', color: '#fff', fontWeight: 'bold'}}> Sign Up</Text>
                     </TouchableOpacity>
                     <ButtonWizard> sign Up with Google </ButtonWizard>
                 </View>
@@ -59,7 +63,7 @@ const Register = ({navigation}) => {
     },
     btn: {
         width: '50%',
-        backgroundColor: 'blue',
+        backgroundColor: 'black',
         paddingHorizontal: 10,
         paddingVertical: 5,
         borderRadius: 7,

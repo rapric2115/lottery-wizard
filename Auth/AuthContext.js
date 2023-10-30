@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect } from 'react';
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, signOut} from 'firebase/auth';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged} from 'firebase/auth';
+import { getDatabase, ref, set } from 'firebase/database';
 import { initializeApp } from 'firebase/app';
 import { firebaseConfig } from '../firebaseConfig';
 import * as WebBrowser from 'expo-web-browser';
@@ -15,11 +16,13 @@ export const AuthContext = createContext();
 export const AuthProvider = ({children}) => {
     const [currentUser, setCurrentUser] = useState(null);
     const [accessToken, setAccessToken] = useState(null);
-   
+    const [userDataID, setUserDataID] = useState(null);
+    const [userName, setUserName] = useState(null);
+    const [userEmail, setUserEmail] = useState(null);
+    const [errorMessage, setErrorMessage] = useState(null);   
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
-
 
     const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
       clientId: "391790290602-fis5hsn5s2gqs912jn0ljref9ni1ebfa.apps.googleusercontent.com",
@@ -34,18 +37,23 @@ export const AuthProvider = ({children}) => {
         accessToken && fetchUserInfo(); // Fetching user info only when accessToken changes
       }
       loadAccessToken();
+      // userID();
   }, [response, accessToken]);
+
+  useEffect(() => {
+   userID()
+  }, [currentUser])
+  
+  
 
    // Add this useEffect to load the access token from AsyncStorage
   
     const loadAccessToken = async () => {
       try {
         const token = await AsyncStorage.getItem('@user');
-        console.log('access token from asyncStorage: ', token)
         if (token) {
           setAccessToken(token);
           setCurrentUser(token)
-          console.log('token from authContext: ', token)
         }
       } catch (error) {
         console.error('Error loading access token:', error);
@@ -85,20 +93,21 @@ export const AuthProvider = ({children}) => {
      
 
       const userID = () => {
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-              // User is signed in, see docs for a list of available properties
-              // https://firebase.google.com/docs/reference/js/auth.user
-              const uid = user.uid;
-              console.log(uid);
-              // ...
-            } else {
-              // User is signed out
-              // ...
-            }});
+        if(currentUser) {
+          const userDataId = JSON.parse(currentUser);
+          if(userDataId) {
+            const userId = userDataId.user.uid;
+            const name = userDataId.user.displayName;
+            const email = userDataId.user.email;
+            setUserDataID(userId);
+            setUserName(name);
+            setUserEmail(email)
+            console.log('user ID authcontext', name, email)
+          }
+        }
       }
   
-     
+     console.log('user info authContext', userDataID, userEmail, userName)
 
       const login = (values) => {
         signInWithEmailAndPassword(auth, values.email, values.password)
@@ -119,6 +128,7 @@ export const AuthProvider = ({children}) => {
             const errorMessage = error.message;
             // Handle login errors
             console.error(errorCode, errorMessage);
+            setErrorMessage(errorMessage);
           });
       };
       
@@ -161,11 +171,23 @@ export const AuthProvider = ({children}) => {
         });
       }
 
-      console.log('from AuthContext line 171', currentUser)
+      const savedNumber = (values) => {        
+          const db = getDatabase();
+          const userDataId = JSON.parse(currentUser);
+          if (userDataId) {
+            const userId = userDataId.user.uid;
+            set(ref(db, 'userSavedNumber/' + userId), {
+                myCombination: values,
+            });          
+          }
+      }
+
+
 
     return (
         <AuthContext.Provider value={{
-            register, currentUser, signInWithGoogle, login, request, handleSignOutWithGoogle
+            register, currentUser, signInWithGoogle, login, request, handleSignOutWithGoogle, savedNumber,
+            userName, auth, userDataID, userEmail, errorMessage
         }}>
             {children}
         </AuthContext.Provider>

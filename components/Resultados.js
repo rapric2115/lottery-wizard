@@ -117,7 +117,7 @@ const Result = () => {
       
     
 
-      console.log(leidsa)
+      console.log(leidsaFecha)
 
     
 
@@ -133,13 +133,13 @@ const Result = () => {
                     <Text Style={{fontSize: 26, fontWeight: 'bold'}}>RESULTADO</Text>
                 </View>
                 <View style={{flexDirection: 'row', marginTop: 20}}>
-                    {leidsa.map((num) => (
-                        <Text style={styles.results}>{num}</Text>
+                    {leidsa.map((num, index) => (
+                        <Text style={styles.results} key={index}>{num}</Text>
                     ))}
                 </View>
                 <View style={{marginTop: 20}}>
                     <Text>ACUMULADO</Text>
-                    <Text style={{fontSize: 38, fontWeight: 'bold'}}>{`RD$ ${leidsaAcumulado} MILLONES`}</Text>
+                    <Text style={{fontSize: 38, fontWeight: 'bold', color: '#112b3b'}}>{`RD$ ${leidsaAcumulado} MILLONES`}</Text>
                 </View>
             </View>
             <View style={styles.container}>
@@ -158,7 +158,7 @@ const Result = () => {
                 </View>
                 <View style={{marginTop: 20}}>
                     <Text>ACUMULADO</Text>
-                    <Text style={{fontSize: 38, fontWeight: 'bold'}}>{`RD$ ${lotekaAcumulado} MILLONES`}</Text>
+                    <Text style={{fontSize: 38, fontWeight: 'bold', color: '#112b3b'}}>{`RD$ ${lotekaAcumulado} MILLONES`}</Text>
                 </View>
             </View>
         </ScrollView>
@@ -174,13 +174,15 @@ const styles = StyleSheet.create({
         borderRadius: 7,
         marginVertical: 15,
         padding: 5,
-        marginBottom: 15
+        marginBottom: 15, 
+        borderWidth: 1,
+        borderColor: '#247ba0'
     },
     results: {
         width: 35,
         height: 35,
         borderRadius: 50,
-        backgroundColor: '#cbd4c2',
+        backgroundColor: '#d6f1f7',
         margin: 5,
         textAlign: 'center',
         textAlignVertical: 'center',

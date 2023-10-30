@@ -1,17 +1,21 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import Predictions from '../components/prediction';
 import { AuthContext } from '../Auth/AuthContext';
 import { initializeApp } from 'firebase/app';
-import { getDatabase, ref, onValue, child, get } from 'firebase/database';
+import { getDatabase, ref, child, get, set } from 'firebase/database';
 import { firebaseConfig } from '../firebaseConfig';
 
 
 const GeneradorFormula = () => {
+    const {savedNumber, currentUser} = useContext(AuthContext);
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
     const [leidsa, setLeidsa] = useState([]);
     const [lastRes, setLastRes] = useState([]);
+    const [selectedRow, setSelectedRow] = useState([]);
+    const [myCombination, setMyCombination ] = useState([]);
+    const [sortedData, setSortedData] = useState([]);
 
     useEffect(() => {
         getData();
@@ -20,7 +24,7 @@ const GeneradorFormula = () => {
     const AdsRef = ref(db);
 
     const getData = () => {
-        get(child(AdsRef, `lottos/leidsa/lastResults/`))
+        get(child(AdsRef, `lottos/leidsa/results/`))
           .then((snapshot) => {
             if (snapshot.exists()) {
               const data = snapshot.val();
@@ -53,6 +57,7 @@ const GeneradorFormula = () => {
           }).catch((error) => {
             console.error(error);
           });
+           
     }    
 
     
@@ -61,6 +66,7 @@ const GeneradorFormula = () => {
     
     const results = [leidsa[0], leidsa[1], leidsa[2], leidsa[3], leidsa[4], leidsa[5]]
    
+    const [combinacionOne, setCombinacionOne] = useState([]);
     const [combinacionTwo, setCombinacionTwo] = useState([]);
     const [combinacionTres, setCombinacionTres] = useState([]);
     const [combinacionCuatro, setCombinationCuatro] = useState([]);
@@ -72,14 +78,16 @@ const GeneradorFormula = () => {
     const datasetTwo = [combinacionTwo[2], combinacionTres[2], combinacionCuatro[2], combinacionCinco[2], combinacionSeis[2]];
     const datasetThree = [combinacionTwo[3], combinacionTres[3], combinacionCuatro[3], combinacionCinco[3], combinacionSeis[3]];
 
-    console.log('Data from generator', dataset);
+    // console.log('Data from generator', results);
 
-    const TwoNumber = [14, 13, 17, 16];
-    const ThreeNumber = [20, 22, 25, 18];
-    const fourNumber = [23, 22, 29, 24];
-    const fiveNumber = [29, 31, 30, 28];
-    const sixNumber = [34, 35, 32, 36];
+    const OneNumber = [3, 6, 7, 5, 4.4, 4.7, 3,6];
+    const TwoNumber = [14, 13, 17, 16, 19.4, 19.3, 18.8,18.6];
+    const ThreeNumber = [20, 22, 25, 18, 19.8, 19.7, 18.2, 17.9];
+    const fourNumber = [23, 22, 29, 24, 23, 22, 22.9, 26.3];
+    const fiveNumber = [29, 31, 30, 28, 27.7, 27.5, 27.3, 28.9];
+    const sixNumber = [34, 35, 32, 36, 33.9, 34, 33.8, 34.1];
 
+    const OneAverage = 5.536186954;
     const twoAverage = 12.56418659;
     const ThreeAverage = 19.86937931;
     const fourAverage = 26.734528;
@@ -93,6 +101,21 @@ const GeneradorFormula = () => {
     const log = (a, b, c) => {
         return a * Math.log(sum(b, c));
     }
+
+    useEffect(() => {
+        const calculateCombinations = () => {
+            const calculatedCombinations = [];
+            for (const value of OneNumber) {
+                const result = log(value, Number(leidsa[0]), Number(lastRes[0]));
+                const logNumber = (OneAverage * Number(leidsa[0]) * Number(lastRes[0])) / Math.pow(result, 2);
+                const OneResults = Math.abs(Math.round((Math.log(logNumber) * 38) / (Math.pow(720, Math.pow(-sum(leidsa[0], lastRes[0]), -1)))));
+                calculatedCombinations.push(OneResults);
+            }
+            setCombinacionOne(calculatedCombinations);
+        };
+
+        calculateCombinations();
+    }, [leidsa[0], lastRes[0], OneAverage]);
 
     useEffect(() => {
         const calculateCombinations = () => {
@@ -171,76 +194,88 @@ const GeneradorFormula = () => {
         }
     }, [leidsa[5], lastRes[5], sixAverage]);
 
+const logSelectedRowValues = () => {
+  if (selectedRow !== null) {
+    const selectedValues = [];
+    switch (selectedRow) {
+      case 0:
+        selectedValues.push(...combinacionOne);
+        break;
+      case 1:
+        selectedValues.push(...combinacionTwo);
+        break;
+      // Add more cases for other rows if needed
+      default:
+        break;
+    }
+    console.log('Selected Row Values:', selectedValues);
+  }
+};
+
+const renderRows = (combinations, results, styles, columnIndex) => {
+    // Sort the combinations array by the values at the specified columnIndex
+    combinations.sort((a, b) => a[columnIndex] - b[columnIndex]);
+  
+    return (
+      <View key={columnIndex} style={{ flexDirection: 'row', justifyContent: 'center', borderRadius: 7, borderWidth: 1, borderColor: '#effafc', width: '90%', alignSelf: 'center', marginVertical: 10, backgroundColor: '#247ba0' }}>
+        {combinations.map((combination, rowIndex) => (
+          <TouchableOpacity key={rowIndex} onPress={() => logColumnValues(combinations, columnIndex)} style={{ marginVertical: 10 }}>
+            <Text
+              style={[
+                styles.numbers,
+                results.includes(combination[columnIndex]) && styles.highlightedNumber,
+              ]}
+            >
+              {combination[columnIndex]}
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+    );
+  };
+  
+
+        const logColumnValues = (combinations, columnIndex) => {
+            const valuesToLog = combinations.map((combination) => combination[columnIndex]);
+            console.log(`Values at index ${columnIndex} for the clicked column:`, valuesToLog);
+            savedNumber(valuesToLog)
+        };
 
 
-    
+        useEffect(() => {
+            const sortData = () => {
+                const sortedArray = [...myCombination];
+                sortedArray.sort((a, b) => a - b);
+                setSortedData(sortedArray)
+            }
 
-
-
+            sortData()
+        }, [myCombination])
+        
 
     return(
-        <View>
-            <Text style={{marginHorizontal: 20, fontWeight: 'bold', fontSize: 18, marginTop: 15}}>Numeros generados Ledisa</Text>
-            <View style={{flexDirection: 'row', marginTop: 10, justifyContent: 'center'}}>            
-                {/* {
-                    numeros.map((nums, i) => (
-                        <Text style={[styles.numbers, results.includes(nums) && styles.highlightedNumber]} key={i}>{nums}</Text>
-                    ))
-                }
-                {
-                    sumax.map((nummax, i) => (
-                        <Text style={[styles.numbers, resultMax.includes(nummax) && styles.highlightedNumber]} key={i}>{nummax}</Text>
-                    ))
-                }             */}
+        <View style={{flex: 1}}>
+            <Text style={{marginHorizontal: 20, fontWeight: 'bold', fontSize: 18, marginTop: 15, textAlign: 'center'}}>Numeros generados Ledisa</Text>
+            
+           <ScrollView style={{ flexDirection: '', marginTop: 20, marginBottom: 30}}>
+                {/* {renderRows([combinacionOne, combinacionTwo, combinacionTres, combinacionCuatro, combinacionCinco, combinacionSeis], results, styles)} */}
+                {/* Add more rows as needed */}
+                 {renderRows([combinacionOne, combinacionTwo, combinacionTres, combinacionCuatro, combinacionCinco, combinacionSeis], results, styles, 0)}
+                 {renderRows([combinacionOne, combinacionTwo, combinacionTres, combinacionCuatro, combinacionCinco, combinacionSeis], results, styles, 1)}
+                 {renderRows([combinacionOne, combinacionTwo, combinacionTres, combinacionCuatro, combinacionCinco, combinacionSeis], results, styles, 2)}
+                 {renderRows([combinacionOne, combinacionTwo, combinacionTres, combinacionCuatro, combinacionCinco, combinacionSeis], results, styles, 3)}
+                 {renderRows([combinacionOne, combinacionTwo, combinacionTres, combinacionCuatro, combinacionCinco, combinacionSeis], results, styles, 4)}
+                 {renderRows([combinacionOne, combinacionTwo, combinacionTres, combinacionCuatro, combinacionCinco, combinacionSeis], results, styles, 5)}
+                 {renderRows([combinacionOne, combinacionTwo, combinacionTres, combinacionCuatro, combinacionCinco, combinacionSeis], results, styles, 6)}
+                 {renderRows([combinacionOne, combinacionTwo, combinacionTres, combinacionCuatro, combinacionCinco, combinacionSeis], results, styles, 7)}
+                 {/* {renderRows([combinacionOne, combinacionTwo, combinacionTres, combinacionCuatro, combinacionCinco, combinacionSeis], results, styles, 8)} */}
+
+
+
+            <View>
+                <Text style={{textAlign: 'center'}}>Incrementa tus posibilidades de ser Millonario y ganar generando combinaciones con nuestra Inteligencia Aritificial.</Text>
             </View>
-            <View style={{flexDirection: 'row', marginTop: 20, justifyContent: 'center'}}>
-                <View>
-                    <Text>Uno</Text>
-                </View>
-                <View>
-                    {
-                        combinacionTwo.map((three, i) => (
-                          <TouchableOpacity onPress={() => console.log(three)}>
-                              <Text style={[styles.numbers, results.includes(three) && styles.highlightedNumber]} key={i} >{three}</Text>
-                          </TouchableOpacity>  
-                        ))
-                    }
-                </View>
-                <View>
-                    {
-                        combinacionTres.map((three, i) => (
-                         <Text style={[styles.numbers, results.includes(three) && styles.highlightedNumber]} key={i}>{three}</Text>
-                        ))
-                    }
-                </View>
-                <View>
-                    {
-                        combinacionCuatro.map((four, i) => (
-                         <Text style={[styles.numbers, results.includes(four) && styles.highlightedNumber]} key={i}>{four}</Text>
-                        ))
-                    }
-                </View>
-                <View>
-                    {
-                        combinacionCinco.map((five, i) => (
-                         <Text style={[styles.numbers, results.includes(five) && styles.highlightedNumber]} key={i}>{five}</Text>
-                        ))
-                    }
-                </View>
-                <View>
-                {
-                        combinacionSeis.map((six, i) => (
-                         <Text style={[styles.numbers, results.includes(six) && styles.highlightedNumber]} key={i}>{six}</Text>
-                        ))
-                    }
-                </View>
-                <View>
-                    <Text>Mas</Text>
-                </View>
-                <View>
-                    <Text>Super Mas</Text>
-                </View>
-            </View>
+            </ScrollView>
         </View>
     )
 }
@@ -250,12 +285,14 @@ const styles = StyleSheet.create({
         width: 30,
         height: 30,
         borderRadius: 50,
-        backgroundColor: '#cbd4c2',
+        backgroundColor: '#d6f1f7',
         margin: 5,
         textAlign: 'center',
         textAlignVertical: 'center',
         fontSize: 18,
         fontWeight: 'bold',
+        borderWidth: 1,
+        borderColor: '#247ba0'
     },
     highlightedNumber: {
         backgroundColor: 'orange', // Change the background color to orange

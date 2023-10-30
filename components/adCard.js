@@ -82,13 +82,14 @@ const AdCard = ({ iconName, title, onPress, ...textStyle }) => {
           <Text style={[styles.text, { ...textStyle }]}>{adver[0]}</Text>
         </TouchableOpacity>
       )}
+     
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   adContainer: {
-    backgroundColor: '#247ba0',
+    backgroundColor: '#2691b4',
     width: 370,
     borderRadius: 7,
     flexDirection: 'row',
@@ -104,6 +105,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
   },
+  
 });
 
 export default AdCard;
