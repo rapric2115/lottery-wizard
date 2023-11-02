@@ -221,7 +221,7 @@ function AIComponent({result}) {
 
     
 
-    const trainingData = [
+    const firstData = [
         { x: -1, y: -0.5, label: "1" },
         { x: -0.5, y: -0.5, label: "2" },
         { x: 0, y: -0.5, label: "3" },

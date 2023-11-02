@@ -6,21 +6,22 @@
     "development": {
       "developmentClient": true,
       "distribution": "internal",
-      "ios": {
-        "resourcesClass": "ml-medium"
+      "android": {
+        "buildType": "apk"
       }
     },
     "preview": {
       "distribution": "internal",
-      "ios": {
-        "resourcesClass": "ml-medium"
+      "android": {
+        "buildType": "apk"
       }
     },
-    "production": {
-      "ios": {
-        "resourcesClass": "ml-medium"
+    "preview2": {
+      "android": {
+        "gradleCommand": ":app:assembleRelease"
       }
-    }
+    },
+    "production": {}
   },
   "submit": {
     "production": {}
