@@ -196,7 +196,7 @@ const MyAccount = () => {
                             key={index}
                             style={[
                                 styles.numbers,
-                                results.includes(results) && styles.highlightedNumber,
+                                results.includes(number) && styles.highlightedNumber,
                             ]}
                             >
                             {number}
@@ -212,7 +212,7 @@ const MyAccount = () => {
                 </Text>
             </View>
             <View style={{justifyContent: 'center', alignSelf: 'center', alignItems: 'center', marginTop: 25}}>
-                <Text style={{marginBottom: 10}}>Combinaciones Generadas con Inteligencia Artificial</Text>
+                <Text style={{marginBottom: 10}}>Genera combinaciones con Inteligencia Artificial</Text>
                 {/* <View style={{padding: 15}}>
                     <Text style={{fontWeight: 'bold'}}>NOTA IMPORTANTE:</Text>
                     <Text>Esta Sesión de generar combinaciones con IA y guardar sus Combinaciones, serán próximamente de pago, RD$ 50 Mensuales.</Text>

@@ -5,10 +5,12 @@ import { AuthContext } from '../Auth/AuthContext';
 import { initializeApp } from 'firebase/app';
 import { getDatabase, ref, child, get, set } from 'firebase/database';
 import { firebaseConfig } from '../firebaseConfig';
+import OkMessage from '../components/okMessage';
+
 
 
 const GeneradorFormula = () => {
-    const {savedNumber, currentUser} = useContext(AuthContext);
+    const {savedNumber, currentUser, message} = useContext(AuthContext);
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
     const [leidsa, setLeidsa] = useState([]);
@@ -57,7 +59,8 @@ const GeneradorFormula = () => {
           }).catch((error) => {
             console.error(error);
           });
-           
+
+          
     }    
 
     
@@ -80,12 +83,12 @@ const GeneradorFormula = () => {
 
     // console.log('Data from generator', results);
 
-    const OneNumber = [3, 6, 7, 5, 4.4, 4.7, 3,6];
-    const TwoNumber = [14, 13, 17, 16, 19.4, 19.3, 18.8,18.6];
-    const ThreeNumber = [20, 22, 25, 18, 19.8, 19.7, 18.2, 17.9];
-    const fourNumber = [23, 22, 29, 24, 23, 22, 22.9, 26.3];
-    const fiveNumber = [29, 31, 30, 28, 27.7, 27.5, 27.3, 28.9];
-    const sixNumber = [34, 35, 32, 36, 33.9, 34, 33.8, 34.1];
+    const OneNumber = [3, 6, 7, 5, 8, 4, 9, 10, 11, 4.4, 4.7, 3.1, 2.9, 5.1, 6.3];
+    const TwoNumber = [11, 12, 14, 15, 13, 9, 10, 17, 16, 11.5, 12.6, 11.6, 11.2, 11, 13.6, 19, 8, 18, 7, 6];
+    const ThreeNumber = [20, 22, 25, 18, 19, 27, 29, 26, 21, 19.8, 19.7, 18.2, 17.9, 19.6, 19.3];
+    const fourNumber = [23, 22, 29, 24, 25, 26, 27, 21, 31, 22.9, 26.3, 24.6, 26.9, 23.1, 26.2];
+    const fiveNumber = [29, 31, 30, 28, 27, 33, 32, 34, 25, 27.7, 27.5, 27.3, 28.9, 28.8, 30.9];
+    const sixNumber = [34, 35, 32, 36, 33, 31, 37, 38, 29, 33.9, 33.8, 34.1, 34.5, 34.9, 34.7];
 
     const OneAverage = 5.536186954;
     const twoAverage = 12.56418659;
@@ -109,7 +112,9 @@ const GeneradorFormula = () => {
                 const result = log(value, Number(leidsa[0]), Number(lastRes[0]));
                 const logNumber = (OneAverage * Number(leidsa[0]) * Number(lastRes[0])) / Math.pow(result, 2);
                 const OneResults = Math.abs(Math.round((Math.log(logNumber) * 38) / (Math.pow(720, Math.pow(-sum(leidsa[0], lastRes[0]), -1)))));
-                calculatedCombinations.push(OneResults);
+                if (OneResults >= 0 && OneResults <= 22) {
+                  calculatedCombinations.push(OneResults);
+                }
             }
             setCombinacionOne(calculatedCombinations);
         };
@@ -124,7 +129,9 @@ const GeneradorFormula = () => {
                 const result = log(value, Number(leidsa[1]), Number(lastRes[1]));
                 const logNumber = (twoAverage * Number(leidsa[1]) * Number(lastRes[1])) / Math.pow(result, 2);
                 const TwoResults = Math.abs(Math.round((Math.log(logNumber) * 38) / (Math.pow(720, Math.pow(-sum(leidsa[1], lastRes[1]), -1)))));
-                calculatedCombinations.push(TwoResults);
+                if (TwoResults >= 2 && TwoResults <= 29) {
+                  calculatedCombinations.push(TwoResults);
+                }
             }
             setCombinacionTwo(calculatedCombinations);
         };
@@ -139,7 +146,10 @@ const GeneradorFormula = () => {
                 const result = log(value, Number(leidsa[2]), Number(lastRes[2]));
                 const logNumber = (ThreeAverage * Number(leidsa[2]) * Number(lastRes[2])) / Math.pow(result, 2);
                 const ThreeResults = Math.abs(Math.round((Math.log(logNumber) * 38) / (Math.pow(720, Math.pow(-sum(leidsa[2], lastRes[2]), -1)))));
-                calculatedCombinations.push(ThreeResults);
+
+                if (ThreeResults >= 3 && ThreeResults <= 33) {
+                  calculatedCombinations.push(ThreeResults);
+                }
             }
             setCombinacionTres(calculatedCombinations);
         };
@@ -154,7 +164,9 @@ const GeneradorFormula = () => {
                 const result = log(value, Number(leidsa[3]), Number(lastRes[3]));
                 const logNumber = (fourAverage * Number(leidsa[3]) * Number(lastRes[3])) / Math.pow(result, 2);
                 const fourResults = Math.abs(Math.round((Math.log(logNumber) * 38) / (Math.pow(720, Math.pow(-sum(leidsa[3], lastRes[3]), -1)))));
-                calculatedCombinations.push(fourResults);
+                if (fourResults >= 4 && fourResults <= 34) {
+                  calculatedCombinations.push(fourResults);
+                }
             }
             setCombinationCuatro(calculatedCombinations);
         };
@@ -169,7 +181,9 @@ const GeneradorFormula = () => {
                 const result = log(value, Number(leidsa[4]), Number(lastRes[4]));
                 const logNumber = (fiveAverage * Number(leidsa[4]) * Number(lastRes[4])) / Math.pow(result, 2);
                 const cincoResults = Math.round((Math.log(logNumber) * 38) / (Math.pow(720, Math.pow(-sum(leidsa[4], lastRes[4]), -1))));
-                calculatedCombinations.push(cincoResults);
+                if (cincoResults >= 12 && cincoResults <= 37) {
+                  calculatedCombinations.push(cincoResults);
+                }
             }
             setCombinationCinco(calculatedCombinations);
         };
@@ -185,7 +199,9 @@ const GeneradorFormula = () => {
                     const result = log(value, Number(leidsa[5]), Number(lastRes[5]));
                     const logNumber = (sixAverage * Number(leidsa[5]) * Number(lastRes[5])) / Math.pow(result, 2);
                     const seisResults = Math.round((Math.log(logNumber) * 38) / (Math.pow(720, Math.pow(-sum(leidsa[5], lastRes[5]), -1))));
-                    calculatedCombinations.push(seisResults);
+                    if (seisResults >= 19 && seisResults <= 38) {
+                      calculatedCombinations.push(seisResults);
+                    }
                 }
                 setCombinationSeis(calculatedCombinations);
             };
@@ -256,6 +272,7 @@ const renderRows = (combinations, results, styles, columnIndex) => {
     return(
         <View style={{flex: 1}}>
             <Text style={{marginHorizontal: 20, fontWeight: 'bold', fontSize: 18, marginTop: 15, textAlign: 'center'}}>Numeros generados Ledisa</Text>
+            <OkMessage message={message} />
             
            <ScrollView style={{ flexDirection: '', marginTop: 20, marginBottom: 30}}>
                 {/* {renderRows([combinacionOne, combinacionTwo, combinacionTres, combinacionCuatro, combinacionCinco, combinacionSeis], results, styles)} */}

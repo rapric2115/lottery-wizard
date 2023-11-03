@@ -6,6 +6,7 @@ import { firebaseConfig } from '../firebaseConfig';
 import * as WebBrowser from 'expo-web-browser';
 import * as Google from 'expo-auth-session/providers/google';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Alert } from 'react-native';
 
 // web client ID: "391790290602-fis5hsn5s2gqs912jn0ljref9ni1ebfa.apps.googleusercontent.com"
 // IOs client ID: "391790290602-9v54hr3dtoplo9r5a572ctf69uo1ftj7.apps.googleusercontent.com"
@@ -19,7 +20,8 @@ export const AuthProvider = ({children}) => {
     const [userDataID, setUserDataID] = useState(null);
     const [userName, setUserName] = useState(null);
     const [userEmail, setUserEmail] = useState(null);
-    const [errorMessage, setErrorMessage] = useState(null);   
+    const [errorMessage, setErrorMessage] = useState(null);  
+    const [message, setMessage] = useState(null); 
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
@@ -93,19 +95,25 @@ export const AuthProvider = ({children}) => {
      
 
       const userID = () => {
-        if(currentUser) {
-          const userDataId = JSON.parse(currentUser);
-          if(userDataId) {
-            const userId = userDataId.user.uid;
-            const name = userDataId.user.displayName;
-            const email = userDataId.user.email;
-            setUserDataID(userId);
-            setUserName(name);
-            setUserEmail(email)
-            console.log('user ID authcontext', name, email)
+        if (currentUser) {
+          try {
+            const userDataId = JSON.parse(currentUser);
+            if (userDataId) {
+              const userId = userDataId.user.uid;
+              const name = userDataId.user.displayName;
+              const email = userDataId.user.email;
+              setUserDataID(userId);
+              setUserName(name);
+              setUserEmail(email);
+              console.log('user ID authcontext', name, email);
+            }
+          } catch (error) {
+            console.error('Error parsing JSON:', error);
+            // Handle the error as needed
           }
         }
       }
+      
   
      console.log('user info authContext', userDataID, userEmail, userName)
 
@@ -154,7 +162,8 @@ export const AuthProvider = ({children}) => {
       
 
       const signInWithGoogle = () => {
-        promptAsync();
+        // promptAsync();
+        Alert.alert('Por el momento Ingresar con Google no esta disponible.')
       };
       
       handleSignOutWithGoogle = () => {
@@ -178,7 +187,8 @@ export const AuthProvider = ({children}) => {
             const userId = userDataId.user.uid;
             set(ref(db, 'userSavedNumber/' + userId), {
                 myCombination: values,
-            });          
+            });    
+            setMessage('Guardado exitosamente')      
           }
       }
 
@@ -187,7 +197,7 @@ export const AuthProvider = ({children}) => {
     return (
         <AuthContext.Provider value={{
             register, currentUser, signInWithGoogle, login, request, handleSignOutWithGoogle, savedNumber,
-            userName, auth, userDataID, userEmail, errorMessage
+            userName, auth, userDataID, userEmail, errorMessage, message
         }}>
             {children}
         </AuthContext.Provider>

@@ -18,13 +18,13 @@ const MembershipPrice = () => {
     const benefics = [
         {
             id: 1,
-            benefics: 'Combinaciones con AI',
+            benefics: 'Generar combinaciones con AI',
             basic: 'lock',
             premium: 'check'
         },
         {
             id: 2,
-            benefics: 'Guardar Combinaciones',
+            benefics: 'Guardar hasta 5 Combinaciones',
             basic: 'lock',
             premium: 'check'
         }
@@ -82,7 +82,7 @@ const MembershipPrice = () => {
                     <Text style={{fontSize: 20, fontWeight: 'bold'}}>{data.name}</Text>
                     <View style={{justifyContent: 'center', alignItems: 'center'}}>
                         <Text style={{fontSize: 16, fontWeight: 'bold'}}>{data.price}</Text>
-                        <Text style={{fontSize: 12, fontWeight: 400}}>{data.save}</Text>
+                        <Text style={{fontSize: 12, fontWeight: 400}}>Ahorra {data.save}</Text>
                     </View>
                 </TouchableOpacity>
             ))}
@@ -91,7 +91,7 @@ const MembershipPrice = () => {
                 <Pressable style={{marginVertical: 30, width: 200, backgroundColor: 'black', padding: 10, justifyContent: 'center', borderRadius: 7}}
                     onPress={handlePaypalPayment}
                 >
-                    <Text style={{color: 'snow', alignSelf: 'center'}}>Pagar con Paypal</Text>
+                    <Text style={{color: 'snow', alignSelf: 'center'}}>Pagar Membresia</Text>
                 </Pressable>
             </View>
             <View style={{marginTop: 15}}>
