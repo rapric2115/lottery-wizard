@@ -113,13 +113,6 @@ const Result = () => {
             console.error(error);
           });
       }
-      
-      
-    
-
-      console.log(leidsaFecha)
-
-    
 
     return(
         <ScrollView>

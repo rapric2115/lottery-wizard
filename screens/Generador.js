@@ -81,8 +81,6 @@ const GeneradorFormula = () => {
     const datasetTwo = [combinacionTwo[2], combinacionTres[2], combinacionCuatro[2], combinacionCinco[2], combinacionSeis[2]];
     const datasetThree = [combinacionTwo[3], combinacionTres[3], combinacionCuatro[3], combinacionCinco[3], combinacionSeis[3]];
 
-    // console.log('Data from generator', results);
-
     const OneNumber = [3, 6, 7, 5, 8, 4, 9, 10, 11, 4.4, 4.7, 3.1, 2.9, 5.1, 6.3];
     const TwoNumber = [11, 12, 14, 15, 13, 9, 10, 17, 16, 11.5, 12.6, 11.6, 11.2, 11, 13.6, 19, 8, 18, 7, 6];
     const ThreeNumber = [20, 22, 25, 18, 19, 27, 29, 26, 21, 19.8, 19.7, 18.2, 17.9, 19.6, 19.3];
@@ -224,7 +222,6 @@ const logSelectedRowValues = () => {
       default:
         break;
     }
-    console.log('Selected Row Values:', selectedValues);
   }
 };
 
@@ -253,7 +250,6 @@ const renderRows = (combinations, results, styles, columnIndex) => {
 
         const logColumnValues = (combinations, columnIndex) => {
             const valuesToLog = combinations.map((combination) => combination[columnIndex]);
-            console.log(`Values at index ${columnIndex} for the clicked column:`, valuesToLog);
             savedNumber(valuesToLog)
         };
 

@@ -174,7 +174,6 @@ class AIFive extends Component {
         }
       
         // Now you can use the predictedLabels array as needed
-        console.log('Predicted labels of Five:', predictedLabels);
     
         function findMostFrequentValue(array) {
             const counts = {};
@@ -201,7 +200,6 @@ class AIFive extends Component {
           
           
           const mostFrequentValue = findMostFrequentValue(predictedLabels);
-          console.log('Most frequent value:', mostFrequentValue);
           this.setState({ five: mostFrequentValue.toString() });
           
     })

@@ -198,8 +198,7 @@ function AIComponent({result}) {
             }
         }
     
-        console.log(`Optimal Learning Rate: ${optimalLearningRate}`);
-    
+            
         // Set the network's learning rate to the optimal value
         network.learningRate = optimalLearningRate;
     
