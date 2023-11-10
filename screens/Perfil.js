@@ -32,10 +32,7 @@ const MyAccount = () => {
         getData();      
     }, [userDataID, userName, userEmail])
 
-    console.log('user Info Perfil',userDataID, userName, userEmail)
-
     const AdsRef = ref(db);
-
     const getData = () => { 
 
         if (userDataID) {        

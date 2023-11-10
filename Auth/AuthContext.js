@@ -1,22 +1,22 @@
 import React, { createContext, useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
-import { initializeApp } from 'firebase/app';
-import { getAuth, createUserWithEmailAndPassword, 
-  signInWithEmailAndPassword, GoogleAuthProvider, 
-  signInWithPopup, signOut, onAuthStateChanged, 
-  initializeAuth, getReactNativePersistence } from 'firebase/auth';
+
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  initializeAuth,
+  getAuth,
+  getReactNativePersistence,
+  onAuthStateChanged,
+} from 'firebase/auth';
+
 import { getDatabase, ref, set } from 'firebase/database';
-import { firebaseConfig } from '../firebaseConfig';
+import { app, auth, firebaseConfig } from '../firebaseConfig';
 import * as Google from 'expo-auth-session/providers/google';
 import { Alert } from 'react-native';
 
 export const AuthContext = createContext();
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app, {
-  persistence: getReactNativePersistence(ReactNativeAsyncStorage),
-});
 
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
@@ -26,41 +26,28 @@ export const AuthProvider = ({ children }) => {
   const [userEmail, setUserEmail] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
   const [message, setMessage] = useState(null);
-  
-// Set AsyncStorage for Firebase Auth persistence
-const setPersistenceLocally = async () => {
-  try {
-    await auth.setPersistence(getAuth.Persistence.LOCAL);
-    onAuthStateChanged(auth, (user) => {
-      // Handle auth state changes
-    });
-  } catch (error) {
-    console.error('Error setting persistence:', error);
-  }
-};
-    
-  const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
-    clientId: "391790290602-fis5hsn5s2gqs912jn0ljref9ni1ebfa.apps.googleusercontent.com",
-    iosClientId: "391790290602-9v54hr3dtoplo9r5a572ctf69uo1ftj7.apps.googleusercontent.com",
-    androidClientId: "391790290602-ou4v1l1620m3ia989spi2p3l16ir4m6c.apps.googleusercontent.com"
-  });
+
+  // const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
+  //   clientId: "391790290602-fis5hsn5s2gqs912jn0ljref9ni1ebfa.apps.googleusercontent.com",
+  //   iosClientId: "391790290602-9v54hr3dtoplo9r5a572ctf69uo1ftj7.apps.googleusercontent.com",
+  //   androidClientId: "391790290602-ou4v1l1620m3ia989spi2p3l16ir4m6c.apps.googleusercontent.com"
+  // });
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      // setCurrentUser(user);
-      console.log('subscribe authContext: ', user)
+      setCurrentUser(user);
     });
 
     return () => unsubscribe();
   }, []);
 
-  useEffect(() => {
-    if (response?.type === "success") {
-      setAccessToken(response.authentication.accessToken);
-      accessToken && fetchUserInfo();
-    }
-    loadAccessToken();
-  }, [response, accessToken]);
+  // useEffect(() => {
+  //   if (response?.type === "success") {
+  //     setAccessToken(response.authentication.accessToken);
+  //     accessToken && fetchUserInfo();
+  //   }
+  //   // loadAccessToken();
+  // }, [response, accessToken]);
 
   useEffect(() => {
     userID();
@@ -108,11 +95,11 @@ const setPersistenceLocally = async () => {
   const userID = () => {
     if (currentUser) {
       try {
-        const userDataId = JSON.parse(currentUser);
+        const userDataId = currentUser;
         if (userDataId) {
-          const userId = userDataId.user.uid;
-          const name = userDataId.user.displayName;
-          const email = userDataId.user.email;
+          const userId = userDataId.uid;
+          const name = userDataId.displayName;
+          const email = userDataId.email;
           setUserDataID(userId);
           setUserName(name);
           setUserEmail(email);
@@ -121,7 +108,7 @@ const setPersistenceLocally = async () => {
         console.error('Error parsing JSON:', error);
       }
     }
-  }
+  };
 
   const login = (values) => {
     signInWithEmailAndPassword(auth, values.email, values.password)
@@ -171,7 +158,7 @@ const setPersistenceLocally = async () => {
     }).catch((error) => {
       console.error('An error happened during sign-out:', error);
     });
-  }
+  };
 
   const savedNumber = (values) => {
     const db = getDatabase();
@@ -183,12 +170,23 @@ const setPersistenceLocally = async () => {
       });
       setMessage('Guardado exitosamente');
     }
-  }
+  };
 
   return (
     <AuthContext.Provider value={{
-      register, currentUser, signInWithGoogle, login, request, handleSignOutWithGoogle, savedNumber,
-      userName, auth, userDataID, userEmail, errorMessage, message
+      register,
+      currentUser,
+      signInWithGoogle,
+      login,
+      // request,
+      handleSignOutWithGoogle,
+      savedNumber,
+      userName,
+      auth,
+      userDataID,
+      userEmail,
+      errorMessage,
+      message
     }}>
       {children}
     </AuthContext.Provider>
