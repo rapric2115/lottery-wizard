@@ -126,7 +126,7 @@ class AISix extends Component {
         { x: 0, y: 0.5, label: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1] },
       ],
       second: '',
-      six: '',
+      six: '0',
     };
     this.neuralNetwork = null;
 

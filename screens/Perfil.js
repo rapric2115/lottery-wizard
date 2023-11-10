@@ -111,15 +111,15 @@ const MyAccount = () => {
     const AIfive = useRef(null);
     const AIsix = useRef(null);
     
-    useEffect(() => {
-        callAIFunctions()
-        .then(() => {
-            console.log('All AI functions completed.');
-        })
-        .catch(err => {
-            console.error('Error:', err);
-        });
-      }, [])
+    // useEffect(() => {
+    //     callAIFunctions()
+    //     .then(() => {
+    //         console.log('All AI functions completed.');
+    //     })
+    //     .catch(err => {
+    //         console.error('Error:', err);
+    //     });
+    //   }, [])
 
     const callAIFunctions = async () => {
         try {
@@ -127,18 +127,23 @@ const MyAccount = () => {
             AIone.current.initialize(),
             AIone.current.train(),
             AIone.current.classifyPoints(),
+
             AItwo.current.initialize(),
             AItwo.current.train(),
             AItwo.current.classifyPoints(),
+
             AIthree.current.initialize(),
             AIthree.current.train(),
             AIthree.current.classifyPoints(),
+
             AIfour.current.initialize(),
             AIfour.current.train(),
             AIfour.current.classifyPoints(),
+
             AIfive.current.initialize(),
             AIfive.current.train(),
             AIfive.current.classifyPoints(),
+
             AIsix.current.initialize(),
             AIsix.current.train(),
             AIsix.current.classifyPoints(),
@@ -222,7 +227,7 @@ const MyAccount = () => {
                     <AIFive ref={AIfive} />
                     <AISix ref={AIsix} />
                 </View>
-                <TouchableOpacity onPress={callAIFunctions} style={{backgroundColor: '#2691b4', padding: 10, borderRadius: 7, marginTop: 25}}>
+                <TouchableOpacity onPress={() => callAIFunctions()} style={{backgroundColor: '#2691b4', padding: 10, borderRadius: 7, marginTop: 25}}>
                     <Text style={{color: 'snow'}}>
                         Iniciar Secuencia Aprendizaje
                     </Text>

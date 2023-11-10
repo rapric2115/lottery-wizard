@@ -126,7 +126,7 @@ class AIThree extends Component {
         { x: 0, y: 0.5, label: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1] },
       ],
       second: '',
-      three: '',
+      three: '0',
     };
     this.neuralNetwork = null;
 
