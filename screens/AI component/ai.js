@@ -339,7 +339,7 @@
 
 //     // let colorName = '';
 
-//     return (
+//     return {
 //         <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 25 }}>
 //             <Text>Neural Network Demo</Text>
 //             <View style={{flexDirection: 'row', width: SCREEN_WIDTH * .8, justifyContent: 'center'}}>
