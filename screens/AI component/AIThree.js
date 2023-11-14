@@ -244,14 +244,14 @@ class AIThree extends Component {
             width: 30,
             height: 30,
             borderRadius: 50,
-            backgroundColor: '#d6f1f7',
+            backgroundColor: '#fff',
             margin: 5,
             textAlign: 'center',
             textAlignVertical: 'center',
             fontSize: 18,
             fontWeight: 'bold',
-            borderWidth: 1,
-            borderColor: '#247ba0'
+            // borderWidth: 1,
+            // borderColor: '#247ba0'
         }}>{this.state.three}</Text>
         {/* <Button title="Initialize" onPress={this.initialize} /> */}
         {/* <Button title="Train" onPress={this.train} />

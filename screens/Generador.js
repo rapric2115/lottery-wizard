@@ -6,6 +6,7 @@ import { initializeApp } from 'firebase/app';
 import { getDatabase, ref, child, get, set } from 'firebase/database';
 import { firebaseConfig } from '../firebaseConfig';
 import OkMessage from '../components/okMessage';
+import { LinearGradient } from 'expo-linear-gradient';
 
 
 
@@ -230,22 +231,27 @@ const renderRows = (combinations, results, styles, columnIndex) => {
     combinations.sort((a, b) => a[columnIndex] - b[columnIndex]);
   
     return (
-      <View key={columnIndex} style={{ flexDirection: 'row', justifyContent: 'center', borderRadius: 7, borderWidth: 1, borderColor: '#effafc', width: '90%', alignSelf: 'center', marginVertical: 10, backgroundColor: '#247ba0' }}>
+        
+      <LinearGradient 
+      colors={['#0065B8','#004E8F']}
+       start={[0.01, 0.1]}
+      key={columnIndex} style={{ flexDirection: 'row', justifyContent: 'center', borderRadius: 7, borderWidth: 1, borderColor: '#effafc', width: '90%', alignSelf: 'center', marginVertical: 10 }}>
         {combinations.map((combination, rowIndex) => (
-          <TouchableOpacity key={rowIndex} onPress={() => logColumnValues(combinations, columnIndex)} style={{ marginVertical: 10 }}>
-            <Text
-              style={[
-                styles.numbers,
-                results.includes(combination[columnIndex]) && styles.highlightedNumber,
-              ]}
-            >
-              {combination[columnIndex]}
-            </Text>
-          </TouchableOpacity>
+            <TouchableOpacity key={rowIndex} onPress={() => logColumnValues(combinations, columnIndex)} style={{ marginVertical: 10 }}>
+              <Text
+                style={[
+                  styles.numbers,
+                  results.includes(combination[columnIndex]) && styles.highlightedNumber,
+                ]}
+              >
+                {combination[columnIndex]}
+              </Text>
+            </TouchableOpacity>
         ))}
-      </View>
+      </LinearGradient>
     );
   };
+  
   
 
         const logColumnValues = (combinations, columnIndex) => {

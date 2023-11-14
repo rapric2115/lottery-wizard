@@ -5,6 +5,7 @@ import { AuthContext } from '../Auth/AuthContext';
 import { initializeApp } from 'firebase/app';
 import { getDatabase, ref, onValue, child, get } from 'firebase/database';
 import { firebaseConfig } from '../firebaseConfig';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const AdCard = ({ iconName, title, onPress, ...textStyle }) => {
   const app = initializeApp(firebaseConfig);
@@ -64,23 +65,43 @@ const AdCard = ({ iconName, title, onPress, ...textStyle }) => {
 
   return (
     <View>
-      <TouchableOpacity style={styles.adContainer} onPress={() => openURL('https://freebitco.in/?r=1239559')}>
-        <MaterialCommunityIcons name={iconName} size={70} color="#F9AA4B" />
-        <Text style={[styles.text, { ...textStyle }]}>{title}</Text>
-      </TouchableOpacity>
+       <LinearGradient
+         // Button Linear Gradient
+         colors={['#72C6EF','#004E8F']}
+         start={[0.01, 0.01]}
+         style={styles.adContainer}>
+          <TouchableOpacity style={styles.adContainer} onPress={() => openURL('https://freebitco.in/?r=1239559')}>
+            <MaterialCommunityIcons name={iconName} size={70} color="#F9AA4B" />
+            <Text style={[styles.text, { ...textStyle }]}>{title}</Text>
+          </TouchableOpacity>
+         </LinearGradient>
+      
 
       {mcmoney && mcmoney[1] && mcmoney[2] && (
-        <TouchableOpacity style={styles.adContainer} onPress={() => openURL(mcmoney[2])}>
-          <MaterialCommunityIcons name={mcmoney[1]} size={70} color="#F9AA4B" />
-          <Text style={[styles.text, { ...textStyle }]}>{mcmoney[0]}</Text>
-        </TouchableOpacity>
+         <LinearGradient
+         // Button Linear Gradient
+         colors={['#72C6EF','#004E8F']}
+         start={[0.01, 0.01]}
+         style={styles.adContainer}>
+          <TouchableOpacity style={styles.adContainer} onPress={() => openURL(mcmoney[2])}>
+            <MaterialCommunityIcons name={mcmoney[1]} size={70} color="#F9AA4B" />
+            <Text style={[styles.text, { ...textStyle }]}>{mcmoney[0]}</Text>
+          </TouchableOpacity>
+        </LinearGradient>
       )}
 
       {adver && adver[1] && adver[2] && adver[0] !== 'no' && (
-        <TouchableOpacity style={styles.adContainer} onPress={() => openURL(adver[2])}>
-          <MaterialCommunityIcons name={adver[1]} size={70} color="#F9AA4B" />
-          <Text style={[styles.text, { ...textStyle }]}>{adver[0]}</Text>
-        </TouchableOpacity>
+         <LinearGradient
+         // Button Linear Gradient
+         colors={['#72C6EF','#004E8F']}
+        //  start={[0.1, 0.2]}
+         start={[0.01, 0.01]}
+         style={styles.adContainer}>
+          <TouchableOpacity style={styles.adContainer} onPress={() => openURL(adver[2])}>
+            <MaterialCommunityIcons name={adver[1]} size={70} color="#F9AA4B" />
+            <Text style={[styles.text, { ...textStyle }]}>{adver[0]}</Text>
+          </TouchableOpacity>
+         </LinearGradient>
       )}
      
     </View>
@@ -89,11 +110,11 @@ const AdCard = ({ iconName, title, onPress, ...textStyle }) => {
 
 const styles = StyleSheet.create({
   adContainer: {
-    backgroundColor: '#2691b4',
+    // backgroundColor: '#2691b4',
     width: 370,
     borderRadius: 7,
     flexDirection: 'row',
-    padding: 10,
+    padding: 8,
     marginTop: 20,
     alignSelf: 'center',
   },

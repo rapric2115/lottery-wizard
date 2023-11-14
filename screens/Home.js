@@ -1,11 +1,13 @@
 import React, { useContext } from 'react';
 import { View, Text, StyleSheet, Touchable, ScrollView } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 
 import AdCard from '../components/adCard';
 import Result from '../components/Resultados';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { AuthContext } from '../Auth/AuthContext';
 import CountdownTimer from '../components/countDown';
+
 
 const HomeScreen = ({navigation}) => {
     const {advert1, advert1Name, fecha} = useContext(AuthContext);
@@ -29,11 +31,16 @@ const HomeScreen = ({navigation}) => {
             <AdCard iconName="bitcoin" title="Toma Acción Ahora, Gane hasta US$200 Dolares en Bitcoin. "/>
             {/* <CountdownTimer targetDate="November 1, 2023" /> */}
             <Result/>
-            <TouchableOpacity onPress={handlePres} style={styles.btnGenerar}>
-                <Text style={{color: 'snow', fontSize: 20, fontWeight: 'bold'}}>
-                     Combinaciones con Lottery Wizard
-                </Text>
-            </TouchableOpacity>
+            <LinearGradient
+                colors={['#0065B8','#004E8F']}
+                 start={[0.01, 0.01]}
+                 style={styles.btnGenerar} >
+                <TouchableOpacity onPress={handlePres}>
+                    <Text style={{color: 'snow', fontSize: 20, fontWeight: 'bold'}}>
+                        Combinaciones con Lottery Wizard
+                    </Text>
+                </TouchableOpacity>
+            </LinearGradient>
         </ScrollView>
     )
 }
@@ -48,7 +55,7 @@ const styles = StyleSheet.create({
     },
     btnGenerar: {
         alignSelf: 'center',
-        backgroundColor: '#2691b4',
+        // backgroundColor: '#2691b4',
         padding: 20,
         borderRadius: 10,
         marginBottom: 40

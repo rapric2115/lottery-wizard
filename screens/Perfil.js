@@ -16,6 +16,7 @@ import AIFour from './AI component/AIFour';
 import AIFive from './AI component/AIFive';
 import AISix from './AI component/AISix';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const width = Dimensions.get('screen').width;
 
@@ -162,21 +163,26 @@ const MyAccount = () => {
     
       
     return(
-        <View>
+        <View style={{backgroundColor: 'white', flex: 1}}>
             <View style={styles.card}>
                 <View style={styles.content}>
-                    <FontAwesome name='user-circle-o' size={50} color="white" />
+                    <View style={{justifyContent: 'center', paddingHorizontal: 15, borderRadius: 10}} >
+                      <FontAwesome name='user-circle-o' size={50} color="black" />
+                    </View>
                     <View>
-                        <Text style={styles.title}>{userName != null ? userName : `Tu Nombre Aqui`}</Text>
-                        <Text style={styles.p}>{userEmail}</Text>
+                        <Text style={styles.title}>{userName != null ? userName : `Nombre`}</Text>
+                        <Text style={styles.p}>{userEmail != null ? userEmail : "email@mail.com"}</Text>
+                        <Pressable style={styles.button} onPress={handleSignOutWithGoogle}>
+                            <Text style={styles.text}>Cerrar Sesión</Text>
+                        </Pressable>
                     </View>
                 </View>
-                <Pressable style={styles.button} onPress={handleSignOutWithGoogle}>
-                    <Text style={styles.text}>Cerrar Sesión</Text>
-                </Pressable>
             </View>
-            <Text style={{textAlign: 'center', marginVertical: 15}}>Mis Combinaciones</Text>
+            
             <View style={styles.combinationContainer}>
+                <View>
+                  <Text style={{textAlign: 'center', marginVertical: 15, fontWeight: 'bold'}}>MIS COMBINACIONES</Text>
+                </View>
                 <Text style={[styles.countText, winner > 2 ? styles.green: styles.red]}>
                 {winner == 8
                 ? `RD$ ${acumulado[0]} Millones`
@@ -213,8 +219,11 @@ const MyAccount = () => {
                     {winner > 3 ? `Felicidades! Ha Ganado ha tenido ${winner} resultados` : `Siga Intentando ha tenido ${winner} resultados`}
                 </Text>
             </View>
-            <View style={{justifyContent: 'center', alignSelf: 'center', alignItems: 'center', marginTop: 25}}>
-                <Text style={{marginBottom: 10}}>Genera combinaciones con Inteligencia Artificial</Text>
+           
+            <View style={{width: '90%', justifyContent: 'center', alignSelf: 
+            'center', alignItems: 'center', marginTop: 25, backgroundColor: '#ffebeb', 
+            paddingVertical: 32, borderRadius: 5}}>
+                <Text style={{marginBottom: 10, fontWeight: 'bold'}}>Genera combinaciones con Inteligencia Artificial</Text>
                 {/* <View style={{padding: 15}}>
                     <Text style={{fontWeight: 'bold'}}>NOTA IMPORTANTE:</Text>
                     <Text>Esta Sesión de generar combinaciones con IA y guardar sus Combinaciones, serán próximamente de pago, RD$ 50 Mensuales.</Text>
@@ -227,36 +236,39 @@ const MyAccount = () => {
                     <AIFive ref={AIfive} />
                     <AISix ref={AIsix} />
                 </View>
-                <TouchableOpacity onPress={() => callAIFunctions()} style={{backgroundColor: '#2691b4', padding: 10, borderRadius: 7, marginTop: 25}}>
-                    <Text style={{color: 'snow'}}>
-                        Iniciar Secuencia Aprendizaje
-                    </Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={handleNavigation} style={{backgroundColor: '#2691b4', padding: 10, borderRadius: 7, marginTop: 25}}>
-                    <Text style={{color: 'snow'}}>
-                        Membresias
-                    </Text>
-                </TouchableOpacity>
+                <LinearGradient
+                  colors={['#0065B8','#004E8F']}
+                  start={[0.01, 0.01]}
+                  style={{paddingVertical: 12, paddingHorizontal: 32, borderRadius: 7, marginTop: 25}}>
+                    <TouchableOpacity onPress={() => callAIFunctions()}>
+                        <Text style={{color: 'snow'}}>
+                            Iniciar Secuencia Aprendizaje
+                        </Text>
+                    </TouchableOpacity>
+                  </LinearGradient>
             </View>
+
+                <LinearGradient
+                colors={['#0065B8','#004E8F']}
+                start={[0.01, 0.01]}
+                style={{paddingVertical: 12, paddingHorizontal: 32, borderRadius: 7, 
+                marginTop: 25, width: '60%', alignSelf: 'center'}}>
+                  <TouchableOpacity onPress={handleNavigation} >
+                      <Text style={{color: 'snow', alignSelf: 'center'}}>
+                          Membresias
+                      </Text>
+                  </TouchableOpacity>
+                </LinearGradient>
         </View>
     )
 }
 
 const styles = StyleSheet.create({
-    combinationContainer: {
-        backgroundColor: '#fff', 
-        borderRadius: 7, 
-        width: '90%', 
-        alignSelf: 'center', 
-        borderWidth: 1, 
-        borderColor: '#247ba0',
-        paddingVertical: 5,
-    },
     card: {
-        width: width * .8,
+        width: width * .9,
         color: 'white',
         height: 150,
-        backgroundColor: '#2691b4',
+        // backgroundColor: '#2691b4',
         borderRadius: 14,
         alignSelf: 'center',
         paddingTop: 15,
@@ -268,27 +280,40 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20
     },
     title: {
-        fontSize: 16,
-        color: 'white'
+        fontSize: 20,
+        color: 'black',
+        fontWeight: 'bold',
+        textAlign: 'right'
     },
     p: {
-        color: 'white'
+        color: 'black'
     },
     numbers: {
         width: 30,
         height: 30,
         borderRadius: 50,
-        backgroundColor: '#d6f1f7',
+        backgroundColor: '#fff',
         margin: 5,
         textAlign: 'center',
         textAlignVertical: 'center',
         fontSize: 18,
         fontWeight: 'bold',
-        borderWidth: 1,
-        borderColor: '#247ba0'
+        color: '#001629'
+        // borderWidth: 1,
+        // borderColor: '#247ba0'
     },
+    combinationContainer: {
+      backgroundColor: '#ebf6ff', 
+      borderRadius: 7, 
+      width: '90%', 
+      alignSelf: 'center', 
+      // borderWidth: 1, 
+      // borderColor: 'black',
+      paddingVertical: 5,
+  },
     highlightedNumber: {
         backgroundColor: 'orange', // Change the background color to orange
+        color: '#fff'
     },
     countText: {
         alignSelf: 'flex-end',
@@ -300,11 +325,11 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     red: {
-        color: 'red',
+        color: '#BF4E30',
         fontWeight: 'bold',
     },
     button: {
-        width: '80%',
+        width: '90%',
         alignItems: 'center',
         justifyContent: 'center',
         paddingVertical: 12,
