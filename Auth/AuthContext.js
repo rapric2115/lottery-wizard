@@ -162,9 +162,9 @@ export const AuthProvider = ({ children }) => {
 
   const savedNumber = (values) => {
     const db = getDatabase();
-    const userDataId = JSON.parse(currentUser);
-    if (userDataId) {
-      const userId = userDataId.user.uid;
+    
+    if (currentUser) {
+      const userId = currentUser.uid;
       set(ref(db, 'userSavedNumber/' + userId), {
         myCombination: values,
       });

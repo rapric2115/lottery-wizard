@@ -125,19 +125,23 @@ class AIFour extends Component {
         { x: 0, y: 0.25, label: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0] },
         { x: 0, y: 0.5, label: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1] },
       ],
-      second: '',
       four: '0',
     };
-    this.neuralNetwork = null;
 
-    this.initialize = this.initialize.bind(this);
-    this.train = this.train.bind(this);
-    this.classifyPoints = this.classifyPoints.bind(this);
+    this.neuralNetwork = new NeuralNetwork(2, this.state.hiddenNodes, 15);
+    this.initializeNeuralNetwork()
+  }
+
+  async initializeNeuralNetwork() {
+    try {
+      await this.initialize();  console.log('Neural network initialized successfully.');
+    } catch (error) {
+      console.error('Error initializing neural network:', error.message);
+    }
   }
 
   initialize = async () => {
     return new Promise((resolve, reject) => {
-      this.neuralNetwork = new NeuralNetwork(2, this.state.hiddenNodes, 15);
       resolve();
     });
   };
@@ -250,12 +254,7 @@ class AIFour extends Component {
             textAlignVertical: 'center',
             fontSize: 18,
             fontWeight: 'bold',
-            // borderWidth: 1,
-            // borderColor: '#247ba0'
         }}>{this.state.four}</Text>
-        {/* <Button title="Initialize" onPress={this.initialize} /> */}
-        {/* <Button title="Train" onPress={this.train} />
-        <Button title="Classify Points" onPress={this.classifyPoints} /> */}
       </View>
     );
   }

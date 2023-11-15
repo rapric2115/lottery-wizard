@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Button, Text } from 'react-native';
+import { View, Text } from 'react-native';
 
 class NeuralNetwork {
   constructor(inputSize, hiddenSize, outputSize) {
@@ -125,19 +125,25 @@ class AIOne extends Component {
         { x: 0, y: 0.25, label: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0] },
         { x: 0, y: 0.5, label: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1] },
       ],
-      second: '',
       one: '0',
     };
-    this.neuralNetwork = null;
-
-    this.initialize = this.initialize.bind(this);
-    this.train = this.train.bind(this);
-    this.classifyPoints = this.classifyPoints.bind(this);
+    
+    this.neuralNetwork = new NeuralNetwork(2, this.state.hiddenNodes, 15)
+    this.initializeNeuralNetwork();
   }
+
+  async initializeNeuralNetwork() {
+    try {
+      await this.initialize();
+      console.log('Neural network initialized successfully.');
+    } catch (error) {
+      console.error('Error initializing neural network:', error.message);
+    }
+  }
+
 
   initialize = async () => {
     return new Promise((resolve, reject) => {
-      this.neuralNetwork = new NeuralNetwork(2, this.state.hiddenNodes, 15);
       resolve();
     });
   };
@@ -249,13 +255,8 @@ class AIOne extends Component {
             textAlign: 'center',
             textAlignVertical: 'center',
             fontSize: 18,
-            fontWeight: 'bold',
-            // borderWidth: 1,
-            // borderColor: '#247ba0'
+            fontWeight: 'bold'
         }}>{this.state.one}</Text>
-        {/* <Button title="Initialize" onPress={this.initialize} /> */}
-        {/* <Button title="Train" onPress={this.train} />
-        <Button title="Classify Points" onPress={this.classifyPoints} /> */}
       </View>
     );
   }

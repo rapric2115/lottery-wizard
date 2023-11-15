@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { View, Text, StyleSheet, Touchable, ScrollView } from 'react-native';
+import { Text, StyleSheet, ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import AdCard from '../components/adCard';
@@ -10,7 +10,6 @@ import CountdownTimer from '../components/countDown';
 
 
 const HomeScreen = ({navigation}) => {
-    const {advert1, advert1Name, fecha} = useContext(AuthContext);
     const today = new Date();
     const daysOfWeek = ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'];
     const month = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
@@ -21,7 +20,7 @@ const HomeScreen = ({navigation}) => {
     
     const formattedDate = `Hoy ${dayOfWeek} ${dayOfMonth} de ${monthOfYear} del ${dayOfYear}`;
 
-    const handlePres = () => {
+    const handlePressNavigation = () => {
         navigation.navigate('Combinaciones')
     }
 
@@ -35,7 +34,7 @@ const HomeScreen = ({navigation}) => {
                 colors={['#0065B8','#004E8F']}
                  start={[0.01, 0.01]}
                  style={styles.btnGenerar} >
-                <TouchableOpacity onPress={handlePres}>
+                <TouchableOpacity onPress={handlePressNavigation}>
                     <Text style={{color: 'snow', fontSize: 20, fontWeight: 'bold'}}>
                         Combinaciones con Lottery Wizard
                     </Text>
@@ -55,7 +54,6 @@ const styles = StyleSheet.create({
     },
     btnGenerar: {
         alignSelf: 'center',
-        // backgroundColor: '#2691b4',
         padding: 20,
         borderRadius: 10,
         marginBottom: 40

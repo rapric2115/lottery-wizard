@@ -1,363 +1,269 @@
-// import React, { useState } from 'react';
-// import { View, Text, Button, Dimensions } from 'react-native';
+import React, { Component } from 'react';
+import { View, Text } from 'react-native';
 
-// const SCREEN_WIDTH = Dimensions.get("screen").width;
+class NeuralNetwork {
+    constructor(inputSize, hiddenSize, outputSize) {
+        this.inputSize = inputSize;
+        this.hiddenSize = hiddenSize;
+        this.outputSize = outputSize;
 
-// function encode(label) {
-//     // Assuming the labels are numerical strings like "1", "2", "3", ...
-//     const encoding = new Array(22).fill(0);
-//     encoding[parseInt(label) - 1] = 1; // Subtract 1 to convert to a 0-based index
-//     return encoding;
-// }
-
-// function decode(output) {
-//     // Find the index of the maximum value in the output array
-//     const maxIndex = output.indexOf(Math.max(...output));
-//     // Add 1 to convert the 0-based index back to the numerical label
-//     return (maxIndex + 1).toString();
-// }
-
-// class NeuralNetwork {
-//     constructor(inputLen, outputLen) {
-//         this.inputLen = inputLen;
-//         this.outputLen = outputLen;
-//         this.weights = Array.from({ length: this.outputLen }, () =>
-//             Array.from({ length: this.inputLen }, () => Math.random())
-//         );
-//         // this.bias = Array(this.outputLen).fill(0);
-//         this.learningRate = 0.1;
-//     }
-
-//     propagate(inputs) {
-//         const output = new Array(this.outputLen);
-//         for (let i = 0; i < this.outputLen; i++) {
-//             output[i] = 0;
-//             for (let j = 0; j < this.inputLen; j++) {
-//                 output[i] += this.weights[i][j] * inputs[j];
-//             }
-//             // output[i] += this.bias[i];
-//             output[i] = this.sigmoid(output[i]);
-//         }
-//         return output;
-//     }
-
-//     sigmoid(x) {
-//         return 1 / (1 + Math.exp(-x));
-//     }
-
-//     train(inputs, target) {
-//         const output = this.propagate(inputs);
-//         const errors = new Array(this.outputLen);
-
-//         for (let i = 0; i < this.outputLen; i++) {
-//             errors[i] = target[i] - output[i];
-//             for (let j = 0; j < this.inputLen; j++) {
-//                 this.weights[i][j] +=
-//                     this.learningRate *
-//                     errors[i] *
-//                     output[i] *
-//                     (1 - output[i]) *
-//                     inputs[j];
-//             }
-//             // this.bias[i] += this.learningRate * errors[i];
-//         }
-//     }
+        this.weightsInputToHidden = Array.from({ length: hiddenSize }, () =>
+          Array.from({ length: inputSize }, () => Math.random() * 2 - 1)
+        );
+        this.biasHidden = Array(hiddenSize).fill(0);
+        this.weightsHiddenToOutput = Array.from({ length: outputSize }, () =>
+          Array.from({ length: hiddenSize }, () => Math.random() * 2 - 1)
+        );
+        this.biasOutput = Array(outputSize).fill(0);
+        this.hiddenLayer = new Array(this.hiddenSize);
+        this.learningRate = 0.1;
     
-// }
-
-// function AIComponent({result}) {
-//     const [neuralNetwork, setNeuralNetwork] = useState(new NeuralNetwork(2, 4));
-//     const [NumberOne, setNumberOne] = useState('');
-//     const [NumberTwo, setNumberTwo] = useState('');
-//     const [NumberThree, setNumberThree] = useState('')
-//     const [NumberFour, setNumberFour] = useState('');
-//     const [NumberFive, setNumberFive] = useState('');
-//     const [NumberSix, setNumberSix] = useState('');
-//     const [isTrainingComplete, setIsTrainingComplete] = useState(false);
-
-
-//     async function train() {
-//         const network = new NeuralNetwork(2, 4);
-//         for (let i = 0; i < 10000; i++) {
-//             const data =
-//                 trainingData[Math.floor(Math.random() * trainingData.length)];
-//             network.train([data.x, data.y], encode(data.label));
-//         }
-//             const X = { x: -1, y: -0.5 };
-//             const output = network.propagate([X.x, X.y]);
-//             const predictedLabel = decode(output);
-//             setNumberOne(predictedLabel);
-        
-//     }
-
-//     async function trainSecond() {
-//         const network = new NeuralNetwork(2, 4);
-//         for (let i = 0; i < 10000; i++) {
-//             const data =
-//                 secondData[Math.floor(Math.random() * secondData.length)];
-//             network.train([data.x, data.y], encode(data.label));
-//         }
-
-//             const X = { x: 0, y: -0.5 };
-//             const output = network.propagate([X.x, X.y]);
-//             const predictedLabel = decode(output);
-//             setNumberTwo(predictedLabel);       
-//     }
-
-//     async function trainThird() {
-//         const network = new NeuralNetwork(2, 4);
-//         for (let i = 0; i < 10000; i++) {
-//             const data =
-//                 thirdData[Math.floor(Math.random() * thirdData.length)];
-//             network.train([data.x, data.y], encode(data.label));
-//         }
-
-//             const X = { x: 1, y: -0.5 };
-//             const output = network.propagate([X.x, X.y]);
-//             const predictedLabel = decode(output);
-//             setNumberThree(predictedLabel);       
-//     }
-
-//     async function trainFour() {
-//         const network = new NeuralNetwork(2, 4);
-//         for (let i = 0; i < 10000; i++) {
-//             const data =
-//                 fourData[Math.floor(Math.random() * fourData.length)];
-//             network.train([data.x, data.y], encode(data.label));
-//         }
-
-//             const X = { x: 1, y: 0 };
-//             const output = network.propagate([X.x, X.y]);
-//             const predictedLabel = decode(output);
-//             setNumberFour(predictedLabel);       
-//     }
-
-//     async function trainFive() {
-//         const network = new NeuralNetwork(2, 4);
-//         for (let i = 0; i < 10000; i++) {
-//             const data =
-//                 fiveData[Math.floor(Math.random() * fiveData.length)];
-//             network.train([data.x, data.y], encode(data.label));
-//         }
-
-//             const X = { x: 0, y: 0.5 };
-//             const output = network.propagate([X.x, X.y]);
-//             const predictedLabel = decode(output);
-//             setNumberFive(predictedLabel);       
-//     }
-
-//     async function trainSix() {
-//         const network = new NeuralNetwork(2, 4);
+        this.sigmoid = (x) => 1 / (1 + Math.exp(-x));
+      }
     
-//         // Initialize variables for learning rate range test
-//         let learningRate = 1e-6; // Starting learning rate
-//         const maxLearningRate = 1; // Maximum learning rate to test
-//         const numSteps = 100; // Number of steps
-//         let bestLoss = Number.POSITIVE_INFINITY; // Initialize best loss
-//         let bestOutput = new Array(4).fill(0); // Initialize best output as an array of zeros
+      feedForward(inputs) {
+        for (let i = 0; i < this.hiddenSize; i++) {
+          this.hiddenLayer[i] = 0;
+          for (let j = 0; j < this.inputSize; j++) {
+            this.hiddenLayer[i] +=
+              this.weightsInputToHidden[i][j] * inputs[j];
+          }
+          this.hiddenLayer[i] += this.biasHidden[i];
+          this.hiddenLayer[i] = this.sigmoid(this.hiddenLayer[i]);
+        }
     
-//         let optimalLearningRate = 0.1; // Default learning rate
+        const output = new Array(this.outputSize);
+        for (let i = 0; i < this.outputSize; i++) {
+          output[i] = 0;
+          for (let j = 0; j < this.hiddenSize; j++) {
+            output[i] +=
+              this.weightsHiddenToOutput[i][j] * this.hiddenLayer[j];
+          }
+          output[i] += this.biasOutput[i];
+          output[i] = this.sigmoid(output[i]);
+        }
+        return output;
+      }
     
-//         for (let step = 0; step < numSteps; step++) {
-//             network.learningRate = learningRate;
-//             let totalLoss = 0;
+      train(inputs, target) {
+        for (let i = 0; i < this.hiddenSize; i++) {
+          this.hiddenLayer[i] = 0;
+          for (let j = 0; j < this.inputSize; j++) {
+            this.hiddenLayer[i] +=
+              this.weightsInputToHidden[i][j] * inputs[j];
+          }
+          this.hiddenLayer[i] += this.biasHidden[i];
+          this.hiddenLayer[i] = this.sigmoid(this.hiddenLayer[i]);
+        }
     
-//             // Train for a fixed number of iterations (adjust as needed)
-//             for (let i = 0; i < 10000; i++) {
-//                 const data = sixData[Math.floor(Math.random() * sixData.length)];
-//                 network.train([data.x, data.y], encode(data.label));
-//             }
+        const output = new Array(this.outputSize);
+        for (let i = 0; i < this.outputSize; i++) {
+          output[i] = 0;
+          for (let j = 0; j < this.hiddenSize; j++) {
+            output[i] +=
+              this.weightsHiddenToOutput[i][j] * this.hiddenLayer[j];
+          }
+          output[i] += this.biasOutput[i];
+          output[i] = this.sigmoid(output[i]);
+        }
     
-//             // Calculate and record the loss using Mean Squared Error (MSE)
-//             for (let i = 0; i < 1000; i++) {
-//                 const data = sixData[Math.floor(Math.random() * sixData.length)];
-//                 const output = network.propagate([data.x, data.y]);
-//                 const target = encode(data.label);
-                
-//                 // Calculate MSE
-//                 let loss = 0;
-//                 for (let j = 0; j < target.length; j++) {
-//                     loss += (target[j] - output[j]) ** 2;
-//                 }
-//                 totalLoss += loss;
-//             }
+        const errorsOutput = new Array(this.outputSize);
+        const errorsHidden = new Array(this.hiddenSize);
     
-//             const averageLoss = totalLoss / 1000;
+        for (let i = 0; i < this.outputSize; i++) {
+          errorsOutput[i] = target[i] - output[i];
+          for (let j = 0; j < this.hiddenSize; j++) {
+            this.weightsHiddenToOutput[i][j] +=
+              this.learningRate *
+              errorsOutput[i] *
+              output[i] *
+              (1 - output[i]) *
+              this.hiddenLayer[j];
+          }
+          this.biasOutput[i] += this.learningRate * errorsOutput[i];
+        }
     
-//             console.log(`Step ${step}: Learning Rate ${learningRate}, Loss ${averageLoss}`);
-    
-//             if (step > 0 && averageLoss < bestLoss) {
-//                 optimalLearningRate = learningRate;
-//                 bestLoss = averageLoss;
-//                 bestOutput = network.propagate([1, 0.5]); // Store the output with the lowest loss
-//             }
-    
-//             learningRate *= 1.2; // Increase learning rate (adjust multiplier as needed)
-//             if (learningRate > maxLearningRate) {
-//                 break; // Stop if learning rate exceeds the maximum
-//             }
-//         }
-    
-            
-//         // Set the network's learning rate to the optimal value
-//         network.learningRate = optimalLearningRate;
-    
-//         // Now, you can use the best output for prediction
-//         const predictedLabel = decode(bestOutput);
-//         setNumberSix(predictedLabel);
-//     }
-    
-    
-//     function reset() {
-//         setNeuralNetwork(new NeuralNetwork(2, 4));
-//         setNumberOne('')
-//         setNumberTwo('')
-//         setNumberThree('');
-//         setNumberFour('');
-//         setNumberFive('');
-//         setNumberSix('');
-//     }
+        for (let i = 0; i < this.hiddenSize; i++) {
+          errorsHidden[i] = 0;
+          for (let j = 0; j < this.outputSize; j++) {
+            errorsHidden[i] +=
+              this.weightsHiddenToOutput[j][i] * errorsOutput[j];
+          }
+          this.biasHidden[i] += this.learningRate * errorsHidden[i];
+          for (let j = 0; j < this.inputSize; j++) {
+            this.weightsInputToHidden[i][j] +=
+              this.learningRate *
+              errorsHidden[i] *
+              this.hiddenLayer[i] *
+              (1 - this.hiddenLayer[i]) *
+              inputs[j];
+          }
+        }
+      }
+}
 
-    
+class AIOne extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      hiddenNodes: 3,
+      trainingIterations: 1000,
+      numPoints: 100,
+      trainingData: [
+        { x: -1, y: -0.5, label: [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
+        { x: -1, y: -0.25, label: [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
+        { x: -1, y: 0, label: [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
+        { x: -1, y: 0.25, label: [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
+        { x: -1, y: 0.5, label: [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
+        { x: -0.5, y: -0.5, label: [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
+        { x: -0.5, y: -0.25, label: [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0] },
+        { x: -0.5, y: 0, label: [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0] },
+        { x: -0.5, y: 0.25, label: [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0] },
+        { x: -0.5, y: 0.5, label: [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0] },
+        { x: 0, y: -0.5, label: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0] },
+        { x: 0, y: -0.25, label: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0] },
+        { x: 0, y: 0, label: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0] },
+        { x: 0, y: 0.25, label: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0] },
+        { x: 0, y: 0.5, label: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1] },
+      ],
+      one: '0',
+    };
 
-//     const firstData = [
-//         { x: -1, y: -0.5, label: "1" },
-//         { x: -0.5, y: -0.5, label: "2" },
-//         { x: 0, y: -0.5, label: "3" },
-//         { x: 0.5, y: -0.5, label: "4" },
-//         { x: 1, y: -0.5, label: "5" },
-//         { x: 0, y: 1, label: "6" },
-//         { x: 0, y: 0.5, label: "7" },
-//         { x: 0, y: 0, label: "8" },
-//         { x: 0.5, y: 0, label: "9" },
-//         { x: 1, y: 0, label: "10" },
-//         { x: -1, y: 0.5, label: "11" },
-//         { x: -0.5, y: 0.5, label: "12" },
-//         { x: -0.5, y: 0, label: "13" },
-//         { x: 0.5, y: 0.5, label: "14" },
-//         { x: 1, y: 0.5, label: "15" },
-//     ];
+    // Instantiate the NeuralNetwork class
+    this.neuralNetwork = new NeuralNetwork(2, this.state.hiddenNodes, 15);
 
-//     const secondData = [
-//         { x: -1, y: -0.5, label: "4" },
-//         { x: -0.5, y: -0.5, label: "5" },
-//         { x: 0, y: -0.5, label: "6" },
-//         { x: 0.5, y: -0.5, label: "7" },
-//         { x: 1, y: -0.5, label: "8" },
-//         { x: 0, y: 1, label: "9" },
-//         { x: 0, y: 0.5, label: "10" },
-//         { x: 0, y: 0, label: "11" },
-//         { x: 0.5, y: 0, label: "12" },
-//         { x: 1, y: 0, label: "13" },
-//         { x: -1, y: 0.5, label: "14" },
-//         { x: -0.5, y: 0.5, label: "15" },
-//         { x: -0.5, y: 0, label: "16" },
-//         { x: 0.5, y: 0.5, label: "17" },
-//         { x: 1, y: 0.5, label: "19" },
-//     ];
+    this.initializeNeuralNetwork();
+  }
 
-//     const thirdData = [
-//         { x: -1, y: -0.5, label: "10" },
-//         { x: -0.5, y: -0.5, label: "11" },
-//         { x: 0, y: -0.5, label: "12" },
-//         { x: 0.5, y: -0.5, label: "13" },
-//         { x: 1, y: -0.5, label: "14" },
-//         { x: 0, y: 1, label: "15" },
-//         { x: 0, y: 0.5, label: "16" },
-//         { x: 0, y: 0, label: "17" },
-//         { x: 0.5, y: 0, label: "18" },
-//         { x: 1, y: 0, label: "19" },
-//         { x: -1, y: 0.5, label: "20" },
-//         { x: -0.5, y: 0.5, label: "21" },
-//         { x: -0.5, y: 0, label: "22" },
-//         { x: 0.5, y: 0.5, label: "23" },
-//         { x: 1, y: 0.5, label: "24" },
-//     ];
-
-//     const fourData = [
-//         { x: -1, y: -0.5, label: "16" },
-//         { x: -0.5, y: -0.5, label: "17" },
-//         { x: 0, y: -0.5, label: "18" },
-//         { x: 0.5, y: -0.5, label: "19" },
-//         { x: 1, y: -0.5, label: "20" },
-//         { x: 0, y: 1, label: "21" },
-//         { x: 0, y: 0.5, label: "22" },
-//         { x: 0, y: 0, label: "23" },
-//         { x: 0.5, y: 0, label: "24" },
-//         { x: 1, y: 0, label: "25" },
-//         { x: -1, y: 0.5, label: "26" },
-//         { x: -0.5, y: 0.5, label: "27" },
-//         { x: -0.5, y: 0, label: "28" },
-//         { x: 0.5, y: 0.5, label: "29" },
-//         { x: 1, y: 0.5, label: "30" },
-//     ];
-
-//     const fiveData = [
-//         { x: -1, y: -0.5, label: "22" },
-//         { x: -0.5, y: -0.5, label: "23" },
-//         { x: 0, y: -0.5, label: "24" },
-//         { x: 0.5, y: -0.5, label: "25" },
-//         { x: 1, y: -0.5, label: "26" },
-//         { x: 0, y: 1, label: "27" },
-//         { x: 0, y: 0.5, label: "28" },
-//         { x: 0, y: 0, label: "29" },
-//         { x: 0.5, y: 0, label: "30" },
-//         { x: 1, y: 0, label: "31" },
-//         { x: -1, y: 0.5, label: "32" },
-//         { x: -0.5, y: 0.5, label: "33" },
-//         { x: -0.5, y: 0, label: "34" },
-//         { x: 0.5, y: 0.5, label: "35" },
-//         { x: 1, y: 0.5, label: "36" },
-//     ];
-
-//     const sixData = [
-//         { x: -1, y: -0.5, label: "24" },
-//         { x: -0.5, y: -0.5, label: "25" },
-//         { x: 0, y: -0.5, label: "26" },
-//         { x: 0.5, y: -0.5, label: "27" },
-//         { x: 1, y: -0.5, label: "28" },
-//         { x: 0, y: 1, label: "29" },
-//         { x: 0, y: 0.5, label: "30" },
-//         { x: 0, y: 0, label: "31" },
-//         { x: 0.5, y: 0, label: "32" },
-//         { x: 1, y: 0, label: "33" },
-//         { x: -1, y: 0.5, label: "34" },
-//         { x: -0.5, y: 0.5, label: "35" },
-//         { x: -0.5, y: 0, label: "36" },
-//         { x: 0.5, y: 0.5, label: "37" },
-//         { x: 1, y: 0.5, label: "38" },
-//     ];
-    
-//     const handleTraining = async () => {
-//         setIsTrainingComplete(false);
-
-//         // Use Promise.all to await all training functions
-//         await Promise.all([train(), trainSecond(), trainThird(), trainFour(), trainFive(), trainSix()]);
-
-//         setIsTrainingComplete(true);
-//     }
-
-//     // let colorName = '';
-
-//     return {
-//         <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 25 }}>
-//             <Text>Neural Network Demo</Text>
-//             <View style={{flexDirection: 'row', width: SCREEN_WIDTH * .8, justifyContent: 'center'}}>
-//                <Text>{NumberOne} -</Text>
-//                <Text>{NumberTwo} -</Text>
-//                <Text>{NumberThree} -</Text>
-//                <Text>{NumberFour} -</Text>
-//                <Text>{NumberFive} -</Text>
-//                <Text>{NumberSix}</Text>
-//             </View>
-//             <View style={{flexDirection: 'row', justifyContent: 'space-evenly', width: SCREEN_WIDTH * .8, marginTop: 10}}>
-//                 <Button title="Train" onPress={handleTraining} />
-//                 <Button title="Reset" onPress={reset} />
-//             </View>
-//         </View>
-//     );
-// }
-
-// export default AIComponent;
+  // ... (rest of the code remains unchanged)
+  async initializeNeuralNetwork() {
+    try {
+      await this.initialize();
+      console.log('Neural network initialized successfully.');
+    } catch (error) {
+      console.error('Error initializing neural network:', error.message);
+    }
+  }
 
 
+  initialize = async () => {
+    return new Promise((resolve, reject) => {
+      resolve();
+    });
+  };
+
+  train = async () => {
+    return new Promise((resolve, reject) => {
+      if (this.neuralNetwork) {
+        for (let i = 0; i < this.state.trainingIterations; i++) {
+          const data = this.state.trainingData[
+            Math.floor(Math.random() * this.state.trainingData.length)
+          ];
+          this.neuralNetwork.train([data.x, data.y], data.label);
+        }
+        resolve();
+      } else {
+        reject(new Error('Neural network not initialized. Please initialize before training.'));
+      }
+    });
+  };
+
+  classifyPoints = () => {
+    return new Promise((resolve, reject) => {
+
+        const predictedLabels = [];
+      
+        for (let i = 0; i < this.state.numPoints; i++) {
+          const x = Math.random() * 2 - 1;
+          const y = Math.random() * 2 - 1;
+          const output = this.neuralNetwork.feedForward([x, y]);
+      
+          const predictedLabel = this.decodePredictedLabel(output);
+      
+          predictedLabels.push(predictedLabel);
+        }
+      
+        // Now you can use the predictedLabels array as needed
+    
+        function findMostFrequentValue(array) {
+            const counts = {};
+            let mostFrequentValue = null;
+            let maxCount = 0;
+          
+            for (let i = 0; i < array.length; i++) {
+              const value = array[i];
+          
+              if (counts[value] === undefined) {
+                counts[value] = 1;
+              } else {
+                counts[value]++;
+              }
+          
+              if (counts[value] > maxCount) {
+                mostFrequentValue = value;
+                maxCount = counts[value];
+              }
+            }
+          
+            return mostFrequentValue;
+          }
+          
+          
+          const mostFrequentValue = findMostFrequentValue(predictedLabels);
+          this.setState({ one: mostFrequentValue.toString() });
+          
+    })
+  };
+
+  decodePredictedLabel = (output) => {
+    // Find the index with the highest probability in the output array
+    const predictedIndex = output.indexOf(Math.max(...output));
+  
+    // Map the index to the corresponding label from your training data
+    
+    const trainingData = [
+      { x: -1, y: -0.5, label: 1 },
+      { x: -1, y: -0.25, label: 2 },
+      { x: -1, y: 0, label: 3 },
+      { x: -1, y: 0.25, label: 4 },
+      { x: -1, y: 0.5, label: 5 },
+      { x: -0.5, y: -0.5, label: 6 },
+      { x: -0.5, y: -0.25, label: 7 },
+      { x: -0.5, y: 0, label: 8 },
+      { x: -0.5, y: 0.25, label: 9 },
+      { x: -0.5, y: 0.5, label: 10 },
+      { x: 0, y: -0.5, label: 11 },
+      { x: 0, y: -0.25, label: 12 },
+      { x: 0, y: 0, label: 13 },
+      { x: 0, y: 0.25, label: 14 },
+      { x: 0, y: 0.5, label: 15 },
+    ];
+  
+    if (predictedIndex >= 0 && predictedIndex < trainingData.length) {
+      return trainingData[predictedIndex].label;
+    } else {
+      return 'Unknown';
+    }
+  };
+  
+
+  render() {
+    return (
+      <View>
+        <Text style={{
+            width: 30,
+            height: 30,
+            borderRadius: 50,
+            backgroundColor: '#fff',
+            margin: 5,
+            textAlign: 'center',
+            textAlignVertical: 'center',
+            fontSize: 18,
+            fontWeight: 'bold'
+        }}>{this.state.one}</Text>
+      </View>
+    );
+  }
+}
+
+export default AIOne;

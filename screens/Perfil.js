@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, Dimensions, Pressable } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, Pressable, ScrollView } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { AuthContext } from '../Auth/AuthContext';
 import { initializeApp } from 'firebase/app';
@@ -7,8 +7,7 @@ import { getDatabase, ref, child, get, set } from 'firebase/database';
 import { firebaseConfig } from '../firebaseConfig';
 import { useNavigation } from '@react-navigation/native';
 
-import AIComponent from './AI component/ai';
-import AITest from './AI component/AITest';
+import AITest from './AI component/ai';
 import AIOne from './AI component/AIOne';
 import AITwo from './AI component/AITwo';
 import AIThree from './AI component/AIThree';
@@ -111,6 +110,8 @@ const MyAccount = () => {
     const AIfour = useRef(null);
     const AIfive = useRef(null);
     const AIsix = useRef(null);
+
+    const AItest = useRef(null);
     
     // useEffect(() => {
     //     callAIFunctions()
@@ -148,6 +149,11 @@ const MyAccount = () => {
             AIsix.current.initialize(),
             AIsix.current.train(),
             AIsix.current.classifyPoints(),
+
+            AItest.current.initialize(),
+            AItest.current.train(),
+            AItest.current.classifyPoints(),
+
           ]);
       
           console.log('All AI functions completed.');
@@ -163,7 +169,7 @@ const MyAccount = () => {
     
       
     return(
-        <View style={{backgroundColor: 'white', flex: 1}}>
+        <ScrollView style={{backgroundColor: 'white'}}>
             <View style={styles.card}>
                 <View style={styles.content}>
                     <View style={{justifyContent: 'center', paddingHorizontal: 15, borderRadius: 10}} >
@@ -223,18 +229,22 @@ const MyAccount = () => {
             <View style={{width: '90%', justifyContent: 'center', alignSelf: 
             'center', alignItems: 'center', marginTop: 25, backgroundColor: '#ffebeb', 
             paddingVertical: 32, borderRadius: 5}}>
-                <Text style={{marginBottom: 10, fontWeight: 'bold'}}>Genera combinaciones con Inteligencia Artificial</Text>
+                <Text style={{marginBottom: 10, fontWeight: 'bold', textAlign: 'center'}}>Genera combinaciones utilizando nuestra Inteligencia Artificial</Text>
                 {/* <View style={{padding: 15}}>
                     <Text style={{fontWeight: 'bold'}}>NOTA IMPORTANTE:</Text>
                     <Text>Esta Sesión de generar combinaciones con IA y guardar sus Combinaciones, serán próximamente de pago, RD$ 50 Mensuales.</Text>
                 </View> */}
                 <View style={{flexDirection: 'row'}}>
+
                     <AIOne ref={AIone}/> 
                     <AITwo ref={AItwo}/>
                     <AIThree ref={AIthree}/>
                     <AIFour ref={AIfour} />
                     <AIFive ref={AIfive} />
                     <AISix ref={AIsix} />
+                    {/* numero mas y super*/}
+                    <AITest ref={AItest} />
+                  {/* <AITest ref={AItest} /> */}
                 </View>
                 <LinearGradient
                   colors={['#0065B8','#004E8F']}
@@ -252,14 +262,14 @@ const MyAccount = () => {
                 colors={['#0065B8','#004E8F']}
                 start={[0.01, 0.01]}
                 style={{paddingVertical: 12, paddingHorizontal: 32, borderRadius: 7, 
-                marginTop: 25, width: '60%', alignSelf: 'center'}}>
+                marginTop: 25, width: '60%', alignSelf: 'center', marginBottom: 30}}>
                   <TouchableOpacity onPress={handleNavigation} >
                       <Text style={{color: 'snow', alignSelf: 'center'}}>
                           Membresias
                       </Text>
                   </TouchableOpacity>
                 </LinearGradient>
-        </View>
+        </ScrollView>
     )
 }
 
