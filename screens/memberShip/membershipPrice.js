@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {View, Text, StyleSheet, SafeAreaView, Dimensions, Pressable} from 'react-native';
+import {View, Text, StyleSheet, SafeAreaView, Dimensions, Pressable, Alert} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { AntDesign } from '@expo/vector-icons';
 // import PayPal from 'react-native-paypal';
@@ -10,9 +10,9 @@ const MembershipPrice = () => {
     const [selectedItem, setSelectedItem] = useState(null);
     const [selectedPrice, setSelectedPrice] = useState();
     const Package = [
-        {id: 1, name: '12 Meses', price: '$500', save: '$100'},
-        {id: 2, name: '3 Meses', price: '$130', save: '$20'},
-        {id: 3, name: '1 Meses', price: '$50', save: '$0'},
+        {id: 1, name: '12 Meses', price: 50000, save: 's100' },
+        {id: 2, name: '3 Meses', price: 13000, save: '$20'},
+        {id: 3, name: '1 Meses', price: 5000, save: '$0'},
     ]
 
     const benefics = [
@@ -39,6 +39,10 @@ const MembershipPrice = () => {
     const handlePaypalPayment = () => {
         alert(`Paypal payment received ${selectedPrice}`);
     }
+
+   const handleSubscription = () => {
+    Alert.alert(`Has realizado la subscricion de ${selectedItem}`)
+   }
 
     // const handlePaypalPayment = async () => {
     //     // Set up your PayPal client ID (replace with your own)
@@ -89,7 +93,7 @@ const MembershipPrice = () => {
             </View>
             <View>
                 <Pressable style={{marginVertical: 30, width: 200, backgroundColor: 'black', padding: 10, justifyContent: 'center', borderRadius: 7}}
-                    onPress={handlePaypalPayment}
+                    onPress={handleSubscription}
                 >
                     <Text style={{color: 'snow', alignSelf: 'center'}}>Pagar Membresia</Text>
                 </Pressable>

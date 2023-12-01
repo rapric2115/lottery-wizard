@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext, useMemo } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Touchable } from 'react-native';
 import Predictions from '../components/prediction';
 import { AuthContext } from '../Auth/AuthContext';
 import { initializeApp } from 'firebase/app';
@@ -10,7 +10,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 
 
-const GeneradorFormula = () => {
+const GeneradorFormula = ({navigation}) => {
     const {savedNumber, currentUser, message} = useContext(AuthContext);
     const db = getDatabase(app);
     const [leidsa, setLeidsa] = useState([]);
@@ -150,12 +150,21 @@ const renderRows = (combinations, results, styles, columnIndex) => {
 
             sortData()
         }, [myCombination])
+
+        const handleNavigation = () => {
+          navigation.navigate('genAI')
+        }
         
 
     return(
         <View style={{flex: 1}}>
             <Text style={{marginHorizontal: 20, fontWeight: 'bold', fontSize: 18, marginTop: 15, textAlign: 'center'}}>Numeros generados Ledisa</Text>
             <OkMessage message={message} />
+            <TouchableOpacity onPress={handleNavigation}>
+              <Text>
+                Generar Combinaciones con AI
+              </Text> 
+            </TouchableOpacity>
             
            <ScrollView style={{ flexDirection: '', marginTop: 20, marginBottom: 30}}>
                 {/* {renderRows([combinacionOne, combinacionTwo, combinacionTres, combinacionCuatro, combinacionCinco, combinacionSeis], results, styles)} */}
