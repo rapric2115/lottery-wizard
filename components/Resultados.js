@@ -1,58 +1,65 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Dimensions, RefreshControl } from 'react-native';
 import { initializeApp } from 'firebase/app';
 import { getDatabase, ref, onValue, child, get } from 'firebase/database';
 import { firebaseConfig } from '../firebaseConfig';
-import axios from 'axios';
-import * as cheerio from 'cheerio';
 
 import useFetch from '../custom/useFetch';
+
+const SCREEN_WiDTH = Dimensions.get('screen').width;
+const SCREEN_HEIGHT = Dimensions.get('screen').height;
 
 
 const Result = () => {
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
     const [leidsaAcumulado, setLeidsaAcumulado] = useState();
-    const [leidsaFecha, setLeidsaFecha] = useState();
+    // const [leidsaFecha, setLeidsaFecha] = useState();
     const [lotekaAcumulado, setLotekaAcumulado] = useState();
     const [lotekaFecha, setLotekaFecha] = useState();
     const [formattedDate, setFormattedDate] = useState('5-12-1979');
+    const [refreshing, setRefreshing] = useState();
 
-    const LeidsaRef = ref(db);
+    // const LeidsaRef = ref(db);
     // const LeidsaRef = ref(db, 'leidsa/');
     // onValue(LeidsaRef, (snapshot) => {
     //   const data = snapshot.val();
     //   setLeidsa(data);
     // })
 
-    useEffect(() => {
-      getData()
-    }, [])
+    // useEffect(() => {
+    //   getData()
+    // }, [])
     
-    const getData = () => {  
-          get(child(LeidsaRef, `lottos/leidsa/fecha`)).then((snapshot) => {
-            if (snapshot.exists()) {
-              const data = snapshot.val();
-              // Extract values into an array
-                setLeidsaFecha(data);
+    // const getData = () => {  
+    //       get(child(LeidsaRef, `lottos/leidsa/fecha`)).then((snapshot) => {
+    //         if (snapshot.exists()) {
+    //           const data = snapshot.val();
+    //           // Extract values into an array
+    //             setLeidsaFecha(data);
              
-            } else {
-              console.log("No data available");
-            }
-          }).catch((error) => {
-            console.error(error);
-          });
-      }
+    //         } else {
+    //           console.log("No data available");
+    //         }
+    //       }).catch((error) => {
+    //         console.error(error);
+    //       });
+    //   }
 
-      
       const { leidsa } = useFetch('https://www.conectate.com.do/loterias/leidsa', 'score', 'leidsa' );
       const { fechaLeidsa } = useFetch('https://www.conectate.com.do/loterias/leidsa', 'session-date', 'fechaLeidsa' );
       const { leidsaTotalAcumulado } = useFetch('https://www.conectate.com.do/loterias/leidsa', 'session-badge', 'leidsaTotalAcumulado');
       const { loteka } = useFetch('https://www.conectate.com.do/loterias/loteka', 'score', 'loteka' );
+      const { fechaLoteka } = useFetch('https://www.conectate.com.do/loterias/loteka', 'session-date', 'fechaLoteka' );
       const { lotekaTotalAcumulado } = useFetch('https://www.conectate.com.do/loterias/loteka', 'session-badge', 'lotekaTotalAcumulado');
       const { lotekaWebsite } = useFetch('https://loteka.com.do/', 'bola', 'lotekaWebsite');
 
-      console.log('Numeros de loteka website', leidsaTotalAcumulado)
+
+      const onRefresh = () => {
+        setRefreshing(true);
+        previousSaturday.toDateString();
+        setRefreshing(false);
+      }
 
       const convertDateFormat = (inputDate) => {
         try {
@@ -81,32 +88,17 @@ const Result = () => {
         } else {
           console.error('Invalid or missing date in fechaLeidsa:', fechaLeidsa);
         }
+
+        if (fechaLoteka && fechaLoteka.length >= 5) {
+          const dateToString = fechaLoteka[4];
+          const formattedDate = convertDateFormat(dateToString);
+      
+          setLotekaFecha(formattedDate);
+        } else {
+          console.error('Invalid or missing date in fechaLeidsa:', fechaLeidsa);
+        }
       }, [fechaLeidsa]);
 
-      function getPreviousWednesday() {
-        const today = new Date();
-        const currentDay = today.getDay();
-        const daysUntilWednesday = (currentDay - 3 + 7) % 7; // Calculate days until Wednesday
-        const previousWednesday = new Date(today);
-        previousWednesday.setDate(today.getDate() - daysUntilWednesday);
-        return previousWednesday;
-      }
-
-      function getPreviousSaturday() {
-        const today = new Date();
-        const currentDay = today.getDay();
-        const daysUntilSaturday = (currentDay - 6 + 7) % 7; // Calculate days until Saturday
-        const previousSaturday = new Date(today);
-        previousSaturday.setDate(today.getDate() - daysUntilSaturday);
-        return previousSaturday;
-      }
-      
-      // Previous Days.
-      const previousSaturday = getPreviousSaturday();
-      console.log(previousSaturday.toDateString());
-
-      const previousWednesday = getPreviousWednesday();
-      console.log(previousWednesday.toDateString());
 
       useEffect(() => {
         if (Array.isArray(lotekaTotalAcumulado) && lotekaTotalAcumulado.length > 5) {
@@ -143,10 +135,10 @@ const Result = () => {
               console.log("No match found");
             }
           } else {
-            console.log("lotekaTotalAcumulado[5] is not a string");
+            console.log("leidsaTotalAcumulado[5] is not a string");
           }
         } else {
-          console.log("lotekaTotalAcumulado is not an array or does not have an element at index 5");
+          console.log("leidsaTotalAcumulado is not an array or does not have an element at index 5");
         }
       }, [lotekaTotalAcumulado]);
       
@@ -156,23 +148,31 @@ const Result = () => {
      
 
     return(
-        <ScrollView>
+        <ScrollView
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        >
             <View style={{flexDirection: 'row', paddingHorizontal: 10, justifyContent: 'space-around'}}>
               <View style={styles.resultContainer}>
                 <Text style={{fontSize: 24, fontWeight: 'bold', color: '#112b3b', textAlign: 'center'}}>Pega 3 Mas</Text>
-                <View style={{flexDirection: 'row', alignSelf: 'center'}}>
-                  <Text style={styles.fetchResults}>{leidsa[0]}</Text>
-                  <Text style={styles.fetchResults}>{leidsa[1]}</Text>
-                  <Text style={styles.fetchResults}>{leidsa[2]}</Text>
+                <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
+                  {leidsa.slice(0, 3).map((num, index) => (
+                    <Text key={index} style={styles.fetchResults}>
+                      {num}
+                    </Text>
+                  ))}
                 </View>
               </View>
 
               <View style={styles.resultContainer}>
                 <Text style={{fontSize: 24, fontWeight: 'bold', color: '#112b3b', textAlign: 'center'}}>Toca 3</Text>
-                <View style={{flexDirection: 'row', alignSelf: 'center'}}>
-                  <Text style={styles.fetchResults}>{loteka[0]}</Text>
-                  <Text style={styles.fetchResults}>{loteka[1]}</Text>
-                  <Text style={styles.fetchResults}>{loteka[2]}</Text>
+                <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
+                  {loteka.slice(0, 3).map((num, index) => (
+                    <Text key={index} style={styles.fetchResults}>
+                      {num}
+                    </Text>
+                  ))}
                 </View>
               </View>
             </View>
@@ -181,18 +181,22 @@ const Result = () => {
               <View style={styles.resultContainer}>
                 <Text style={{fontSize: 24, fontWeight: 'bold', color: '#112b3b', textAlign: 'center'}}>Quiniela Palé</Text>
                 <View style={{flexDirection: 'row', alignSelf: 'center'}}>
-                  <Text style={styles.fetchResults}>{leidsa[28]}</Text>
-                  <Text style={styles.fetchResults}>{leidsa[29]}</Text>
-                  <Text style={styles.fetchResults}>{leidsa[30]}</Text>
+                {Array.from({ length: 3 }, (_, index) => (
+                  <Text key={index} style={styles.fetchResults}>
+                    {leidsa[index + 28]}
+                  </Text>
+                ))}
                 </View>
               </View>
 
               <View style={styles.resultContainer}>
                 <Text style={{fontSize: 24, fontWeight: 'bold', color: '#112b3b', textAlign: 'center'}}>Quiniela Loteka</Text>
                 <View style={{flexDirection: 'row', alignSelf: 'center'}}>
-                  <Text style={styles.fetchResults}>{loteka[3]}</Text>
-                  <Text style={styles.fetchResults}>{loteka[4]}</Text>
-                  <Text style={styles.fetchResults}>{loteka[5]}</Text>
+                {Array.from({ length: 3 }, (_, index) => (
+                  <Text key={index} style={styles.fetchResults}>
+                    {loteka[index + 3]}
+                  </Text>
+                ))}
                 </View>
               </View>
             </View>
@@ -201,21 +205,21 @@ const Result = () => {
               <View style={styles.resultContainer}>
                   <Text style={{fontSize: 24, fontWeight: 'bold', color: '#112b3b', textAlign: 'center'}}>Loto Pool</Text>
                   <View style={{flexDirection: 'row', alignSelf: 'center'}}>
-                    <Text style={styles.fetchResults}>{leidsa[3]}</Text>
-                    <Text style={styles.fetchResults}>{leidsa[4]}</Text>
-                    <Text style={styles.fetchResults}>{leidsa[5]}</Text>
-                    <Text style={styles.fetchResults}>{leidsa[6]}</Text>
-                    <Text style={styles.fetchResults}>{leidsa[7]}</Text>
+                  {Array.from({ length: 5 }, (_, index) => (
+                    <Text key={index} style={styles.fetchResults}>
+                      {leidsa[index + 3]}
+                    </Text>
+                  ))}
                   </View>
                 </View>
                 <View style={styles.resultContainer}>
                   <Text style={{fontSize: 24, fontWeight: 'bold', color: '#112b3b', textAlign: 'center'}}>Mega Chances</Text>
                   <View style={{flexDirection: 'row', alignSelf: 'center'}}>
-                    <Text style={styles.fetchResults}>{loteka[6]}</Text>
-                    <Text style={styles.fetchResults}>{loteka[7]}</Text>
-                    <Text style={styles.fetchResults}>{loteka[8]}</Text>
-                    <Text style={styles.fetchResults}>{loteka[9]}</Text>
-                    <Text style={styles.fetchResults}>{loteka[10]}</Text>
+                  {Array.from({ length: 5 }, (_, index) => (
+                    <Text key={index} style={styles.fetchResults}>
+                      {loteka[index + 6]}
+                    </Text>
+                  ))}
                   </View>
                 </View>
                 
@@ -230,18 +234,11 @@ const Result = () => {
                     <Text Style={{fontSize: 26, fontWeight: 'bold'}}>RESULTADO</Text>
                 </View>
                 <View style={{flexDirection: 'row', marginTop: 20, alignSelf: 'center'}}>
-                  <Text style={styles.lotoResults}>{leidsa[31]}</Text>
-                  <Text style={styles.lotoResults}>{leidsa[32]}</Text>
-                  <Text style={styles.lotoResults}>{leidsa[33]}</Text>
-                  <Text style={styles.lotoResults}>{leidsa[34]}</Text>
-                  <Text style={styles.lotoResults}>{leidsa[35]}</Text>
-                  <Text style={styles.lotoResults}>{leidsa[36]}</Text>
-                  <Text style={styles.lotoResults}>{leidsa[37]}</Text>
-                  <Text style={styles.lotoResults}>{leidsa[38]}</Text>
-
-                    {/* {leidsa.map((num, index) => (
-                        <Text style={styles.results} key={index}>{num}</Text>
-                    ))} */}
+                {Array.from({ length: 8 }, (_, index) => (
+                  <Text key={index} style={[styles.fetchResults, styles.textResults]}>
+                    {leidsa[index + 31]}
+                  </Text>
+                ))}
                 </View>
                 <View style={{marginTop: 20}}>
                     <Text>ACUMULADO</Text>
@@ -258,14 +255,11 @@ const Result = () => {
                     <Text Style={{fontSize: 26, fontWeight: 'bold'}}>RESULTADO</Text>
                 </View>
                 <View style={{flexDirection: 'row', marginTop: 20, alignSelf: 'center'}}>
-                  <Text style={styles.lotoResults}>{loteka[12]}</Text>
-                  <Text style={styles.lotoResults}>{loteka[13]}</Text>
-                  <Text style={styles.lotoResults}>{loteka[14]}</Text>
-                  <Text style={styles.lotoResults}>{loteka[15]}</Text>
-                  <Text style={styles.lotoResults}>{loteka[16]}</Text>
-                  <Text style={styles.lotoResults}>{loteka[17]}</Text>
-                  <Text style={styles.lotoResults}>{loteka[18]}</Text>
-                  <Text style={styles.lotoResults}>{loteka[19]}</Text>                  
+                {Array.from({ length: 8 }, (_, index) => (
+                  <Text key={index} style={[styles.fetchResults, styles.textResults]}>
+                    {loteka[index + 12]}
+                  </Text>
+                ))}              
                 </View>
                 <View style={{marginTop: 20}}>
                     <Text>ACUMULADO</Text>
@@ -278,7 +272,7 @@ const Result = () => {
 
 const styles = StyleSheet.create({
     container: {
-      width: 370,
+      width: SCREEN_WiDTH * .95,
       height: 220,
       backgroundColor: 'white',
       alignSelf: 'center',
@@ -290,8 +284,8 @@ const styles = StyleSheet.create({
       borderColor: '#247ba0'
     },
     results: {
-      width: 35,
-      height: 35,
+      width: SCREEN_WiDTH * .35,
+      height: SCREEN_HEIGHT * .35,
       borderRadius: 50,
       backgroundColor: '#d6f1f7',
       margin: 5,
@@ -323,11 +317,14 @@ const styles = StyleSheet.create({
       borderColor: '#247ba0',
       width: '49%'
     }, 
-    fetchResults: {      
+    fetchResults: {     
       margin: 4,
       textAlign: 'center',
       fontSize: 18,
       fontWeight: 'bold',
+    },
+    textResults: {
+      fontSize: 20,
     },
     lotoResults: {
       width: 35,
