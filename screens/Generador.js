@@ -14,6 +14,7 @@ import OkMessage from '../components/okMessage';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import useFetch from '../custom/useFetch';
+import useFetchDate from '../custom/useFetchDate';
 
 const GeneradorFormula = ({ navigation }) => {
   const { savedNumber, currentUser, message } = useContext(AuthContext);
@@ -46,82 +47,6 @@ const GeneradorFormula = ({ navigation }) => {
     }
   };
 
-  function getPreviousWednesday() {
-    const today = new Date();
-    const currentDay = today.getDay();
-    const daysUntilWednesday = (currentDay - 3 + 7) % 7; // Calculate days until Wednesday
-    const previousWednesday = new Date(today);
-    previousWednesday.setDate(today.getDate() - daysUntilWednesday);
-    return previousWednesday;
-  }
-
-  function getPreviousSaturday() {
-    const today = new Date();
-    const currentDay = today.getDay();
-    const daysUntilSaturday = (currentDay - 6 + 7) % 7; // Calculate days until Saturday
-    const previousSaturday = new Date(today);
-    previousSaturday.setDate(today.getDate() - daysUntilSaturday);
-    return previousSaturday;
-  }
-
-  // Previous Days.
-  const previousSaturday = getPreviousSaturday();
-  console.log(previousSaturday.toDateString());
-
-  const previousWednesday = getPreviousWednesday();
-  console.log(previousWednesday.toDateString());
-
-  function formatDate(inputDate) {
-    try {
-      if (inputDate) {
-        const dateObject = new Date(inputDate);
-        const day = dateObject.getDate().toString().padStart(2, '0');
-        const month = (dateObject.getMonth() + 1).toString().padStart(2, '0');
-        const year = dateObject.getFullYear();
-
-        const formattedDate = `${day}-${month}-${year}`;
-        return formattedDate;
-      } else {
-        console.error('Input date is undefined');
-        return null;
-      }
-    } catch (error) {
-      console.error('Error formatting date:', error);
-      return null;
-    }
-  }
- 
-  useEffect(() => {
-   
-    function getPreviousDay() {
-      const today = new Date();
-      const currentDay = today.getDay();
-    
-      if (currentDay === 0 || currentDay === 1 || currentDay === 2) {
-        return getPreviousWednesday();
-      } else {
-        return getPreviousSaturday();
-      }
-    }  
-  
-    const previousDay = getPreviousDay();
-  
-    if (previousDay) {
-      try {
-        const { response } = useFetch(
-          `https://www.conectate.com.do/loterias/leidsa?date=${formatDate(
-            previousDay
-          )}`,
-          'score',
-          'response'
-        );
-        setLastRes(response);
-      } catch (error) {
-        console.error('Error Fetching Previous Data', error)
-      }
-    }
-  }, [previousSaturday, previousWednesday])
-  
 
 
   const { leidsaOne } = useFetch(
@@ -129,6 +54,16 @@ const GeneradorFormula = ({ navigation }) => {
     'score',
     'leidsaOne'
   );
+
+  const { leidsaLast } = useFetchDate('score', 'leidsaLast');
+
+  useEffect(() => {
+    setLastRes(leidsaLast)
+  }, [])
+  
+
+  console.log(lastRes)
+
   const leidsaArray = leidsaOne.map((item) => Number(item.trim()));
 
 

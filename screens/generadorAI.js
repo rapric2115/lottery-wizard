@@ -1,33 +1,11 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
 // import {brain} from 'brainjs';
-import { SimpleLinearRegression3D } from 'ml-regression';
+// import { SimpleLinearRegression3D } from 'ml-regression';
 
 const GeneradorAI = ({ navigation }) => {
   // State to manage the background color
   const [backgroundColor, setBackgroundColor] = useState('#ffffff'); 
-//   const [neuralNetwork] = useState(() => {
-//     const net = new brain.NeuralNetwork();
-//     // Train the neural network (you can customize the training data)
-//     net.train([
-//       { input: { r: 0.25, g: 0.33 }, output: { nine: 1 } },
-//       { input: { r: 0.33, g: 0.1428 }, output: { four: 1 } },
-//       { input: { r: 0.1428, g: 0.1}, output: { three: 1 } },
-//       { input: { r: 0.1, g: 1}, output: { seven: 1 } },
-//       { input: { r: 1, g: 0.1}, output: { ten: 1 } },
-//       { input: { r: 1, g: 0.1}, output: { one: 1 } },
-//       { input: { r: 0.1, g: 1}, output: { ten: 1 } },
-//       { input: { r: 1, g: 0.125}, output: { one: 1 } },
-//       { input: { r: 0.125, g: 0.0526}, output: { eight: 1 } },
-//       { input: { r: 0.0526, g: 0.5}, output: { nineteen: 1 } },
-//       { input: { r: 0.5, g: 0.11}, output: { two: 1 } },
-//       { input: { r: 0.11, g: 0.11}, output: { nine: 1 } },
-//       { input: { r: 0.11, g: 0.33}, output: { nine: 1 } },
-//       { input: { r: 0.33, g: 0.11}, output: { three: 1 } },
-//       { input: { r: 0.11, g: 0.1428}, output: { nine: 1 } }
-//     ]);
-//     return net;
-//   });
 
   
 
@@ -44,8 +22,6 @@ const GeneradorAI = ({ navigation }) => {
     g: 0.1666
   };
 
-//   const predictions = neuralNetwork.run(combinations);
-//   console.log(predictions);
 
 const data = [
     { x: 4, y: 1, z: 8 },

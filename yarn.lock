@@ -2862,6 +2862,11 @@ at-least-node@^1.0.0:
   resolved "https://registry.yarnpkg.com/at-least-node/-/at-least-node-1.0.0.tgz#602cd4b46e844ad4effc92a8011a3c46e0238dc2"
   integrity sha512-+q/t7Ekv1EDY2l6Gda6LLiX14rU9TV20Wa3ofeQmwPFZbOMo9DXrLbOjFaaclkXKWidIaopwAObQDqwWtGUjqg==
 
+axios-cancel@^0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/axios-cancel/-/axios-cancel-0.2.2.tgz#a587368d2f34c4baa8dcf2538d8264db13b643cf"
+  integrity sha512-YOArJ6aaK1c2W0uuxDSxTQbdNUwOpSNZeWM7u3K79tzfdzNicM5UzQ61zn1OolECU9fAd4A7fNV8hqnddK4Mdg==
+
 axios@^1.4.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/axios/-/axios-1.6.0.tgz#f1e5292f26b2fd5c2e66876adc5b06cdbd7d2102"

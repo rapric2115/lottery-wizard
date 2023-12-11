@@ -236,13 +236,13 @@ const Result = () => {
                 <View style={{flexDirection: 'row', marginTop: 20, alignSelf: 'center'}}>
                 {Array.from({ length: 8 }, (_, index) => (
                   <Text key={index} style={[styles.fetchResults, styles.textResults]}>
-                    {leidsa[index + 31]}
+                    {leidsa[index + 30]}
                   </Text>
                 ))}
                 </View>
                 <View style={{marginTop: 20}}>
                     <Text>ACUMULADO</Text>
-                    <Text style={{fontSize: 38, fontWeight: 'bold', color: '#112b3b', textAlign: 'center'}}>{`RD ${leidsaAcumulado} MILLONES`}</Text>
+                    <Text style={{fontSize: 38, fontWeight: 'bold', color: '#112b3b', textAlign: 'center'}}>{`RD ${leidsaAcumulado != undefined ? leidsaAcumulado : '00' } MILLONES`}</Text>
                 </View>
             </View>
             <View style={styles.container}>
@@ -273,7 +273,7 @@ const Result = () => {
 const styles = StyleSheet.create({
     container: {
       width: SCREEN_WiDTH * .95,
-      height: 220,
+      // height: 220,
       backgroundColor: 'white',
       alignSelf: 'center',
       borderRadius: 7,
