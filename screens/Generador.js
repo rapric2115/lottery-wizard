@@ -62,10 +62,10 @@ const GeneradorFormula = ({ navigation }) => {
   }, [leidsaLast])
   
 
-  console.log(lastRes)
-
+  
   const leidsaArray = leidsaOne.map((item) => Number(item.trim()));
-
+  
+  console.log(leidsaLast)
 
   const results = useMemo(
     () => [
@@ -75,8 +75,8 @@ const GeneradorFormula = ({ navigation }) => {
       leidsaArray[34],
       leidsaArray[35],
       leidsaArray[36],
+      leidsaArray[37],
       leidsaArray[38],
-      leidsaArray[39],
     ],
     [leidsaArray]
   );
@@ -243,7 +243,7 @@ const GeneradorFormula = ({ navigation }) => {
 
     setCombinacionOne(
       calculateCombinations(
-        leidsaArray[30],
+        leidsaArray[31],
         lastRes[32],
         OneNumber,
         OneAverage,
@@ -253,7 +253,7 @@ const GeneradorFormula = ({ navigation }) => {
     );
     setCombinacionTwo(
       calculateCombinations(
-        leidsaArray[31],
+        leidsaArray[32],
         lastRes[33],
         TwoNumber,
         twoAverage,
@@ -263,7 +263,7 @@ const GeneradorFormula = ({ navigation }) => {
     );
     setCombinacionTres(
       calculateCombinations(
-        leidsaArray[32],
+        leidsaArray[33],
         lastRes[34],
         ThreeNumber,
         ThreeAverage,
@@ -273,7 +273,7 @@ const GeneradorFormula = ({ navigation }) => {
     );
     setCombinationCuatro(
       calculateCombinations(
-        leidsaArray[33],
+        leidsaArray[34],
         lastRes[35],
         fourNumber,
         fourAverage,
@@ -283,7 +283,7 @@ const GeneradorFormula = ({ navigation }) => {
     );
     setCombinationCinco(
       calculateCombinations(
-        leidsaArray[34],
+        leidsaArray[35],
         lastRes[36],
         fiveNumber,
         fiveAverage,
@@ -293,7 +293,7 @@ const GeneradorFormula = ({ navigation }) => {
     );
     setCombinationSeis(
       calculateCombinations(
-        leidsaArray[35],
+        leidsaArray[36],
         lastRes[37],
         sixNumber,
         sixAverage,

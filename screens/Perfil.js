@@ -166,6 +166,9 @@ const MyAccount = () => {
       const handleNavigation = () => {
         navigation.navigate('Precios')
       }
+
+      const firstLetter = userEmail.charAt(0);
+      const proMember = false;
     
       
     return(
@@ -173,7 +176,14 @@ const MyAccount = () => {
             <View style={styles.card}>
                 <View style={styles.content}>
                     <View style={{justifyContent: 'center', paddingHorizontal: 15, borderRadius: 10}} >
+                      {userName != null ?
                       <FontAwesome name='user-circle-o' size={50} color="black" />
+                     :
+                      <Text style={{borderRadius: 50, borderWidth: 2, borderColor: '#004E8F', 
+                      width: 50, height: 50, textAlign: 'center', textTransform: 'uppercase', 
+                      fontSize: 25, color: '#004E8F', marginTop: -50, textAlignVertical: 'center',
+                       backgroundColor: '#99d1ff'}}>{firstLetter}</Text> 
+                      }
                     </View>
                     <View>
                         <Text style={styles.title}>{userName != null ? userName : `Nombre`}</Text>
@@ -246,6 +256,7 @@ const MyAccount = () => {
                     <AITest ref={AItest} />
                   {/* <AITest ref={AItest} /> */}
                 </View>
+                {proMember != false ?
                 <LinearGradient
                   colors={['#0065B8','#004E8F']}
                   start={[0.01, 0.01]}
@@ -256,6 +267,12 @@ const MyAccount = () => {
                         </Text>
                     </TouchableOpacity>
                   </LinearGradient>
+              :
+              <TouchableOpacity onPress={handleNavigation} style={{paddingVertical: 12, 
+              paddingHorizontal: 32, borderRadius: 7, marginTop: 25, backgroundColor: '#000'}}>
+                <Text style={styles.text}>Hacerse Miembro Pro para user AI</Text>
+              </TouchableOpacity>  
+              }
             </View>
 
                 <LinearGradient

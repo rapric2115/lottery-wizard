@@ -236,7 +236,7 @@ const Result = () => {
                 <View style={{flexDirection: 'row', marginTop: 20, alignSelf: 'center'}}>
                 {Array.from({ length: 8 }, (_, index) => (
                   <Text key={index} style={[styles.fetchResults, styles.textResults]}>
-                    {leidsa[index + 30]}
+                    {leidsa[index + 31]}
                   </Text>
                 ))}
                 </View>
@@ -263,7 +263,7 @@ const Result = () => {
                 </View>
                 <View style={{marginTop: 20}}>
                     <Text>ACUMULADO</Text>
-                    <Text style={{fontSize: 38, fontWeight: 'bold', color: '#112b3b', textAlign: 'center'}}>{`RD ${lotekaAcumulado} MILLONES`}</Text>
+                    <Text style={{fontSize: 38, fontWeight: 'bold', color: '#112b3b', textAlign: 'center'}}>{`RD ${lotekaAcumulado != undefined ? lotekaAcumulado : '00'} MILLONES`}</Text>
                 </View>
             </View>
         </ScrollView>
