@@ -59,7 +59,7 @@ const GeneradorFormula = ({ navigation }) => {
 
   useEffect(() => {
     setLastRes(leidsaLast)
-  }, [])
+  }, [leidsaLast])
   
 
   console.log(lastRes)
@@ -243,8 +243,8 @@ const GeneradorFormula = ({ navigation }) => {
 
     setCombinacionOne(
       calculateCombinations(
-        leidsaArray[31],
-        lastRes[31],
+        leidsaArray[30],
+        lastRes[32],
         OneNumber,
         OneAverage,
         0,
@@ -253,8 +253,8 @@ const GeneradorFormula = ({ navigation }) => {
     );
     setCombinacionTwo(
       calculateCombinations(
-        leidsaArray[32],
-        lastRes[32],
+        leidsaArray[31],
+        lastRes[33],
         TwoNumber,
         twoAverage,
         2,
@@ -263,8 +263,8 @@ const GeneradorFormula = ({ navigation }) => {
     );
     setCombinacionTres(
       calculateCombinations(
-        leidsaArray[33],
-        lastRes[33],
+        leidsaArray[32],
+        lastRes[34],
         ThreeNumber,
         ThreeAverage,
         3,
@@ -273,8 +273,8 @@ const GeneradorFormula = ({ navigation }) => {
     );
     setCombinationCuatro(
       calculateCombinations(
-        leidsaArray[34],
-        lastRes[34],
+        leidsaArray[33],
+        lastRes[35],
         fourNumber,
         fourAverage,
         4,
@@ -283,8 +283,8 @@ const GeneradorFormula = ({ navigation }) => {
     );
     setCombinationCinco(
       calculateCombinations(
-        leidsaArray[35],
-        lastRes[35],
+        leidsaArray[34],
+        lastRes[36],
         fiveNumber,
         fiveAverage,
         12,
@@ -293,8 +293,8 @@ const GeneradorFormula = ({ navigation }) => {
     );
     setCombinationSeis(
       calculateCombinations(
-        leidsaArray[36],
-        lastRes[36],
+        leidsaArray[35],
+        lastRes[37],
         sixNumber,
         sixAverage,
         19,

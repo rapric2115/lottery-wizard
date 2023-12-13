@@ -56,17 +56,17 @@ const inputs = data.map((point) => [point.x, point.y]);
 const outputs = data.map((point) => point.z);
 
 // Create a linear regression model
-const regression = new SimpleLinearRegression3D(inputs, outputs);
+// const regression = new SimpleLinearRegression3D(inputs, outputs);
 
 // Get the coefficients (slope and intercept)
-const coefficients = regression.getCoefficients();
+// const coefficients = regression.getCoefficients();
 
-console.log('Slope:', coefficients.slope);
-console.log('Intercept:', coefficients.intercept);
+// console.log('Slope:', coefficients.slope);
+// console.log('Intercept:', coefficients.intercept);
 
-// Use the model to make predictions
-const prediction = regression.predict([newX, newY]);
-console.log('Predicted Z:', prediction);
+// // Use the model to make predictions
+// // const prediction = regression.predict([newX, newY]);
+// console.log('Predicted Z:', prediction);
 
 
 
