@@ -16,7 +16,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import useFetch from '../custom/useFetch';
 import useFetchDate from '../custom/useFetchDate';
 
-const GeneradorFormula = ({ navigation }) => {
+const GeneradorFormulaLoteka = ({ navigation }) => {
   const { savedNumber, currentUser, message } = useContext(AuthContext);
   const db = getDatabase(app);
   const [leidsa, setLeidsa] = useState([]);
@@ -49,10 +49,10 @@ const GeneradorFormula = ({ navigation }) => {
 
 
 
-  const { leidsaOne } = useFetch(
-    'https://www.conectate.com.do/loterias/leidsa',
+  const { loteka } = useFetch(
+    'https://www.conectate.com.do/loterias/loteka',
     'score',
-    'leidsaOne'
+    'loteka'
   );
 
   const { leidsaLast } = useFetchDate('score', 'leidsaLast');
@@ -63,22 +63,22 @@ const GeneradorFormula = ({ navigation }) => {
   
 
   
-  const leidsaArray = leidsaOne.map((item) => Number(item.trim()));
+  const lotekaArray = loteka.map((item) => Number(item.trim()));
   
-  console.log(leidsaLast)
+  console.log(lotekaArray)
 
   const results = useMemo(
     () => [
-      leidsaArray[31],
-      leidsaArray[32],
-      leidsaArray[33],
-      leidsaArray[34],
-      leidsaArray[35],
-      leidsaArray[36],
-      leidsaArray[37],
-      leidsaArray[38],
+      lotekaArray[31],
+      lotekaArray[32],
+      lotekaArray[33],
+      lotekaArray[34],
+      lotekaArray[35],
+      lotekaArray[36],
+      lotekaArray[37],
+      lotekaArray[38],
     ],
-    [leidsaArray]
+    [lotekaArray]
   );
 
 
@@ -245,7 +245,7 @@ const GeneradorFormula = ({ navigation }) => {
 
     setCombinacionOne(
       calculateCombinations(
-        leidsaArray[31],
+        lotekaArray[31],
         lastRes[31],
         OneNumber,
         OneAverage,
@@ -255,7 +255,7 @@ const GeneradorFormula = ({ navigation }) => {
     );
     setCombinacionTwo(
       calculateCombinations(
-        leidsaArray[32],
+        lotekaArray[32],
         lastRes[32],
         TwoNumber,
         twoAverage,
@@ -265,7 +265,7 @@ const GeneradorFormula = ({ navigation }) => {
     );
     setCombinacionTres(
       calculateCombinations(
-        leidsaArray[33],
+        lotekaArray[33],
         lastRes[33],
         ThreeNumber,
         ThreeAverage,
@@ -275,7 +275,7 @@ const GeneradorFormula = ({ navigation }) => {
     );
     setCombinationCuatro(
       calculateCombinations(
-        leidsaArray[34],
+        lotekaArray[34],
         lastRes[34],
         fourNumber,
         fourAverage,
@@ -285,7 +285,7 @@ const GeneradorFormula = ({ navigation }) => {
     );
     setCombinationCinco(
       calculateCombinations(
-        leidsaArray[35],
+        lotekaArray[35],
         lastRes[35],
         fiveNumber,
         fiveAverage,
@@ -295,7 +295,7 @@ const GeneradorFormula = ({ navigation }) => {
     );
     setCombinationSeis(
       calculateCombinations(
-        leidsaArray[36],
+        lotekaArray[36],
         lastRes[36],
         sixNumber,
         sixAverage,
@@ -474,4 +474,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export default GeneradorFormula;
+export default GeneradorFormulaLoteka;

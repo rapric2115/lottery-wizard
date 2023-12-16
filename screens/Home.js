@@ -24,6 +24,10 @@ const HomeScreen = ({navigation}) => {
         navigation.navigate('Combinaciones')
     }
 
+    const handlePressNavigationLoteka = () => {
+        navigation.navigate('Loteka')
+    }
+
     return(
         <ScrollView style={{flex: 1}}>
             <Text style={styles.fecha}>{formattedDate}</Text>
@@ -36,7 +40,17 @@ const HomeScreen = ({navigation}) => {
                  style={styles.btnGenerar} >
                 <TouchableOpacity onPress={handlePressNavigation}>
                     <Text style={{color: 'snow', fontSize: 20, fontWeight: 'bold'}}>
-                        Combinaciones con Lottery Wizard
+                        Combinaciones Leidsa
+                    </Text>
+                </TouchableOpacity>
+            </LinearGradient>
+            <LinearGradient
+                colors={['#0065B8','#004E8F']}
+                 start={[0.01, 0.01]}
+                 style={styles.btnGenerar} >
+                <TouchableOpacity onPress={handlePressNavigationLoteka}>
+                    <Text style={{color: 'snow', fontSize: 20, fontWeight: 'bold'}}>
+                        Combinaciones Loteka
                     </Text>
                 </TouchableOpacity>
             </LinearGradient>

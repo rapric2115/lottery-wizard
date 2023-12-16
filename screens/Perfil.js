@@ -270,7 +270,7 @@ const MyAccount = () => {
               :
               <TouchableOpacity onPress={handleNavigation} style={{paddingVertical: 12, 
               paddingHorizontal: 32, borderRadius: 7, marginTop: 25, backgroundColor: '#000'}}>
-                <Text style={styles.text}>Hacerse Miembro Pro para user AI</Text>
+                <Text style={styles.text}>Hacerse Miembro Pro para usar AI</Text>
               </TouchableOpacity>  
               }
             </View>

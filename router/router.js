@@ -8,6 +8,7 @@ import { AuthContext } from '../Auth/AuthContext';
 import GeneradorFormula from '../screens/Generador';
 import MembershipPrice from '../screens/memberShip/membershipPrice';
 import GeneradorAI from '../screens/generadorAI';
+import GeneradorFormulaLoteka from '../screens/generadorLoteka';
 
 import HomeScreen from '../screens/Home';
 import MyAccount from '../screens/Perfil';
@@ -83,7 +84,7 @@ const AppNavigator = () => {
                         <Stack.Screen name="Tabs" component={TabNavigator} options={{headerShown: false}}/> 
                         <Stack.Screen name="Precios" component={MembershipPrice} options={{headerShown: true, title: 'Membresias', presentation: 'modal'}} />
                         <Stack.Screen name="genAI" component={GeneradorAI} options={{headerShown: true, title: 'AI', presentation: 'modal'}} />
-
+                        <Stack.Screen name="Loteka" component={GeneradorFormulaLoteka} options={{headerShown: true, title: 'Combinaciones Loteka'}} />
                     </Stack.Group>
                     
                     ): (
