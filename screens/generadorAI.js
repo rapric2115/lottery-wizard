@@ -88,10 +88,11 @@ const handlePress = () => {
             height: 30, textAlign: 'center', fontWeight: 'bold'}} key={i}>{numbers}</Text>
         ))}
       </View>
-      <TouchableOpacity onPress={handlePress}>
+      <DesicionTreeComponent />
+      <TouchableOpacity onPress={handlePress} style={{marginTop: 20, paddingHorizontal: 15, paddingVertical: 10, 
+      borderRadius: 5, borderWidth: 2, borderColor: "#fff"}}>
         <Text>Generar</Text>
       </TouchableOpacity>
-      <DesicionTreeComponent />
     </SafeAreaView>
   );
 };

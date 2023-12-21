@@ -1,57 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button } from 'react-native';
-import DecisionTree from '../custom/DecisionTree';
+// import DecisionTree from '../custom/DecisionTree';
+import { DecisionTree } from '@rhodri_davies/decision-tree-js'
 
 export default function App() {
-  const [age, setAge] = useState('');
-  const [income, setIncome] = useState('');
   const [prediction, setPrediction] = useState(null);
 
-  const trainingData = [
-    [20, 30000],
-    [30, 50000],
-    [40, 70000],
-    [10, 20000],
-    [5, 10000]
-    // Add more training data as needed
-  ];
+  useEffect(() => {
+    // Move the decision tree-related code here
+    const trainingData = [
+      ['15', 22, '14'],
+      ['17', 15, '22'],
+      ['14', 17, '15'],
+      ['15', 14, '17'],
+      ['16', 15, '14'],
+    ];
 
-  const targetValues = [0, 1, 1];
-  // Add more target values as needed
+    const headers = ['color', 'diameter'];
 
-  const decisionTree = new DecisionTree();
-  decisionTree.train(trainingData, targetValues);
+    const decisionTree = new DecisionTree(trainingData, headers);
 
-  const handlePrediction = () => {
-    const newInput = [parseInt(age), parseInt(income)];
-    const result = decisionTree.predict(newInput);
-    console.log('The results in DesicionComponent', result);
-    setPrediction(result);
-  };
+    const predict = decisionTree.predict(['22', 14]);
+    const firstKey = Object.keys(predict.class)[0];
+    setPrediction(firstKey);
 
-  console.log('Training Data:', trainingData);
-  console.log('Target Values:', targetValues);
-  console.log('Trained Decision Tree:', decisionTree.root);
+    console.log(predict.class);
+    console.log(predict.rule);
+    console.log(firstKey);
+  }, []); 
 
 
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Enter Customer Information</Text>
-      <TextInput
-        placeholder="Age"
-        keyboardType="numeric"
-        value={age}
-        onChangeText={text => setAge(text)}
-        style={{ borderBottomWidth: 1, marginBottom: 10, width: 200 }}
-      />
-      <TextInput
-        placeholder="Income"
-        keyboardType="numeric"
-        value={income}
-        onChangeText={text => setIncome(text)}
-        style={{ borderBottomWidth: 1, marginBottom: 20, width: 200 }}
-      />
-      <Button title="Predict" onPress={handlePrediction} />
+    <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 15 }}>
+      <Text style={{fontWeight: 'bold', fontSize: 20}}>Leidsa Pale AI</Text>
+      
+      {/* <Button title="Predict" onPress={handlePrediction} /> */}
       {prediction !== null && (
         <Text>Prediction: {prediction}</Text>
       )}
