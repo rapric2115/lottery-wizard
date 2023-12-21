@@ -196,7 +196,7 @@ const MyAccount = () => {
             
             <View style={styles.combinationContainer}>
                 <View>
-                  <Text style={{textAlign: 'center', marginVertical: 15, fontWeight: 'bold'}}>MIS COMBINACIONES</Text>
+                  <Text style={{textAlign: 'center', marginVertical: 15, fontWeight: 'bold'}}>MIS COMBINACIONES DE LEIDSA</Text>
                 </View>
                 <Text style={[styles.countText, winner > 2 ? styles.green: styles.red]}>
                 {winner == 8
