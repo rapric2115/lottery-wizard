@@ -20,7 +20,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 const width = Dimensions.get('screen').width;
 
 const MyAccount = () => {
-    const {handleSignOutWithGoogle, userDataID, userName, userEmail} = useContext(AuthContext);
+    const {handleSignOutWithGoogle, userDataID, userName, userEmail, proMember} = useContext(AuthContext);
     const [leidsa, setLeidsa] = useState([]);
     const [sortedData, setSortedData] = useState([]);
     const [myCombination, setMyCombination] = useState([]);
@@ -168,7 +168,6 @@ const MyAccount = () => {
       }
 
       const firstLetter = userEmail.charAt(0);
-      const proMember = false;
     
       
     return(

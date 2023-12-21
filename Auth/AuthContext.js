@@ -26,12 +26,15 @@ export const AuthProvider = ({ children }) => {
   const [userEmail, setUserEmail] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
   const [message, setMessage] = useState(null);
+  const [proMember, setProMember] = useState(true);
 
   // const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
   //   clientId: "391790290602-fis5hsn5s2gqs912jn0ljref9ni1ebfa.apps.googleusercontent.com",
   //   iosClientId: "391790290602-9v54hr3dtoplo9r5a572ctf69uo1ftj7.apps.googleusercontent.com",
   //   androidClientId: "391790290602-ou4v1l1620m3ia989spi2p3l16ir4m6c.apps.googleusercontent.com"
   // });
+
+ 
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -186,7 +189,8 @@ export const AuthProvider = ({ children }) => {
       userDataID,
       userEmail,
       errorMessage,
-      message
+      message,
+      proMember
     }}>
       {children}
     </AuthContext.Provider>

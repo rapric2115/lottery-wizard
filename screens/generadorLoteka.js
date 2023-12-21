@@ -17,7 +17,7 @@ import useFetch from '../custom/useFetch';
 import useFetchDate from '../custom/useFetchDate';
 
 const GeneradorFormulaLoteka = ({ navigation }) => {
-  const { savedNumber, currentUser, message } = useContext(AuthContext);
+  const { savedNumber, currentUser, message, proMember } = useContext(AuthContext);
   const db = getDatabase(app);
   const [leidsa, setLeidsa] = useState([]);
   const [lastRes, setLastRes] = useState([]);
@@ -64,19 +64,18 @@ const GeneradorFormulaLoteka = ({ navigation }) => {
 
   
   const lotekaArray = loteka.map((item) => Number(item.trim()));
-  
-  console.log(lotekaArray)
+
 
   const results = useMemo(
     () => [
-      lotekaArray[31],
-      lotekaArray[32],
-      lotekaArray[33],
-      lotekaArray[34],
-      lotekaArray[35],
-      lotekaArray[36],
-      lotekaArray[37],
-      lotekaArray[38],
+      lotekaArray[12],
+      lotekaArray[13],
+      lotekaArray[14],
+      lotekaArray[15],
+      lotekaArray[16],
+      lotekaArray[17],
+      lotekaArray[18],
+      lotekaArray[19],
     ],
     [lotekaArray]
   );
@@ -213,8 +212,6 @@ const GeneradorFormulaLoteka = ({ navigation }) => {
     return a * Math.log(sum(b, c));
   };
 
-  const proMember = false;
-
   useEffect(() => {
     const calculateCombinations = (
       leidsaIndex,
@@ -245,7 +242,7 @@ const GeneradorFormulaLoteka = ({ navigation }) => {
 
     setCombinacionOne(
       calculateCombinations(
-        lotekaArray[31],
+        lotekaArray[12],
         lastRes[31],
         OneNumber,
         OneAverage,
@@ -255,7 +252,7 @@ const GeneradorFormulaLoteka = ({ navigation }) => {
     );
     setCombinacionTwo(
       calculateCombinations(
-        lotekaArray[32],
+        lotekaArray[13],
         lastRes[32],
         TwoNumber,
         twoAverage,
@@ -265,7 +262,7 @@ const GeneradorFormulaLoteka = ({ navigation }) => {
     );
     setCombinacionTres(
       calculateCombinations(
-        lotekaArray[33],
+        lotekaArray[14],
         lastRes[33],
         ThreeNumber,
         ThreeAverage,
@@ -275,7 +272,7 @@ const GeneradorFormulaLoteka = ({ navigation }) => {
     );
     setCombinationCuatro(
       calculateCombinations(
-        lotekaArray[34],
+        lotekaArray[15],
         lastRes[34],
         fourNumber,
         fourAverage,
@@ -285,7 +282,7 @@ const GeneradorFormulaLoteka = ({ navigation }) => {
     );
     setCombinationCinco(
       calculateCombinations(
-        lotekaArray[35],
+        lotekaArray[16],
         lastRes[35],
         fiveNumber,
         fiveAverage,
@@ -295,7 +292,7 @@ const GeneradorFormulaLoteka = ({ navigation }) => {
     );
     setCombinationSeis(
       calculateCombinations(
-        lotekaArray[36],
+        lotekaArray[17],
         lastRes[36],
         sixNumber,
         sixAverage,
@@ -369,7 +366,7 @@ const GeneradorFormulaLoteka = ({ navigation }) => {
   return (
     <View style={{ flex: 1 }}>
       <Text style={{ marginHorizontal: 20, fontWeight: 'bold', fontSize: 18, marginTop: 15, textAlign: 'center' }}>
-        Numeros generados Ledisa
+        Numeros generados Loteka
       </Text>
       <OkMessage message={message} />
       {proMember != false ?
@@ -380,7 +377,7 @@ const GeneradorFormulaLoteka = ({ navigation }) => {
         borderRadius: 5, marginTop: 10
         }}>
         <Text>
-          Pale y Tripleta con AI
+          Pale y Tripleta loteka con AI
         </Text>
       </TouchableOpacity> :
       <TouchableOpacity onPress={handleNavigation} 

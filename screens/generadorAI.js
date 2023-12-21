@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
 // import {brain} from 'brainjs';
 // import { SimpleLinearRegression3D } from 'ml-regression';
+import DesicionTreeComponent from './../components/DesicionTreeComponent';
 
 const GeneradorAI = ({ navigation }) => {
   // State to manage the background color
@@ -72,7 +73,7 @@ const outputs = data.map((point) => point.z);
 
 const handlePress = () => {
     generateRandomColor();
-    console.log('prediction: ',predict([2,9],[9,3],3))
+    // console.log('prediction: ',predict([2,9],[9,3],3))
 }
 
 
@@ -90,6 +91,7 @@ const handlePress = () => {
       <TouchableOpacity onPress={handlePress}>
         <Text>Generar</Text>
       </TouchableOpacity>
+      <DesicionTreeComponent />
     </SafeAreaView>
   );
 };

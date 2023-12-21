@@ -47,7 +47,7 @@ const TabNavigator = () => {
                         title: 'Resultados'
                         }} 
                 />
-                 <Tab.Screen 
+                 {/* <Tab.Screen 
                     name="Combinaciones"
                     component={GeneradorFormula}
                     options={{
@@ -57,7 +57,7 @@ const TabNavigator = () => {
                             <Brain width={30} height={30} fill="blue" />
                             )
                         }}
-                />
+                /> */}
                 <Tab.Screen 
                     name="Profile"
                     component={MyAccount}
@@ -85,6 +85,7 @@ const AppNavigator = () => {
                         <Stack.Screen name="Precios" component={MembershipPrice} options={{headerShown: true, title: 'Membresias', presentation: 'modal'}} />
                         <Stack.Screen name="genAI" component={GeneradorAI} options={{headerShown: true, title: 'AI', presentation: 'modal'}} />
                         <Stack.Screen name="Loteka" component={GeneradorFormulaLoteka} options={{headerShown: true, title: 'Combinaciones Loteka'}} />
+                        <Stack.Screen name="Leidsa" component={GeneradorFormula} options={{headerShown: true, title: 'Combinaciones Leidsa'}} />
                     </Stack.Group>
                     
                     ): (

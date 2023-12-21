@@ -3,6 +3,8 @@ import { View, Text, StyleSheet, ScrollView, Dimensions, RefreshControl } from '
 import { initializeApp } from 'firebase/app';
 import { getDatabase, ref, onValue, child, get } from 'firebase/database';
 import { firebaseConfig } from '../firebaseConfig';
+import CombinationButtons from './combinationButton';
+import { useNavigation } from '@react-navigation/native';
 
 import useFetch from '../custom/useFetch';
 
@@ -11,15 +13,16 @@ const SCREEN_HEIGHT = Dimensions.get('screen').height;
 
 
 const Result = () => {
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
     const [leidsaAcumulado, setLeidsaAcumulado] = useState();
     // const [leidsaFecha, setLeidsaFecha] = useState();
     const [lotekaAcumulado, setLotekaAcumulado] = useState();
     const [lotekaFecha, setLotekaFecha] = useState();
     const [formattedDate, setFormattedDate] = useState('5-12-1979');
     const [refreshing, setRefreshing] = useState();
-
+    const navigation = useNavigation();
+    
     // const LeidsaRef = ref(db);
     // const LeidsaRef = ref(db, 'leidsa/');
     // onValue(LeidsaRef, (snapshot) => {
@@ -54,6 +57,7 @@ const Result = () => {
       const { lotekaTotalAcumulado } = useFetch('https://www.conectate.com.do/loterias/loteka', 'session-badge', 'lotekaTotalAcumulado');
       const { lotekaWebsite } = useFetch('https://loteka.com.do/', 'bola', 'lotekaWebsite');
 
+      
 
       const onRefresh = () => {
         setRefreshing(true);
@@ -141,10 +145,15 @@ const Result = () => {
           console.log("leidsaTotalAcumulado is not an array or does not have an element at index 5");
         }
       }, [lotekaTotalAcumulado]);
-      
-      
-      
-      
+
+
+      const handlePressNavigation = () => {
+        navigation.navigate('Leidsa')
+    }
+
+    const handlePressNavigationLoteka = () => {
+        navigation.navigate('Loteka')
+    }
      
 
     return(
@@ -244,6 +253,7 @@ const Result = () => {
                     <Text>ACUMULADO</Text>
                     <Text style={{fontSize: 38, fontWeight: 'bold', color: '#112b3b', textAlign: 'center'}}>{`RD ${leidsaAcumulado != undefined ? leidsaAcumulado : '00' } MILLONES`}</Text>
                 </View>
+                <CombinationButtons onPress={handlePressNavigation} text={'combinaciones leidsa'} />
             </View>
             <View style={styles.container}>
                 <Text style={{fontWeight: 'bold'}}>LOTEKA</Text>
@@ -265,6 +275,7 @@ const Result = () => {
                     <Text>ACUMULADO</Text>
                     <Text style={{fontSize: 38, fontWeight: 'bold', color: '#112b3b', textAlign: 'center'}}>{`RD ${lotekaAcumulado != undefined ? lotekaAcumulado : '00'} MILLONES`}</Text>
                 </View>
+                <CombinationButtons onPress={handlePressNavigationLoteka} text={'combinaciones loteka'} />
             </View>
         </ScrollView>
     )

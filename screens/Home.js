@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Text, StyleSheet, ScrollView } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import CombinationButtons from '../components/combinationButton';
 
 import AdCard from '../components/adCard';
 import Result from '../components/Resultados';
@@ -9,7 +9,7 @@ import { AuthContext } from '../Auth/AuthContext';
 import CountdownTimer from '../components/countDown';
 
 
-const HomeScreen = ({navigation}) => {
+const HomeScreen = () => {
     const today = new Date();
     const daysOfWeek = ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'];
     const month = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
@@ -20,40 +20,13 @@ const HomeScreen = ({navigation}) => {
     
     const formattedDate = `Hoy ${dayOfWeek} ${dayOfMonth} de ${monthOfYear} del ${dayOfYear}`;
 
-    const handlePressNavigation = () => {
-        navigation.navigate('Combinaciones')
-    }
-
-    const handlePressNavigationLoteka = () => {
-        navigation.navigate('Loteka')
-    }
-
+   
     return(
         <ScrollView style={{flex: 1}}>
             <Text style={styles.fecha}>{formattedDate}</Text>
             <AdCard iconName="bitcoin" title="Toma Acción Ahora, Gane hasta US$200 Dolares en Bitcoin. "/>
             {/* <CountdownTimer targetDate="November 1, 2023" /> */}
             <Result/>
-            <LinearGradient
-                colors={['#0065B8','#004E8F']}
-                 start={[0.01, 0.01]}
-                 style={styles.btnGenerar} >
-                <TouchableOpacity onPress={handlePressNavigation}>
-                    <Text style={{color: 'snow', fontSize: 20, fontWeight: 'bold'}}>
-                        Combinaciones Leidsa
-                    </Text>
-                </TouchableOpacity>
-            </LinearGradient>
-            <LinearGradient
-                colors={['#0065B8','#004E8F']}
-                 start={[0.01, 0.01]}
-                 style={styles.btnGenerar} >
-                <TouchableOpacity onPress={handlePressNavigationLoteka}>
-                    <Text style={{color: 'snow', fontSize: 20, fontWeight: 'bold'}}>
-                        Combinaciones Loteka
-                    </Text>
-                </TouchableOpacity>
-            </LinearGradient>
         </ScrollView>
     )
 }
@@ -65,12 +38,6 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold',
         color: '#224357'
-    },
-    btnGenerar: {
-        alignSelf: 'center',
-        padding: 20,
-        borderRadius: 10,
-        marginBottom: 40
     }
 })
 

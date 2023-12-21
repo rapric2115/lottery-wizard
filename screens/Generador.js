@@ -17,7 +17,7 @@ import useFetch from '../custom/useFetch';
 import useFetchDate from '../custom/useFetchDate';
 
 const GeneradorFormula = ({ navigation }) => {
-  const { savedNumber, currentUser, message } = useContext(AuthContext);
+  const { savedNumber, currentUser, message, proMember } = useContext(AuthContext);
   const db = getDatabase(app);
   const [leidsa, setLeidsa] = useState([]);
   const [lastRes, setLastRes] = useState([]);
@@ -213,8 +213,6 @@ const GeneradorFormula = ({ navigation }) => {
     return a * Math.log(sum(b, c));
   };
 
-  const proMember = false;
-
   useEffect(() => {
     const calculateCombinations = (
       leidsaIndex,
@@ -369,7 +367,7 @@ const GeneradorFormula = ({ navigation }) => {
   return (
     <View style={{ flex: 1 }}>
       <Text style={{ marginHorizontal: 20, fontWeight: 'bold', fontSize: 18, marginTop: 15, textAlign: 'center' }}>
-        Numeros generados Ledisa
+        Numeros generados Leidsa
       </Text>
       <OkMessage message={message} />
       {proMember != false ?
@@ -380,7 +378,7 @@ const GeneradorFormula = ({ navigation }) => {
         borderRadius: 5, marginTop: 10
         }}>
         <Text>
-          Pale y Tripleta con AI
+          Pale y Tripleta leidsa con AI
         </Text>
       </TouchableOpacity> :
       <TouchableOpacity onPress={handleNavigation} 
