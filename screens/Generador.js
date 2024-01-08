@@ -364,6 +364,7 @@ const GeneradorFormula = ({ navigation }) => {
     navigation.navigate('genAI');
   };
 
+
   return (
     <View style={{ flex: 1 }}>
       <Text style={{ marginHorizontal: 20, fontWeight: 'bold', fontSize: 18, marginTop: 15, textAlign: 'center' }}>
