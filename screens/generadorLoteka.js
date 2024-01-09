@@ -5,6 +5,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
+  ActivityIndicator
 } from 'react-native';
 import Predictions from '../components/prediction';
 import { AuthContext } from '../Auth/AuthContext';
@@ -14,10 +15,10 @@ import OkMessage from '../components/okMessage';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import useFetch from '../custom/useFetch';
-import useFetchDate from '../custom/useFetchDate';
+import useFetchDateLoteka from '../custom/useFetchDate';
 
 const GeneradorFormulaLoteka = ({ navigation }) => {
-  const { savedNumber, currentUser, message, proMember } = useContext(AuthContext);
+  const { savedNumberLoteka, currentUser, message, proMember } = useContext(AuthContext);
   const db = getDatabase(app);
   const [leidsa, setLeidsa] = useState([]);
   const [lastRes, setLastRes] = useState([]);
@@ -49,16 +50,17 @@ const GeneradorFormulaLoteka = ({ navigation }) => {
 
 
 
-  const { loteka } = useFetch(
+  const { loteka, loading: lotekaLoading } = useFetch(
     'https://www.conectate.com.do/loterias/loteka',
     'score',
     'loteka'
   );
 
-  const { leidsaLast } = useFetchDate('score', 'leidsaLast');
+  const { leidsaLast } = useFetchDateLoteka('score', 'leidsaLast');
 
   useEffect(() => {
     setLastRes(leidsaLast)
+    console.log('loteka',leidsaLast)
   }, [leidsaLast])
   
 
@@ -213,6 +215,7 @@ const GeneradorFormulaLoteka = ({ navigation }) => {
   };
 
   useEffect(() => {
+    if (loteka.length > 0 && lastRes.length > 0) {
     const calculateCombinations = (
       leidsaIndex,
       resultsIndex,
@@ -300,7 +303,7 @@ const GeneradorFormulaLoteka = ({ navigation }) => {
         38
       )
     );
-  }, [leidsa]);
+  }}, [leidsa]);
 
   const renderRows = (combinations, results, styles, columnIndex) => {
     combinations.sort((a, b) => a[columnIndex] - b[columnIndex]);
@@ -346,7 +349,7 @@ const GeneradorFormulaLoteka = ({ navigation }) => {
     const valuesToLog = combinations.map(
       (combination) => combination[columnIndex]
     );
-    savedNumber(valuesToLog);
+    savedNumberLoteka(valuesToLog);
   };
 
   useEffect(() => {
@@ -390,6 +393,10 @@ const GeneradorFormulaLoteka = ({ navigation }) => {
         </Text>
       </TouchableOpacity>
     }
+
+{lotekaLoading ? (
+        <ActivityIndicator style={{ marginTop: 20 }} size="large" color="#0000ff" />
+      ) : (
 
       <ScrollView style={{ flexDirection: '', marginTop: 20, marginBottom: 30 }}>
         {renderRows(
@@ -448,6 +455,7 @@ const GeneradorFormulaLoteka = ({ navigation }) => {
                 <Text style={{textAlign: 'center'}}>Incrementa tus posibilidades de ser Millonario y ganar generando combinaciones con nuestra Inteligencia Aritificial.</Text>
             </View>
             </ScrollView>
+      )}
         </View>
     )
 }

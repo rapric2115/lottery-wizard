@@ -1,6 +1,7 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Text, StyleSheet, ScrollView } from 'react-native';
 import CombinationButtons from '../components/combinationButton';
+import { getVisitCount, incrementVisitCount } from '../utils/visitCounter';
 
 import AdCard from '../components/adCard';
 import Result from '../components/Resultados';
@@ -19,6 +20,18 @@ const HomeScreen = () => {
     const monthOfYear = month[today.getMonth()]; // Get the month
     
     const formattedDate = `Hoy ${dayOfWeek} ${dayOfMonth} de ${monthOfYear} del ${dayOfYear}`;
+
+    useEffect(() => {
+        // Increment visit count when the app loads
+        incrementVisitCount();
+      }, []);
+    
+      useEffect(() => {
+        // Display visit count
+        getVisitCount().then((count) => {
+          console.log('Visit count:', count);
+        });
+      }, []);
 
    
     return(

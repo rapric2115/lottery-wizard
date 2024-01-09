@@ -82,7 +82,8 @@ const AdCard = ({ iconName, title, onPress, ...textStyle }) => {
          // Button Linear Gradient
          colors={['#FF844B','#EA5C28']}
          start={[0.01, 0.01]}
-         style={styles.adContainer}>
+         style={styles.adContainer}
+         >
           <TouchableOpacity style={{ borderRadius: 7}} onPress={() => openURL('https://freebitco.in/?r=1239559')}>
             <Image source={{uri: 'https://static1.freebitco.in/banners/468x60-3.png'}} style={{width: 355, height: 60, resizeMode: 'contain'}}/>
           </TouchableOpacity>

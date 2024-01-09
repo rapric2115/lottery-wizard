@@ -23,7 +23,9 @@ const MyAccount = () => {
     const {handleSignOutWithGoogle, userDataID, userName, userEmail, proMember} = useContext(AuthContext);
     const [leidsa, setLeidsa] = useState([]);
     const [sortedData, setSortedData] = useState([]);
+    const [sortedDataLoteka, setSortedDataLoteka] = useState([]);
     const [myCombination, setMyCombination] = useState([]);
+    const [myCombinationLoteka, setMyCombinationLoteka] = useState([]);
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
     const [acumulado, setAcumulado] = useState('19');
@@ -53,6 +55,25 @@ const MyAccount = () => {
           });
  
         }
+
+        if (userDataID) {        
+          get(child(AdsRef, 'userSavedNumberLoteka/' + userDataID + '/myCombination')).then((snap) => {
+              if (snap.exists()) {
+                  const data = snap.val();
+                  if (data && typeof data === 'object') {
+                      const dataArray = Object.values(data);
+                      setMyCombinationLoteka(dataArray)
+                  } else {
+                      console.log("Data is not an object or is Empty for my Combination")
+                  }
+              } else {
+                  console.log("no data available")
+              }
+            }).catch((err) => {
+              console.error(err);
+            });
+   
+          }
 
         get(child(AdsRef, `lottos/leidsa/num`)).then((snapshot) => {
             if (snapshot.exists()) {
@@ -97,9 +118,16 @@ const MyAccount = () => {
             sortedArray.sort((a, b) => a - b);
             setSortedData(sortedArray)
         }
+        const sortDataLoteka = () => {
+          const sortedArrayLoteka = [...myCombinationLoteka];
+          sortedArrayLoteka.sort((a, b) => a - b);
+          setSortedDataLoteka(sortedArrayLoteka)
+      }
 
-        sortData()
-    }, [myCombination])
+      sortData()
+      sortDataLoteka()
+
+    }, [myCombination, myCombinationLoteka])
     
 
     const winner = sortedData.filter(number => results.includes(number)).length;
@@ -234,6 +262,48 @@ const MyAccount = () => {
                     {winner > 3 ? `Felicidades! Ha Ganado ha tenido ${winner} resultados` : `Siga Intentando ha tenido ${winner} resultados`}
                 </Text>
             </View>
+
+            {/* Loteka */}
+            <View style={[styles.combinationContainerLoteka, {marginTop: 15}]}>
+                <View>
+                  <Text style={{textAlign: 'center', marginVertical: 15, fontWeight: 'bold'}}>MIS COMBINACIONES DE LOTEKA</Text>
+                </View>
+                <Text style={[styles.countText, winner > 2 ? styles.green: styles.red]}>
+                {winner == 8
+                ? `RD$ ${acumulado[0]} Millones`
+                : winner == 7
+                ? `Ha Ganado Aprox. RD$ ${acumulado[4]} Millones`
+                : winner == 6
+                ? `Ha Ganado Aprox. RD$ ${acumulado[3]} Millones`
+                : winner > 4
+                ? `Ha Ganado Aprox. RD$ 50,000 Pesos`
+                : winner > 3
+                ? `Ha Ganado Aprox. RD$ 25,000 Pesos`
+                : winner > 2
+                ? `Ha Ganado Aprox. RD$ 50 Pesos`
+                : `RD$ 0 Pesos`}
+                </Text>
+                <View style={{flexDirection: 'row', marginTop: 10, justifyContent: 'center'}}>            
+                        {sortedDataLoteka.map((number, index) => (
+                            <Text
+                            key={index}
+                            style={[
+                                styles.numbers,
+                                results.includes(number) && styles.highlightedNumber,
+                            ]}
+                            >
+                            {number}
+                            </Text>
+                        ))}
+                        <Text style={[ styles.numbers,
+                                results.includes(results) && styles.highlightedNumber,]}>0</Text>
+                        <Text  style={[ styles.numbers,
+                                results.includes(results) && styles.highlightedNumber,]}>0</Text>
+                </View>
+                <Text style={[styles.countText, winner > 2? styles.green: styles.red]}>
+                    {winner > 3 ? `Felicidades! Ha Ganado ha tenido ${winner} resultados` : `Siga Intentando ha tenido ${winner} resultados`}
+                </Text>
+            </View>
            
             <View style={{width: '90%', justifyContent: 'center', alignSelf: 
             'center', alignItems: 'center', marginTop: 25, backgroundColor: '#ffebeb', 
@@ -337,6 +407,15 @@ const styles = StyleSheet.create({
       // borderColor: 'black',
       paddingVertical: 5,
   },
+  combinationContainerLoteka: {
+    backgroundColor: '#ebf6f0', 
+    borderRadius: 7, 
+    width: '90%', 
+    alignSelf: 'center', 
+    // borderWidth: 1, 
+    // borderColor: 'black',
+    paddingVertical: 5,
+},
     highlightedNumber: {
         backgroundColor: 'orange', // Change the background color to orange
         color: '#fff'

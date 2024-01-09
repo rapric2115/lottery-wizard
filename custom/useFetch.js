@@ -4,6 +4,7 @@ import * as cheerio from 'cheerio';
 
 const useFetch = (url, cssClass, dataName) => {
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const getData = async () => {
@@ -22,6 +23,8 @@ const useFetch = (url, cssClass, dataName) => {
         setData(extractedData);
       } catch (error) {
         console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -33,7 +36,7 @@ const useFetch = (url, cssClass, dataName) => {
     };
   }, [url, cssClass]); // Include cssClass as a dependency if it can change
 
-  return { [dataName]: data };
+  return { [dataName]: data, loading };
 };
 
 export default useFetch;

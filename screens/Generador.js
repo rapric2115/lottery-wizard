@@ -5,6 +5,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
+  ActivityIndicator
 } from 'react-native';
 import Predictions from '../components/prediction';
 import { AuthContext } from '../Auth/AuthContext';
@@ -49,23 +50,21 @@ const GeneradorFormula = ({ navigation }) => {
 
 
 
-  const { leidsaOne } = useFetch(
+  const { leidsaOne, loading: leidsaLoading } = useFetch(
     'https://www.conectate.com.do/loterias/leidsa',
     'score',
     'leidsaOne'
   );
 
-  const { leidsaLast } = useFetchDate('score', 'leidsaLast');
+ 
+ const { leidsaLast} = useFetchDate('score', 'leidsaLast');
 
   useEffect(() => {
     setLastRes(leidsaLast)
   }, [leidsaLast])
   
-
-  
   const leidsaArray = leidsaOne.map((item) => Number(item.trim()));
-  
-  console.log(leidsaLast)
+
 
   const results = useMemo(
     () => [
@@ -89,6 +88,8 @@ const GeneradorFormula = ({ navigation }) => {
   const [combinacionCuatro, setCombinationCuatro] = useState([]);
   const [combinacionCinco, setCombinationCinco] = useState([]);
   const [combinacionSeis, setCombinationSeis] = useState([]);
+
+  
 
   const OneNumber = [
     3,
@@ -214,6 +215,7 @@ const GeneradorFormula = ({ navigation }) => {
   };
 
   useEffect(() => {
+    if (leidsaOne.length > 0 && lastRes.length > 0) {
     const calculateCombinations = (
       leidsaIndex,
       resultsIndex,
@@ -301,7 +303,7 @@ const GeneradorFormula = ({ navigation }) => {
         38
       )
     );
-  }, [leidsa]);
+  }}, [leidsa]);
 
   const renderRows = (combinations, results, styles, columnIndex) => {
     combinations.sort((a, b) => a[columnIndex] - b[columnIndex]);
@@ -393,6 +395,11 @@ const GeneradorFormula = ({ navigation }) => {
       </TouchableOpacity>
     }
 
+{leidsaLoading ? (
+        <ActivityIndicator style={{ marginTop: 20 }} size="large" color="#0000ff" />
+      ) : (
+
+
       <ScrollView style={{ flexDirection: '', marginTop: 20, marginBottom: 30 }}>
         {renderRows(
           [combinacionOne, combinacionTwo, combinacionTres, combinacionCuatro, combinacionCinco, combinacionSeis],
@@ -450,6 +457,7 @@ const GeneradorFormula = ({ navigation }) => {
                 <Text style={{textAlign: 'center'}}>Incrementa tus posibilidades de ser Millonario y ganar generando combinaciones con nuestra Inteligencia Aritificial.</Text>
             </View>
             </ScrollView>
+      )}
         </View>
     )
 }

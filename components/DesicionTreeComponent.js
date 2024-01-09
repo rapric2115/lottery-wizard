@@ -20,7 +20,7 @@ export default function App() {
 
     const decisionTree = new DecisionTree(trainingData, headers);
 
-    const predict = decisionTree.predict(['22', 14]);
+    const predict = decisionTree.predict(['16', 15]);
     const firstKey = Object.keys(predict.class)[0];
     setPrediction(firstKey);
 

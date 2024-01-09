@@ -175,6 +175,18 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const savedNumberLoteka = (values) => {
+    const db = getDatabase();
+    
+    if (currentUser) {
+      const userId = currentUser.uid;
+      set(ref(db, 'userSavedNumberLoteka/' + userId), {
+        myCombination: values,
+      });
+      setMessage('Guardado exitosamente');
+    }
+  };
+
   return (
     <AuthContext.Provider value={{
       register,
@@ -184,6 +196,7 @@ export const AuthProvider = ({ children }) => {
       // request,
       handleSignOutWithGoogle,
       savedNumber,
+      savedNumberLoteka,
       userName,
       auth,
       userDataID,
