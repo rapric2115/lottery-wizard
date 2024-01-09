@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button } from 'react-native';
 // import DecisionTree from '../custom/DecisionTree';
-import { DecisionTree } from '@rhodri_davies/decision-tree-js'
+import { DecisionTree } from '@rhodri_davies/decision-tree-js';
 
 export default function App() {
   const [prediction, setPrediction] = useState(null);
@@ -29,6 +29,8 @@ export default function App() {
     console.log(firstKey);
   }, []); 
 
+ 
+
 
   return (
     <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 15 }}>
@@ -36,7 +38,7 @@ export default function App() {
       
       {/* <Button title="Predict" onPress={handlePrediction} /> */}
       {prediction !== null && (
-        <Text>Prediction: {prediction}</Text>
+        <Text>Predicción: {prediction}</Text>
       )}
     </View>
   );

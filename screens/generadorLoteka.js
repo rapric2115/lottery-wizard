@@ -393,11 +393,8 @@ const GeneradorFormulaLoteka = ({ navigation }) => {
       </TouchableOpacity>
     }
 
-{lotekaLoading ? (
-        <ActivityIndicator style={{ marginTop: 20 }} size="large" color="#0000ff" />
-      ) : (
 
-      <ScrollView style={{ flexDirection: '', marginTop: 20, marginBottom: 30 }}>
+      <ScrollView style={{ marginTop: 20, marginBottom: 30 }}>
         {renderRows(
           [combinacionOne, combinacionTwo, combinacionTres, combinacionCuatro, combinacionCinco, combinacionSeis],
           results,
@@ -454,7 +451,7 @@ const GeneradorFormulaLoteka = ({ navigation }) => {
                 <Text style={{textAlign: 'center'}}>Incrementa tus posibilidades de ser Millonario y ganar generando combinaciones con nuestra Inteligencia Aritificial.</Text>
             </View>
             </ScrollView>
-      )}
+   
         </View>
     )
 }

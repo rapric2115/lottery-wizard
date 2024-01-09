@@ -81,18 +81,20 @@ const handlePress = () => {
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor }]}>
-      <Text>Generador combinaciones con AI</Text>
-      <View style={{flexDirection: 'row'}}>
+      <Text>Generador Palé y tripleta con AI</Text>
+      {/* <View style={{flexDirection: 'row'}}>
         {combi.map((numbers, i) => (
             <Text style={{backgroundColor: '#fff', borderRadius: 50, marginHorizontal: 5, padding: 5,  width: 30,
             height: 30, textAlign: 'center', fontWeight: 'bold'}} key={i}>{numbers}</Text>
         ))}
       </View>
-      <DesicionTreeComponent />
-      <TouchableOpacity onPress={handlePress} style={{marginTop: 20, paddingHorizontal: 15, paddingVertical: 10, 
-      borderRadius: 5, borderWidth: 2, borderColor: "#fff"}}>
-        <Text>Generar</Text>
-      </TouchableOpacity>
+    */}
+      <Text>Estamos Trabajando para brindarles mejores resultados, esta seccion no esta totalmente funcional.</Text>
+     <DesicionTreeComponent />
+    <TouchableOpacity onPress={handlePress} style={{marginTop: 20, paddingHorizontal: 15, paddingVertical: 10, 
+    borderRadius: 5, borderWidth: 2, borderColor: "#fff"}}>
+      <Text>Generar Numeros de Palé y/o Tripleta</Text>
+    </TouchableOpacity> 
     </SafeAreaView>
   );
 };

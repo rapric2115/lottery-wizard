@@ -367,6 +367,7 @@ const GeneradorFormula = ({ navigation }) => {
   };
 
 
+
   return (
     <View style={{ flex: 1 }}>
       <Text style={{ marginHorizontal: 20, fontWeight: 'bold', fontSize: 18, marginTop: 15, textAlign: 'center' }}>
@@ -394,11 +395,6 @@ const GeneradorFormula = ({ navigation }) => {
         </Text>
       </TouchableOpacity>
     }
-
-{leidsaLoading ? (
-        <ActivityIndicator style={{ marginTop: 20 }} size="large" color="#0000ff" />
-      ) : (
-
 
       <ScrollView style={{ flexDirection: '', marginTop: 20, marginBottom: 30 }}>
         {renderRows(
@@ -457,7 +453,7 @@ const GeneradorFormula = ({ navigation }) => {
                 <Text style={{textAlign: 'center'}}>Incrementa tus posibilidades de ser Millonario y ganar generando combinaciones con nuestra Inteligencia Aritificial.</Text>
             </View>
             </ScrollView>
-      )}
+      
         </View>
     )
 }

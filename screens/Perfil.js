@@ -7,6 +7,7 @@ import { getDatabase, ref, child, get, set } from 'firebase/database';
 import { firebaseConfig } from '../firebaseConfig';
 import { useNavigation } from '@react-navigation/native';
 import useFetchDateLoteka from '../custom/useFetchDateLoteka';
+import OkMessage from '../components/okMessage';
 
 import AITest from './AI component/ai';
 import AIOne from './AI component/AIOne';
@@ -111,7 +112,6 @@ const MyAccount = () => {
     }
 
     const { lotekaLast } = useFetchDateLoteka('score', 'lotekaLast');
-    console.log(lotekaLast);
 
     const results = [leidsa[0], leidsa[1], leidsa[2], leidsa[3], leidsa[4], leidsa[5]];  
     const resultsLoteka = [lotekaLast[12], lotekaLast[13], lotekaLast[14], lotekaLast[15], lotekaLast[16], lotekaLast[17]]  
@@ -189,7 +189,6 @@ const MyAccount = () => {
             AItest.current.classifyPoints(),
 
           ]);
-      
           console.log('All AI functions completed.');
         } catch (error) {
           console.error('Error:', error);
@@ -227,7 +226,7 @@ const MyAccount = () => {
                     </View>
                 </View>
             </View>
-            
+           
             <View style={styles.combinationContainer}>
                 <View>
                   <Text style={{textAlign: 'center', marginVertical: 15, fontWeight: 'bold'}}>MIS COMBINACIONES DE LEIDSA</Text>
