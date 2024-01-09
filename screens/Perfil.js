@@ -234,9 +234,9 @@ const MyAccount = () => {
                 : winner == 6
                 ? `Ha Ganado Aprox. RD$ ${acumulado[3]} Millones`
                 : winner > 4
-                ? `Ha Ganado Aprox. RD$ 50,000 Pesos`
+                ? `Ha Ganado Aprox. RD$ 25,000 Pesos Mínimo`
                 : winner > 3
-                ? `Ha Ganado Aprox. RD$ 25,000 Pesos`
+                ? `Ha Ganado Aprox. RD$ 1,000 Pesos Mínimo`
                 : winner > 2
                 ? `Ha Ganado Aprox. RD$ 50 Pesos`
                 : `RD$ 0 Pesos`}
@@ -259,7 +259,7 @@ const MyAccount = () => {
                                 results.includes(results) && styles.highlightedNumber,]}>0</Text>
                 </View>
                 <Text style={[styles.countText, winner > 2? styles.green: styles.red]}>
-                    {winner > 3 ? `Felicidades! Ha Ganado ha tenido ${winner} resultados` : `Siga Intentando ha tenido ${winner} resultados`}
+                    {winner > 2 ? `Felicidades! Ha Ganado ha tenido ${winner} resultados` : `Siga Intentando ha tenido ${winner} resultados`}
                 </Text>
             </View>
 
@@ -276,9 +276,9 @@ const MyAccount = () => {
                 : winner == 6
                 ? `Ha Ganado Aprox. RD$ ${acumulado[3]} Millones`
                 : winner > 4
-                ? `Ha Ganado Aprox. RD$ 50,000 Pesos`
+                ? `Ha Ganado Aprox. RD$ 25,000 Pesos Mínimo`
                 : winner > 3
-                ? `Ha Ganado Aprox. RD$ 25,000 Pesos`
+                ? `Ha Ganado Aprox. RD$ 1,000 Pesos Mínimo`
                 : winner > 2
                 ? `Ha Ganado Aprox. RD$ 50 Pesos`
                 : `RD$ 0 Pesos`}
@@ -301,7 +301,7 @@ const MyAccount = () => {
                                 results.includes(results) && styles.highlightedNumber,]}>0</Text>
                 </View>
                 <Text style={[styles.countText, winner > 2? styles.green: styles.red]}>
-                    {winner > 3 ? `Felicidades! Ha Ganado ha tenido ${winner} resultados` : `Siga Intentando ha tenido ${winner} resultados`}
+                    {winner > 2 ? `Felicidades! Ha Ganado ha tenido ${winner} resultados` : `Siga Intentando ha tenido ${winner} resultados`}
                 </Text>
             </View>
            
