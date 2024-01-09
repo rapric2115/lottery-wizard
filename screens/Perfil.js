@@ -6,6 +6,7 @@ import { initializeApp } from 'firebase/app';
 import { getDatabase, ref, child, get, set } from 'firebase/database';
 import { firebaseConfig } from '../firebaseConfig';
 import { useNavigation } from '@react-navigation/native';
+import useFetchDateLoteka from '../custom/useFetchDateLoteka';
 
 import AITest from './AI component/ai';
 import AIOne from './AI component/AIOne';
@@ -109,7 +110,11 @@ const MyAccount = () => {
 
     }
 
-    const results = [leidsa[0], leidsa[1], leidsa[2], leidsa[3], leidsa[4], leidsa[5]];    
+    const { lotekaLast } = useFetchDateLoteka('score', 'lotekaLast');
+    console.log(lotekaLast);
+
+    const results = [leidsa[0], leidsa[1], leidsa[2], leidsa[3], leidsa[4], leidsa[5]];  
+    const resultsLoteka = [lotekaLast[12], lotekaLast[13], lotekaLast[14], lotekaLast[15], lotekaLast[16], lotekaLast[17]]  
 
 
     useEffect(() => {
@@ -131,6 +136,7 @@ const MyAccount = () => {
     
 
     const winner = sortedData.filter(number => results.includes(number)).length;
+    const winnerLoteka = sortedData.filter(number => resultsLoteka.includes(number)).length;
 
     const AIone = useRef(null);
     const AItwo = useRef(null);
@@ -269,17 +275,17 @@ const MyAccount = () => {
                   <Text style={{textAlign: 'center', marginVertical: 15, fontWeight: 'bold'}}>MIS COMBINACIONES DE LOTEKA</Text>
                 </View>
                 <Text style={[styles.countText, winner > 2 ? styles.green: styles.red]}>
-                {winner == 8
+                {winnerLoteka == 8
                 ? `RD$ ${acumulado[0]} Millones`
-                : winner == 7
+                : winnerLoteka == 7
                 ? `Ha Ganado Aprox. RD$ ${acumulado[4]} Millones`
-                : winner == 6
+                : winnerLoteka == 6
                 ? `Ha Ganado Aprox. RD$ ${acumulado[3]} Millones`
-                : winner > 4
+                : winnerLoteka > 4
                 ? `Ha Ganado Aprox. RD$ 25,000 Pesos Mínimo`
-                : winner > 3
+                : winnerLoteka > 3
                 ? `Ha Ganado Aprox. RD$ 1,000 Pesos Mínimo`
-                : winner > 2
+                : winnerLoteka > 2
                 ? `Ha Ganado Aprox. RD$ 50 Pesos`
                 : `RD$ 0 Pesos`}
                 </Text>
@@ -289,19 +295,19 @@ const MyAccount = () => {
                             key={index}
                             style={[
                                 styles.numbers,
-                                results.includes(number) && styles.highlightedNumber,
+                                resultsLoteka.includes(number) && styles.highlightedNumber,
                             ]}
                             >
                             {number}
                             </Text>
                         ))}
                         <Text style={[ styles.numbers,
-                                results.includes(results) && styles.highlightedNumber,]}>0</Text>
+                                resultsLoteka.includes(results) && styles.highlightedNumber,]}>0</Text>
                         <Text  style={[ styles.numbers,
-                                results.includes(results) && styles.highlightedNumber,]}>0</Text>
+                                resultsLoteka.includes(results) && styles.highlightedNumber,]}>0</Text>
                 </View>
-                <Text style={[styles.countText, winner > 2? styles.green: styles.red]}>
-                    {winner > 2 ? `Felicidades! Ha Ganado ha tenido ${winner} resultados` : `Siga Intentando ha tenido ${winner} resultados`}
+                <Text style={[styles.countText, winnerLoteka > 2? styles.green: styles.red]}>
+                    {resultsLoteka > 2 ? `Felicidades! Ha Ganado ha tenido ${winnerLoteka} resultados` : `Siga Intentando ha tenido ${winnerLoteka} resultados`}
                 </Text>
             </View>
            

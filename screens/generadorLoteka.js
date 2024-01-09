@@ -60,7 +60,6 @@ const GeneradorFormulaLoteka = ({ navigation }) => {
 
   useEffect(() => {
     setLastRes(leidsaLast)
-    console.log('loteka',leidsaLast)
   }, [leidsaLast])
   
 
