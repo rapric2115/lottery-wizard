@@ -16,6 +16,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 import useFetch from '../custom/useFetch';
 import useFetchDateLoteka from '../custom/useFetchDate';
+import ImageAds from '../components/ImageAd';
 
 const GeneradorFormulaLoteka = ({ navigation }) => {
   const { savedNumberLoteka, currentUser, message, proMember } = useContext(AuthContext);
@@ -393,8 +394,8 @@ const GeneradorFormulaLoteka = ({ navigation }) => {
       </TouchableOpacity>
     }
 
-
       <ScrollView style={{ marginTop: 20, marginBottom: 30 }}>
+      <ImageAds />
         {renderRows(
           [combinacionOne, combinacionTwo, combinacionTres, combinacionCuatro, combinacionCinco, combinacionSeis],
           results,

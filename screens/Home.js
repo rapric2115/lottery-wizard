@@ -8,6 +8,7 @@ import Result from '../components/Resultados';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { AuthContext } from '../Auth/AuthContext';
 import CountdownTimer from '../components/countDown';
+import ImageAds from '../components/ImageAd';
 
 
 const HomeScreen = () => {
@@ -38,6 +39,7 @@ const HomeScreen = () => {
         <ScrollView style={{flex: 1}}>
             <Text style={styles.fecha}>{formattedDate}</Text>
             <AdCard iconName="bitcoin" title="Toma Acción Ahora, Gane hasta US$200 Dolares en Bitcoin. "/>
+            <ImageAds />
             {/* <CountdownTimer targetDate="November 1, 2023" /> */}
             <Result/>
         </ScrollView>

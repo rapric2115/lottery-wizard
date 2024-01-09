@@ -16,6 +16,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 import useFetch from '../custom/useFetch';
 import useFetchDate from '../custom/useFetchDate';
+import ImageAds from '../components/ImageAd';
 
 const GeneradorFormula = ({ navigation }) => {
   const { savedNumber, currentUser, message, proMember } = useContext(AuthContext);
@@ -397,6 +398,7 @@ const GeneradorFormula = ({ navigation }) => {
     }
 
       <ScrollView style={{ flexDirection: '', marginTop: 20, marginBottom: 30 }}>
+      <ImageAds />
         {renderRows(
           [combinacionOne, combinacionTwo, combinacionTres, combinacionCuatro, combinacionCinco, combinacionSeis],
           results,

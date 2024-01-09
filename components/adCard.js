@@ -85,7 +85,7 @@ const AdCard = ({ iconName, title, onPress, ...textStyle }) => {
          style={styles.adContainer}
          >
           <TouchableOpacity style={{ borderRadius: 7}} onPress={() => openURL('https://freebitco.in/?r=1239559')}>
-            <Image source={{uri: 'https://static1.freebitco.in/banners/468x60-3.png'}} style={{width: 355, height: 60, resizeMode: 'contain'}}/>
+            <Image source={{uri: 'https://static1.freebitco.in/banners/468x60-3.png'}} style={{width: 355, height: 65, resizeMode: 'contain'}}/>
           </TouchableOpacity>
         </LinearGradient>
       
