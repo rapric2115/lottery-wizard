@@ -12,7 +12,7 @@ const Register = ({navigation}) => {
 
     return (
         <View style={{flex:.9, justifyContent: 'center'}}>
-            <Image source={require('../assets/logo.png')} style={{width: 150, height: 150, alignSelf: 'center'}} />
+            <Image source={require('../assets/logo.png')} style={{width: 150, height: 150, alignSelf: 'center', resizeMode: 'contain'}} />
             <ErrorMessage errorMessage={errorMessage} />
             <Formik
                 initialValues={{ email: '', password: '' }}
@@ -67,13 +67,13 @@ const Register = ({navigation}) => {
  const styles = StyleSheet.create({
     input: {
         borderWidth: 1,
-        borderColor: '#ccc',
+        borderColor: '#000',
         width: '80%',
         alignSelf: 'center',
         borderRadius: 7,
         marginVertical: 5,
         paddingHorizontal: 10,
-        height: 40
+        height: 45,
     },
     btn: {
         width: '50%',
@@ -90,6 +90,10 @@ const Register = ({navigation}) => {
         flexDirection: 'row',
         justifyContent: 'space-evenly',
         marginVertical: 20,
+    },
+    checkbox: {
+        width: 25,
+        height: 25,
     }
  });
 

@@ -31,6 +31,8 @@ const MyAccount = () => {
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
     const [acumulado, setAcumulado] = useState('19');
+    const [mensajeLeidsa, setMensajeLeidsa] = useState(null);
+    const [mensajeLoteka, setMensajeLoteka] = useState(null);
 
     useEffect(() => { 
         getData();      
@@ -45,7 +47,11 @@ const MyAccount = () => {
                 const data = snap.val();
                 if (data && typeof data === 'object') {
                     const dataArray = Object.values(data);
-                    setMyCombination(dataArray)
+                  if (dataArray.length > 0) {
+                      setMyCombination(dataArray);
+                  } else {
+                      setMensajeLeidsa("No hay Combinaciones Guardadas");
+                  }
                 } else {
                     console.log("Data is not an object or is Empty for my Combination")
                 }
@@ -64,7 +70,11 @@ const MyAccount = () => {
                   const data = snap.val();
                   if (data && typeof data === 'object') {
                       const dataArray = Object.values(data);
-                      setMyCombinationLoteka(dataArray)
+                      if (dataArray.length > 0) {
+                        setMyCombinationLoteka(dataArray)
+                    } else {
+                        setMensajeLeidsa("No hay Combinaciones Guardadas");
+                    }
                   } else {
                       console.log("Data is not an object or is Empty for my Combination")
                   }
@@ -230,6 +240,7 @@ const MyAccount = () => {
             <View style={styles.combinationContainer}>
                 <View>
                   <Text style={{textAlign: 'center', marginVertical: 15, fontWeight: 'bold'}}>MIS COMBINACIONES DE LEIDSA</Text>
+                  <Text>{mensajeLeidsa != null ? mensajeLeidsa : null}</Text>
                 </View>
                 <Text style={[styles.countText, winner > 2 ? styles.green: styles.red]}>
                 {winner == 8
@@ -272,6 +283,7 @@ const MyAccount = () => {
             <View style={[styles.combinationContainerLoteka, {marginTop: 15}]}>
                 <View>
                   <Text style={{textAlign: 'center', marginVertical: 15, fontWeight: 'bold'}}>MIS COMBINACIONES DE LOTEKA</Text>
+                  <Text>{mensajeLoteka != null ? mensajeLoteka : null}</Text>
                 </View>
                 <Text style={[styles.countText, winner > 2 ? styles.green: styles.red]}>
                 {winnerLoteka == 8

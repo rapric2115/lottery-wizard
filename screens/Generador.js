@@ -330,6 +330,7 @@ const GeneradorFormula = ({ navigation }) => {
             key={rowIndex}
             onPress={() => logColumnValues(combinations, columnIndex)}
             style={{ marginVertical: 10 }}
+            accessibilityLabel={`${combination[columnIndex]}-${columnIndex}-${rowIndex}`}
           >
             <Text
               style={[

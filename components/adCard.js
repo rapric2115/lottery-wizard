@@ -84,7 +84,7 @@ const AdCard = ({ iconName, title, onPress, ...textStyle }) => {
          start={[0.01, 0.01]}
          style={styles.adContainer}
          >
-          <TouchableOpacity style={{ borderRadius: 7}} onPress={() => openURL('https://freebitco.in/?r=1239559')}>
+          <TouchableOpacity style={{ borderRadius: 7}} onPress={() => openURL('https://freebitco.in/?r=1239559')} accessibilityLabel="Visit FreeBitco website">
             <Image source={{uri: 'https://static1.freebitco.in/banners/468x60-3.png'}} style={{width: 355, height: 65, resizeMode: 'contain'}}/>
           </TouchableOpacity>
         </LinearGradient>
@@ -97,7 +97,7 @@ const AdCard = ({ iconName, title, onPress, ...textStyle }) => {
          start={[0.01, 0.01]}
          style={styles.adContainer}>
           <TouchableOpacity style={styles.adContainer} onPress={() => openURL(mcmoney[2])}>
-            <MaterialCommunityIcons name={mcmoney[1]} size={70} color="#F9AA4B" />
+            <MaterialCommunityIcons name={mcmoney[1]} size={70} color="#590f0f" />
             <Text style={[styles.text, { ...textStyle }]}>{mcmoney[0]}</Text>
           </TouchableOpacity>
         </LinearGradient>
