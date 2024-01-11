@@ -9,10 +9,12 @@ const SCREEN_WIDTH = Dimensions.get("screen").width;
 const MembershipPrice = () => {
     const [selectedItem, setSelectedItem] = useState(null);
     const [selectedPrice, setSelectedPrice] = useState();
+    const [plan, setPlan] = useState(null);
+
     const Package = [
-        {id: 1, name: '12 Meses', price: 50000, save: 's100' },
-        {id: 2, name: '3 Meses', price: 13000, save: '$20'},
-        {id: 3, name: '1 Meses', price: 5000, save: '$0'},
+        {id: 1, name: '12 Meses', price: 50000, save: 's100', plan: 'Premium' },
+        {id: 2, name: '3 Meses', price: 13000, save: '$20', plan: 'Gold'},
+        {id: 3, name: '1 Meses', price: 5000, save: '$0', plan: 'Basico'},
     ]
 
     const benefics = [
@@ -20,20 +22,22 @@ const MembershipPrice = () => {
             id: 1,
             benefics: 'Generar combinaciones con AI',
             basic: 'lock',
-            premium: 'check'
+            premium: 'check',
+            plan: 'Basic'
         },
         {
             id: 2,
             benefics: 'Guardar hasta 5 Combinaciones',
             basic: 'lock',
-            premium: 'check'
+            premium: 'check',
+            plan: 'Premium'
         }
     ]
 
     const handleMembership = (data) => {
-        console.log(data)
         setSelectedItem(data.id);
         setSelectedPrice(data.price)
+        setPlan(data.plan)
     }
 
     const handlePaypalPayment = () => {
@@ -41,7 +45,7 @@ const MembershipPrice = () => {
     }
 
    const handleSubscription = () => {
-    Alert.alert(`Has realizado la subscricion de ${selectedItem}`)
+    Alert.alert(`La subscricion del Plan ${plan} estara gratis hasta junio 2024.`)
    }
 
     // const handlePaypalPayment = async () => {
