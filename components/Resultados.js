@@ -56,8 +56,10 @@ const Result = () => {
       const { fechaLoteka } = useFetch('https://www.conectate.com.do/loterias/loteka', 'session-date', 'fechaLoteka' );
       const { lotekaTotalAcumulado } = useFetch('https://www.conectate.com.do/loterias/loteka', 'session-badge', 'lotekaTotalAcumulado');
       const { lotekaWebsite } = useFetch('https://loteka.com.do/', 'bola', 'lotekaWebsite');
+      const { leidsaTest } = useFetch('https://www.leidsa.com/', 'css-1m78loj', 'leidsaTest');
 
-      
+
+      console.log('Acumulado Leidsa', leidsaTest);
 
       const onRefresh = () => {
         setRefreshing(true);

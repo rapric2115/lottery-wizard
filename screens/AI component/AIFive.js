@@ -124,6 +124,8 @@ class AIFive extends Component {
         { x: 0, y: 0, label: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0] },
         { x: 0, y: 0.25, label: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0] },
         { x: 0, y: 0.5, label: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1] },
+        { x: 0.5, y: -0.5, label: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
+        { x: 0.5, y: -0.25, label: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
       ],
       five: '0',
     };
@@ -232,6 +234,8 @@ class AIFive extends Component {
       { x: 0, y: 0, label: 34 },
       { x: 0, y: 0.25, label: 35 },
       { x: 0, y: 0.5, label: 36 },
+      { x: 0.5, y: -0.5, label: 37 },
+      { x: 0.5, y: -0.25, label: 38 },
     ];
   
     if (predictedIndex >= 0 && predictedIndex < trainingData.length) {

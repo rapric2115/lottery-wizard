@@ -9,6 +9,7 @@ import GeneradorFormula from '../screens/Generador';
 import MembershipPrice from '../screens/memberShip/membershipPrice';
 import GeneradorAI from '../screens/generadorAI';
 import GeneradorFormulaLoteka from '../screens/generadorLoteka';
+import AIGen from '../screens/aiGenerator';
 
 import HomeScreen from '../screens/Home';
 import MyAccount from '../screens/Perfil';
@@ -47,17 +48,17 @@ const TabNavigator = () => {
                         title: 'Resultados'
                         }} 
                 />
-                 {/* <Tab.Screen 
-                    name="Combinaciones"
-                    component={GeneradorFormula}
+                 <Tab.Screen 
+                    name=" AI Combinaciones"
+                    component={AIGen}
                     options={{
-                        tabBarLabel: 'Combinaciones',
+                        tabBarLabel: 'AI Combinaciones',
                         tabBarIcon: () => (
                             // <MaterialIcons name="bolt" size={24} color="black" />
                             <Brain width={30} height={30} fill="blue" />
                             )
                         }}
-                /> */}
+                />
                 <Tab.Screen 
                     name="Profile"
                     component={MyAccount}

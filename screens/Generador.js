@@ -57,6 +57,13 @@ const GeneradorFormula = ({ navigation }) => {
     'leidsaOne'
   );
 
+  const { leidsaTest, loading: Loading } = useFetch(
+    'https://www.ledisa.com',
+    'css-7crzrc',
+    'leidsaTest'
+  );
+
+  console.log(leidsaTest);
  
  const { leidsaLast} = useFetchDate('score', 'leidsaLast');
 
