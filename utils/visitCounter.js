@@ -21,3 +21,5 @@ export const incrementVisitCount = async () => {
     console.error('Error incrementing visit count:', error);
   }
 };
+
+
