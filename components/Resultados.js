@@ -19,48 +19,51 @@ const Result = () => {
     // const [leidsaFecha, setLeidsaFecha] = useState();
     const [lotekaAcumulado, setLotekaAcumulado] = useState();
     const [lotekaFecha, setLotekaFecha] = useState();
-    const [formattedDate, setFormattedDate] = useState('5-12-1979');
+    const [leidsaFecha, setLeidsaFecha ] = useState();
     const [refreshing, setRefreshing] = useState();
     const navigation = useNavigation();
+  
+    const LeidsaRef = ref(db);
+   
+    useEffect(() => {
+      getData()
+    }, [])
     
-    // const LeidsaRef = ref(db);
-    // const LeidsaRef = ref(db, 'leidsa/');
-    // onValue(LeidsaRef, (snapshot) => {
-    //   const data = snapshot.val();
-    //   setLeidsa(data);
-    // })
-
-    // useEffect(() => {
-    //   getData()
-    // }, [])
-    
-    // const getData = () => {  
-    //       get(child(LeidsaRef, `lottos/leidsa/fecha`)).then((snapshot) => {
-    //         if (snapshot.exists()) {
-    //           const data = snapshot.val();
-    //           // Extract values into an array
-    //             setLeidsaFecha(data);
+    const getData = () => {  
+          get(child(LeidsaRef, `acumulados/leidsa`)).then((snapshot) => {
+            if (snapshot.exists()) {
+              const data = snapshot.val();
+              // Extract values into an array
+                setLeidsaAcumulado(data);
+                // console.log('Acumulado leidsa', data)
              
-    //         } else {
-    //           console.log("No data available");
-    //         }
-    //       }).catch((error) => {
-    //         console.error(error);
-    //       });
-    //   }
+            } else {
+              console.log("No data available");
+            }
+          }).catch((error) => {
+            console.error('error de firebase', error);
+          });
 
-      const { leidsa } = useFetch('https://www.conectate.com.do/loterias/leidsa', 'score', 'leidsa' );
-      const { fechaLeidsa } = useFetch('https://www.conectate.com.do/loterias/leidsa', 'session-date', 'fechaLeidsa' );
-      const { leidsaTotalAcumulado } = useFetch('https://www.conectate.com.do/loterias/leidsa', 'session-badge', 'leidsaTotalAcumulado');
+          get(child(LeidsaRef, `acumulados/loteka`)).then((snapshot) => {
+            if (snapshot.exists()) {
+              const data = snapshot.val();
+              // Extract values into an array
+                setLotekaAcumulado(data);
+                // console.log('Acumulado leidsa', data)
+             
+            } else {
+              console.log("No data available");
+            }
+          }).catch((error) => {
+            console.error('error de firebase', error);
+          });
+      }
+
+      const { leidsa } = useFetch('https://www.conectate.com.do/loterias/leidsa', 'score', 'leidsa' ); 
       const { loteka } = useFetch('https://www.conectate.com.do/loterias/loteka', 'score', 'loteka' );
-      const { fechaLoteka } = useFetch('https://www.conectate.com.do/loterias/loteka', 'session-date', 'fechaLoteka' );
-      const { lotekaTotalAcumulado } = useFetch('https://www.conectate.com.do/loterias/loteka', 'session-badge', 'lotekaTotalAcumulado');
-      const { lotekaWebsite } = useFetch('https://loteka.com.do/', 'bola', 'lotekaWebsite');
-      const { leidsaTest } = useFetch('https://www.leidsa.com/', 'css-1m78loj', 'leidsaTest');
-
-
-      console.log('Acumulado Leidsa', leidsaTest);
-
+     
+     
+     
       const onRefresh = () => {
         setRefreshing(true);
         previousSaturday.toDateString();
@@ -85,69 +88,92 @@ const Result = () => {
         }
       };
       
-      useEffect(() => {
-        if (fechaLeidsa && fechaLeidsa.length >= 5) {
-          const dateToString = fechaLeidsa[4];
-          const formattedDate = convertDateFormat(dateToString);
-      
-          setFormattedDate(formattedDate);
-        } else {
-          console.error('Invalid or missing date in fechaLeidsa:', fechaLeidsa);
+     
+      function getSpecificDate() {
+        const today = new Date();
+        const dayOfWeek = today.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+    
+        // Create a new date object to manipulate
+        const specificDate = new Date(today);
+    
+        switch (dayOfWeek) {
+            case 0: // Sunday
+            case 1: // Monday
+            case 2: // Tuesday
+                // Last Saturday
+                specificDate.setDate(today.getDate() - (dayOfWeek + 1)); // Subtract (dayOfWeek + 1) days
+                break;
+            case 3: // Wednesday
+                // Get today's date (Wednesday)
+                break;
+            case 4: // Thursday
+            case 5: // Friday
+                // Get last Wednesday
+                specificDate.setDate(today.getDate() - (dayOfWeek - 3)); // Subtract (dayOfWeek - 3) days
+                break;
+            case 6: // Saturday
+                // Get today's date (Saturday)
+                break;
+            default:
+                break;
         }
+    
+        // Format the date to the desired format
+        const daysOfWeek = ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'];
+        const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    
+        const dayName = daysOfWeek[specificDate.getDay()];
+        const dayNumber = specificDate.getDate();
+        const monthName = months[specificDate.getMonth()];
+        const year = specificDate.getFullYear();
+    
+         setLeidsaFecha(`${dayName} ${dayNumber}, ${year}`)
+    }
 
-        if (fechaLoteka && fechaLoteka.length >= 5) {
-          const dateToString = fechaLoteka[4];
-          const formattedDate = convertDateFormat(dateToString);
-      
-          setLotekaFecha(formattedDate);
-        } else {
-          console.error('Invalid or missing date in fechaLeidsa:', fechaLeidsa);
-        }
-      }, [fechaLeidsa]);
-
-
-      useEffect(() => {
-        if (Array.isArray(lotekaTotalAcumulado) && lotekaTotalAcumulado.length > 5) {
-          const inputString = lotekaTotalAcumulado[5];
-      
-          if (typeof inputString === 'string') {
-            const match = inputString.match(/(\$[0-9,]+)/);
-      
-            if (match) {
-              const extractedValue = match[0];
-              setLotekaAcumulado(extractedValue);
-            } else {
-              console.log("No match found");
-            }
-          } else {
-            console.log("lotekaTotalAcumulado[5] is not a string");
-          }
-        } else {
-          console.log("lotekaTotalAcumulado is not an array or does not have an element at index 5");
-        }
-      }, [lotekaTotalAcumulado]);
-
-      useEffect(() => {
-        if (Array.isArray(leidsaTotalAcumulado) && leidsaTotalAcumulado.length > 5) {
-          const inputString = leidsaTotalAcumulado[5];
-      
-          if (typeof inputString === 'string') {
-            const match = inputString.match(/(\$[0-9,]+)/);
-      
-            if (match) {
-              const extractedValue = match[0];
-              setLeidsaAcumulado(extractedValue);
-            } else {
-              console.log("No match found");
-            }
-          } else {
-            console.log("leidsaTotalAcumulado[5] is not a string");
-          }
-        } else {
-          console.log("leidsaTotalAcumulado is not an array or does not have an element at index 5");
-        }
-      }, [lotekaTotalAcumulado]);
-
+    function getSpecificDateForLoteka() {
+      const today = new Date();
+      const dayOfWeek = today.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+  
+      // Create a new date object to manipulate
+      const specificDate = new Date(today);
+  
+      switch (dayOfWeek) {
+          case 0: // Sunday
+          case 1: // Monday
+          case 2: // Tuesday
+          case 3: // Wednesday
+              // Previous Monday
+              specificDate.setDate(today.getDate() - (dayOfWeek)); // Subtract dayOfWeek days
+              break;
+          case 4: // Thursday
+          case 5: // Friday
+          case 6: // Saturday
+              // Get today's date (Thursday)
+              break;
+          default:
+              break;
+      }
+  
+      // Format the date to the desired format
+      const daysOfWeek = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo'];
+      const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  
+      const dayName = daysOfWeek[specificDate.getDay()];
+      const dayNumber = specificDate.getDate();
+      const monthName = months[specificDate.getMonth()];
+      const year = specificDate.getFullYear();
+  
+      setLotekaFecha(`${dayName} ${dayNumber}, ${year}`)
+  }
+  
+    
+    useEffect(() => {
+      getSpecificDate();
+      getSpecificDateForLoteka();
+    }, [leidsaFecha])
+    
+    
+    
 
       const handlePressNavigation = () => {
         navigation.navigate('Leidsa')
@@ -240,7 +266,7 @@ const Result = () => {
                 <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
                     <View style={{flexDirection: 'row'}}>
                         <Text>FECHA</Text>
-                        <Text style={{marginHorizontal: 10}}>{formattedDate}</Text>
+                        <Text style={{marginHorizontal: 10}}>{leidsaFecha}</Text>
                     </View>
                     <Text Style={{fontSize: 26, fontWeight: 'bold'}}>RESULTADO</Text>
                 </View>

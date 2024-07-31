@@ -1,13 +1,9 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Text, StyleSheet, ScrollView } from 'react-native';
-import CombinationButtons from '../components/combinationButton';
 import { getVisitCount, incrementVisitCount } from '../utils/visitCounter';
 
 import AdCard from '../components/adCard';
 import Result from '../components/Resultados';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { AuthContext } from '../Auth/AuthContext';
-import CountdownTimer from '../components/countDown';
 import ImageAds from '../components/ImageAd';
 
 

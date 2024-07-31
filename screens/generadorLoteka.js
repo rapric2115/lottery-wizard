@@ -5,9 +5,9 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-  ActivityIndicator
+  ActivityIndicator, 
+  RefreshControl
 } from 'react-native';
-import Predictions from '../components/prediction';
 import { AuthContext } from '../Auth/AuthContext';
 import { getDatabase, ref, child, get, set } from 'firebase/database';
 import { app } from '../firebaseConfig';
@@ -25,10 +25,7 @@ const GeneradorFormulaLoteka = ({ navigation }) => {
   const [lastRes, setLastRes] = useState([]);
   const [myCombination, setMyCombination] = useState([]);
   const [sortedData, setSortedData] = useState([]);
-
-  useEffect(() => {
-    gettingData();
-  }, []);
+  const [refreshing, setRefreshing] = useState(false);
 
   const AdsRef = ref(db);
 
@@ -49,8 +46,6 @@ const GeneradorFormulaLoteka = ({ navigation }) => {
     }
   };
 
-
-
   const { loteka, loading: lotekaLoading } = useFetch(
     'https://www.conectate.com.do/loterias/loteka',
     'score',
@@ -60,6 +55,7 @@ const GeneradorFormulaLoteka = ({ navigation }) => {
   const { leidsaLast } = useFetchDateLoteka('score', 'leidsaLast');
 
   useEffect(() => {
+    gettingData();
     setLastRes(leidsaLast)
   }, [leidsaLast])
   
@@ -214,8 +210,7 @@ const GeneradorFormulaLoteka = ({ navigation }) => {
     return a * Math.log(sum(b, c));
   };
 
-  useEffect(() => {
-    if (loteka.length > 0 && lastRes.length > 0) {
+  
     const calculateCombinations = (
       leidsaIndex,
       resultsIndex,
@@ -243,6 +238,9 @@ const GeneradorFormulaLoteka = ({ navigation }) => {
       return calculatedCombinations;
     };
 
+
+const combination = () => {
+    if (loteka.length > 0 && lastRes.length > 0) {
     setCombinacionOne(
       calculateCombinations(
         lotekaArray[12],
@@ -303,7 +301,11 @@ const GeneradorFormulaLoteka = ({ navigation }) => {
         38
       )
     );
-  }}, [leidsa]);
+  }}
+  useEffect(() => {
+    combination();
+  }, [loteka]);
+
 
   const renderRows = (combinations, results, styles, columnIndex) => {
     combinations.sort((a, b) => a[columnIndex] - b[columnIndex]);
@@ -352,15 +354,23 @@ const GeneradorFormulaLoteka = ({ navigation }) => {
     savedNumberLoteka(valuesToLog);
   };
 
-  useEffect(() => {
-    const sortData = () => {
-      const sortedArray = [...myCombination];
-      sortedArray.sort((a, b) => a - b);
-      setSortedData(sortedArray);
-    };
+  const sortData = () => {
+    const sortedArray = [...myCombination];
+    sortedArray.sort((a, b) => a - b);
+    setSortedData(sortedArray);
+  };
 
+  
+
+  useEffect(() => {
     sortData();
   }, [myCombination]);
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    combination();
+    setRefreshing(false);
+  }
 
   const handleNavigation = () => {
     navigation.navigate('genAI');
@@ -371,30 +381,16 @@ const GeneradorFormulaLoteka = ({ navigation }) => {
       <Text style={{ marginHorizontal: 20, fontWeight: 'bold', fontSize: 18, marginTop: 15, textAlign: 'center' }}>
         Numeros generados Loteka
       </Text>
+      <Text style={{display: 'flex', justifyContent: 'center', alignSelf: 'center'}}>Si no aparecen Resultados refresca la pagina haciendo slide hacia abajo.</Text>
       <OkMessage message={message} />
-      {proMember != false ?
-      
-      <TouchableOpacity onPress={handleNavigation} 
-        style={{borderWidth: 1, paddingVertical: 10, 
-        paddingHorizontal: 12, alignSelf: 'center',
-        borderRadius: 5, marginTop: 10
-        }}>
-        <Text>
-          Pale y Tripleta loteka con AI
-        </Text>
-      </TouchableOpacity> :
-      <TouchableOpacity onPress={handleNavigation} 
-        style={{borderWidth: 1, paddingVertical: 10, 
-        paddingHorizontal: 12, alignSelf: 'center',
-        borderRadius: 5, marginTop: 10
-        }}>
-        <Text>
-          Hacerse Miembro Pro para usar AI 
-        </Text>
-      </TouchableOpacity>
-    }
+     
 
-      <ScrollView style={{ marginTop: 20, marginBottom: 30 }}>
+      <ScrollView 
+        style={{ marginTop: 20, marginBottom: 30 }}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
       <ImageAds />
         {renderRows(
           [combinacionOne, combinacionTwo, combinacionTres, combinacionCuatro, combinacionCinco, combinacionSeis],

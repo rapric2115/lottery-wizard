@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, Linking } from 'react-native';
 import { initializeApp } from 'firebase/app';
-import { getDatabase, ref, onValue, child, get } from 'firebase/database';
+import { getDatabase, ref, child, get } from 'firebase/database';
 import { firebaseConfig } from '../firebaseConfig';
 
 const ImageAds = () => {

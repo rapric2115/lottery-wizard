@@ -10,6 +10,7 @@ import MembershipPrice from '../screens/memberShip/membershipPrice';
 import GeneradorAI from '../screens/generadorAI';
 import GeneradorFormulaLoteka from '../screens/generadorLoteka';
 import AIGen from '../screens/aiGenerator';
+import Charts from '../screens/Analitics';
 
 import HomeScreen from '../screens/Home';
 import MyAccount from '../screens/Perfil';
@@ -19,6 +20,7 @@ import Login from '../screens/login';
 import Brain from '../assets/Brain-modified.svg';
 import UProfile from '../assets/user profile-modified.svg';
 import Home from '../assets/home-modified.svg';
+import Charrts from '../assets/chart.svg';
 
 
 
@@ -59,6 +61,17 @@ const TabNavigator = () => {
                             )
                         }}
                 />
+                 <Tab.Screen 
+                    name="Charts"
+                    component={Charts}
+                    options={{
+                        tabBarLabel: 'Analitica',
+                        tabBarIcon: () => (
+                            // <FontAwesome5 name="user-circle" size={24} color="black" />
+                            <Charrts width={20} height={20} fill="black" />
+                        )                    
+                    }}
+                /> 
                 <Tab.Screen 
                     name="Profile"
                     component={MyAccount}

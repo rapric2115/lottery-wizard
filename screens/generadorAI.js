@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
+import { Text, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
 // import {brain} from 'brainjs';
 // import { SimpleLinearRegression3D } from 'ml-regression';
 import DesicionTreeComponent from './../components/DesicionTreeComponent';

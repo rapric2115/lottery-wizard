@@ -5,9 +5,8 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-  ActivityIndicator
+  RefreshControl
 } from 'react-native';
-import Predictions from '../components/prediction';
 import { AuthContext } from '../Auth/AuthContext';
 import { getDatabase, ref, child, get, set } from 'firebase/database';
 import { app } from '../firebaseConfig';
@@ -25,6 +24,7 @@ const GeneradorFormula = ({ navigation }) => {
   const [lastRes, setLastRes] = useState([]);
   const [myCombination, setMyCombination] = useState([]);
   const [sortedData, setSortedData] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     gettingData();
@@ -45,8 +45,8 @@ const GeneradorFormula = ({ navigation }) => {
         }
       }
     } catch (e) {
-      console.log(e);
-    }
+      console.log('firebase error in getting data', e);
+    } 
   };
 
 
@@ -63,14 +63,12 @@ const GeneradorFormula = ({ navigation }) => {
     'leidsaTest'
   );
 
-  console.log(leidsaTest);
- 
- const { leidsaLast} = useFetchDate('score', 'leidsaLast');
+  const { leidsaLast} = useFetchDate('score', 'leidsaLast');
 
   useEffect(() => {
     setLastRes(leidsaLast)
-  }, [leidsaLast])
-  
+  }, [leidsaLast]);
+
   const leidsaArray = leidsaOne.map((item) => Number(item.trim()));
 
 
@@ -222,8 +220,7 @@ const GeneradorFormula = ({ navigation }) => {
     return a * Math.log(sum(b, c));
   };
 
-  useEffect(() => {
-    if (leidsaOne.length > 0 && lastRes.length > 0) {
+
     const calculateCombinations = (
       leidsaIndex,
       resultsIndex,
@@ -251,6 +248,8 @@ const GeneradorFormula = ({ navigation }) => {
       return calculatedCombinations;
     };
 
+  const combination = () => {
+    if (leidsaOne.length > 0 && lastRes.length > 0) {
     setCombinacionOne(
       calculateCombinations(
         leidsaArray[31],
@@ -311,7 +310,10 @@ const GeneradorFormula = ({ navigation }) => {
         38
       )
     );
-  }}, [leidsa]);
+  }}
+  useEffect(() => {
+    combination();
+    }, [leidsa]);
 
   const renderRows = (combinations, results, styles, columnIndex) => {
     combinations.sort((a, b) => a[columnIndex] - b[columnIndex]);
@@ -361,15 +363,21 @@ const GeneradorFormula = ({ navigation }) => {
     savedNumber(valuesToLog);
   };
 
-  useEffect(() => {
-    const sortData = () => {
-      const sortedArray = [...myCombination];
-      sortedArray.sort((a, b) => a - b);
-      setSortedData(sortedArray);
-    };
+  const sortData = () => {
+    const sortedArray = [...myCombination];
+    sortedArray.sort((a, b) => a - b);
+    setSortedData(sortedArray);
+  };
 
+  useEffect(() => {
     sortData();
   }, [myCombination]);
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    combination();
+    setRefreshing(false);
+  }
 
   const handleNavigation = () => {
     navigation.navigate('genAI');
@@ -380,32 +388,17 @@ const GeneradorFormula = ({ navigation }) => {
   return (
     <View style={{ flex: 1 }}>
       <Text style={{ marginHorizontal: 20, fontWeight: 'bold', fontSize: 18, marginTop: 15, textAlign: 'center' }}>
-        Numeros generados Leidsa
+        Números generados Leidsa
       </Text>
+      <Text style={{display: 'flex', justifyContent: 'center', alignSelf: 'center'}}>Si no aparecen Resultados refresca la pagina haciendo slide hacia abajo.</Text>
       <OkMessage message={message} />
-      {proMember != false ?
       
-      <TouchableOpacity onPress={handleNavigation} 
-        style={{borderWidth: 1, paddingVertical: 10, 
-        paddingHorizontal: 12, alignSelf: 'center',
-        borderRadius: 5, marginTop: 10
-        }}>
-        <Text>
-          Pale y Tripleta leidsa con AI
-        </Text>
-      </TouchableOpacity> :
-      <TouchableOpacity onPress={handleNavigation} 
-        style={{borderWidth: 1, paddingVertical: 10, 
-        paddingHorizontal: 12, alignSelf: 'center',
-        borderRadius: 5, marginTop: 10
-        }}>
-        <Text>
-          Hacerse Miembro Pro para usar AI 
-        </Text>
-      </TouchableOpacity>
-    }
-
-      <ScrollView style={{ flexDirection: '', marginTop: 20, marginBottom: 30 }}>
+      <ScrollView 
+        style={{ flexDirection: '', marginTop: 20, marginBottom: 30 }}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
       <ImageAds />
         {renderRows(
           [combinacionOne, combinacionTwo, combinacionTres, combinacionCuatro, combinacionCinco, combinacionSeis],

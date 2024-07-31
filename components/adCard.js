@@ -1,16 +1,14 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Linking, Image } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { AuthContext } from '../Auth/AuthContext';
 import { initializeApp } from 'firebase/app';
-import { getDatabase, ref, onValue, child, get } from 'firebase/database';
+import { getDatabase, ref, child, get } from 'firebase/database';
 import { firebaseConfig } from '../firebaseConfig';
 import { LinearGradient } from 'expo-linear-gradient';
 
 const AdCard = ({ iconName, title, onPress, ...textStyle }) => {
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
-  const [bitcoin, setBitcoin] = useState();
   const [mcmoney, setMcmoney] = useState();
   const [adver, setAdver] = useState();
 
@@ -63,21 +61,9 @@ const AdCard = ({ iconName, title, onPress, ...textStyle }) => {
       });
   };
 
-  // https://static1.freebitco.in/banners/468x60-3.png
-
   return (
     <View>
-       {/* <LinearGradient
-         // Button Linear Gradient
-         colors={['#72C6EF','#004E8F']}
-         start={[0.01, 0.01]}
-         style={styles.adContainer}>
-          <TouchableOpacity style={styles.adContainer} onPress={() => openURL('https://freebitco.in/?r=1239559')}>
-            <MaterialCommunityIcons name={iconName} size={70} color="#F9AA4B" />
-            <Text style={[styles.text, { ...textStyle }]}>{title}</Text>
-          </TouchableOpacity>
-        </LinearGradient> */}
-        
+             
         <LinearGradient
          // Button Linear Gradient
          colors={['#FF844B','#EA5C28']}
