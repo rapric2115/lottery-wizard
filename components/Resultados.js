@@ -356,7 +356,7 @@ const styles = StyleSheet.create({
       borderColor: '#247ba0',
       width: '49%'
     }, 
-    fetchResults: {     
+    fetchResults: { 
       margin: 4,
       textAlign: 'center',
       fontSize: 18,
